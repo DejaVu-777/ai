@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4e8d0">
+<title>CSP &amp; Game Search — Seven Exam Topics (Retro Notes)</title>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Chivo:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4e8d0;
+    --paper-2:#efe0c0;
+    --ink:#2f2418;
+    --mustard:#d9a02b;
+    --avocado:#6f7a3f;
+    --orange:#c2541f;
+    --rule:#c8b28a;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    font-family:'Chivo','Helvetica Neue',Arial,sans-serif;
+    font-size:17px;
+    line-height:1.66;
+    color:var(--ink);
+    overflow-wrap:anywhere;
+    background-color:var(--paper);
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(111,122,63,.10) 0 1.6px, rgba(0,0,0,0) 2.2px),
+      radial-gradient(circle at 74% 58%, rgba(217,160,43,.13) 0 1.6px, rgba(0,0,0,0) 2.2px);
+    background-size:30px 30px, 42px 42px;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 14px 46px}
+
+  /* ---------------- HERO ---------------- */
+  .hero{
+    margin:0 -14px 18px;
+    padding:24px 16px 22px;
+    background:var(--paper-2);
+    border-top:9px solid var(--avocado);
+    border-bottom:4px solid var(--ink);
+  }
+  .hero .kicker{
+    display:inline-block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    background:var(--avocado);
+    color:#f7f2e2;
+    padding:3px 9px;
+    margin-bottom:12px;
+  }
+  .hero h1{
+    font-family:'Alfa Slab One','Rockwell','Georgia',serif;
+    font-weight:400;
+    font-size:clamp(26px,8.2vw,48px);
+    line-height:1.03;
+    margin:0 0 10px;
+    color:var(--ink);
+  }
+  .hero h1 .hot{color:var(--orange)}
+  .hero .sub{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11.5px;
+    line-height:1.9;
+    color:#4a3a24;
+    margin:0;
+    letter-spacing:.02em;
+  }
+  .hero .bands{
+    margin-top:14px;
+    height:12px;
+    background:repeating-linear-gradient(90deg, var(--mustard) 0 10px, var(--orange) 10px 20px, var(--avocado) 20px 30px);
+    opacity:.75;
+  }
+
+  /* ---------------- STICKY BAR ---------------- */
+  .bar{
+    position:sticky;top:0;z-index:30;
+    margin:0 -14px 18px;
+    background:var(--ink);
+    color:var(--paper);
+    padding:4px 14px 6px;
+    border-bottom:3px solid var(--mustard);
+  }
+  .bar summary{
+    list-style:none;cursor:pointer;
+    min-height:44px;display:flex;align-items:center;gap:9px;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+  }
+  .bar summary::-webkit-details-marker{display:none}
+  .bar summary .sq{
+    border:1px solid var(--mustard);
+    color:var(--mustard);
+    padding:0 6px;line-height:18px;font-size:14px;
+  }
+  .bar ol{
+    list-style:none;margin:4px 0 2px;padding:0;
+    border-top:1px solid rgba(244,232,208,.25);
+  }
+  .bar ol li{border-bottom:1px solid rgba(244,232,208,.16)}
+  .bar ol a{
+    display:block;padding:10px 0;
+    color:#f0e4c9;text-decoration:none;font-size:14px;
+  }
+  .bar ol a span{
+    font-family:'Space Mono','Courier New',monospace;
+    color:var(--mustard);font-size:11px;margin-right:9px;
+  }
+
+  /* ---------------- CARDS ---------------- */
+  .card{
+    background:var(--paper);
+    border:3px solid var(--ink);
+    border-radius:6px;
+    box-shadow:6px 6px 0 rgba(47,36,24,.16);
+    margin:0 0 28px;
+    padding:0 0 16px;
+    scroll-margin-top:64px;
+    min-width:0;
+  }
+  .card > h2{
+    margin:0 0 14px;
+    padding:12px 14px 12px;
+    background:var(--paper-2);
+    border-bottom:3px solid var(--ink);
+    font-family:'Alfa Slab One','Rockwell','Georgia',serif;
+    font-weight:400;
+    font-size:clamp(17px,5vw,24px);
+    line-height:1.18;
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .card > h2 .num{
+    flex:0 0 auto;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:12.5px;
+    background:var(--mustard);
+    color:var(--ink);
+    padding:2px 8px;
+    margin-top:4px;
+    border:2px solid var(--ink);
+  }
+  .card > *:not(h2){margin-left:14px;margin-right:14px}
+
+  h3{
+    font-family:'Chivo','Helvetica Neue',Arial,sans-serif;
+    font-weight:700;
+    font-size:16px;
+    margin:20px 0 8px;
+    padding:2px 0 2px 10px;
+    border-left:6px solid var(--avocado);
+    color:var(--ink);
+  }
+  p{margin:0 0 11px}
+  em{font-style:italic}
+  ul{margin:0 0 12px;padding-left:18px}
+  li{margin:0 0 9px}
+  li::marker{color:var(--orange)}
+  li ul{margin-top:8px;margin-bottom:0}
+  code{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:.87em;
+    background:rgba(217,160,43,.3);
+    padding:1px 4px;
+    border-radius:2px;
+  }
+  sup{font-size:.74em;vertical-align:super}
+
+  /* ---------------- CALLOUTS ---------------- */
+  .plan{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:12px;
+    line-height:1.6;
+    background:#fdf2dc;
+    border:2px dashed var(--avocado);
+    padding:9px 10px;
+    margin:0 14px 14px;
+  }
+  .plan .lbl{
+    display:inline-block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:9.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    background:var(--avocado);
+    color:#f7f2e2;
+    padding:2px 6px;
+    margin-right:6px;
+  }
+  .key{
+    background:#fdf6e6;
+    border:2px solid var(--mustard);
+    border-left-width:9px;
+    padding:10px 11px;
+    margin:0 14px 14px;
+    font-size:15px;
+  }
+  .warn{
+    background:#fbeade;
+    border:2px dashed var(--orange);
+    padding:10px 11px;
+    margin:0 14px 14px;
+    font-size:15px;
+  }
+  .tag{
+    display:inline-block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:9.5px;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    background:var(--mustard);
+    color:var(--ink);
+    padding:2px 6px;
+    margin-left:5px;
+    vertical-align:2px;
+    border:1px solid var(--ink);
+  }
+
+  /* ---------------- FIGURES ---------------- */
+  .fig{
+    margin:0 14px 16px;
+    border:2px solid var(--ink);
+    background:#fffaef;
+    border-radius:4px;
+    overflow:hidden;
+  }
+  .fig .cap{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    padding:4px 9px;
+    background:var(--paper-2);
+    border-bottom:2px solid var(--ink);
+    display:flex;justify-content:space-between;gap:10px;
+  }
+  .fig pre{
+    margin:0;
+    padding:11px 9px;
+    overflow-x:auto;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    line-height:1.35;
+    color:#241a10;
+    white-space:pre;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  /* ---------------- TABLES ---------------- */
+  .scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    margin:0 14px 16px;
+    border:2px solid var(--ink);
+    background:#fffaef;
+  }
+  table{border-collapse:collapse;width:100%;font-size:13px;min-width:460px}
+  caption{
+    caption-side:top;text-align:left;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    padding:5px 9px;
+    background:var(--paper-2);
+    border-bottom:2px solid var(--ink);
+  }
+  th,td{border:1px solid var(--rule);padding:8px 9px;text-align:left;vertical-align:top}
+  thead th{
+    background:var(--ink);
+    color:var(--paper);
+    font-size:11.5px;
+    letter-spacing:.05em;
+    text-transform:uppercase;
+  }
+  tbody th{background:var(--paper-2);font-weight:700}
+  tbody tr:nth-child(even) td{background:#f7edd6}
+  .swipe{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--orange);
+    margin:-12px 14px 16px;
+  }
+
+  /* ---------------- FOOTER ---------------- */
+  footer{
+    margin:30px -14px 0;
+    padding:22px 16px 32px;
+    background:var(--ink);
+    color:#e6d6b4;
+    text-align:center;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    line-height:1.95;
+    border-top:8px solid var(--avocado);
+  }
+  footer .big{
+    font-family:'Alfa Slab One','Rockwell','Georgia',serif;
+    font-size:16px;
+    color:var(--paper);
+    margin-bottom:6px;
+  }
+
+  @media (min-width:720px){
+    body{font-size:17.5px}
+    .wrap{padding:0 22px 54px}
+    .hero{margin:0 -22px 20px;padding:34px 24px 30px}
+    .bar{margin:0 -22px 20px}
+    .card > *:not(h2){margin-left:22px;margin-right:22px}
+    .card > h2{margin-left:0;margin-right:0;padding-left:22px;padding-right:22px}
+    .plan,.key,.warn,.fig,.scroll,.swipe{margin-left:22px;margin-right:22px}
+    .fig pre{font-size:13px}
+    table{font-size:13.5px}
+    .swipe{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Artificial Intelligence · CSP &amp; Game Search</div>
+    <h1>CSP &amp; Game Search<br><span class="hot">Seven Exam Topics</span></h1>
+    <p class="sub">
+      Cryptarithmetic (SEND+MORE=MONEY) · Alpha-beta pruning · AC-3 · Minimax<br>
+      Local consistency · Tree-structured CSP · Backtracking search
+    </p>
+    <div class="bands"></div>
+  </header>
+
+  <details class="bar">
+    <summary><span class="sq">≡</span> Contents — 7 topics</summary>
+    <ol>
+      <li><a href="#s1"><span>01</span>Cryptarithmetic as CSP — SEND+MORE=MONEY</a></li>
+      <li><a href="#s2"><span>02</span>Alpha-Beta Pruning on a Game Tree</a></li>
+      <li><a href="#s3"><span>03</span>AC-3 (Arc Consistency)</a></li>
+      <li><a href="#s4"><span>04</span>Minimax Search</a></li>
+      <li><a href="#s5"><span>05</span>Local Consistency — Node / Arc / Path</a></li>
+      <li><a href="#s6"><span>06</span>Constructing a Tree from a CSP Graph</a></li>
+      <li><a href="#s7"><span>07</span>Backtracking Search in CSPs</a></li>
+    </ol>
+  </details>
+
+  <!-- ================= 01 ================= -->
+  <section class="card" id="s1">
+    <h2><span class="num">01</span> Cryptarithmetic as CSP — SEND + MORE = MONEY</h2>
+
+    <div class="warn">
+      <strong>The single most repeated numerical in the whole exam.</strong> Solve it by hand using <strong>backtracking + forward checking + MRV / least-constraining-value heuristics</strong>.
+    </div>
+
+    <h3>1. Problem Formulation (CSP definition)</h3>
+    <ul>
+      <li><strong>Variables</strong>: S, E, N, D, M, O, R, Y (8 letters → 8 variables).</li>
+      <li><strong>Domain</strong>: {0,1,2,...,9} for each variable, with <strong>M ≠ 0</strong> and <strong>S ≠ 0</strong> (no leading zeros).</li>
+      <li><strong>Constraints</strong>: <em>All-Diff</em> (all letters take distinct digits) + the <strong>arithmetic column constraint</strong> that the sum of SEND and MORE equals MONEY.</li>
+    </ul>
+
+    <h3>2. Column Equations (with carries c1–c4)</h3>
+    <div class="key">
+      <ul style="margin:0">
+        <li>Column 1 (units): <strong>D + E = Y + 10·c1</strong></li>
+        <li>Column 2 (tens): <strong>N + R + c1 = E + 10·c2</strong></li>
+        <li>Column 3 (hundreds): <strong>E + O + c2 = N + 10·c3</strong></li>
+        <li>Column 4 (thousands): <strong>S + M + c3 = O + 10·c4</strong></li>
+        <li>Column 5 (ten-thousands): <strong>c4 = M</strong></li>
+      </ul>
+    </div>
+
+    <h3>3. Applying MRV (Minimum Remaining Values)</h3>
+    <ul>
+      <li>MRV picks the variable with the <em>smallest legal domain</em> first. <strong>M</strong> is chosen first because column 5 forces <strong>c4 = M</strong>, and since the maximum possible carry is 1, <strong>M's domain collapses instantly to {1}</strong> — this is the most constrained variable.</li>
+      <li>Next, <strong>S</strong> is selected (highly constrained by column 4: S + M + c3 = O + 10). Using forward checking, S's domain shrinks to <strong>{8, 9}</strong> only.</li>
+    </ul>
+
+    <h3>4. Applying LCV (Least Constraining Value) + Forward Checking</h3>
+    <ul>
+      <li>LCV prefers the value that <strong>rules out the fewest options</strong> for neighboring variables. Trying <strong>S = 9</strong> (instead of 8) leaves more flexibility downstream, so it's chosen first.</li>
+      <li>With <strong>M=1, S=9</strong>: column 4 gives <em>9 + 1 + c3 = O + 10</em> → <strong>O = 0</strong> (since O≠M, O≠S, this is consistent — forward checking confirms no domain wipeout).</li>
+    </ul>
+
+    <h3>5. Backtracking Trace (remaining letters)</h3>
+    <ul>
+      <li>From column 3 (E + O + c2 = N + 10c3), since <strong>O=0</strong>, this simplifies to <strong>E + c2 = N + 10c3</strong>. Testing c3=0 → <strong>E = N</strong> (violates All-Diff) → <strong>backtrack</strong>, set <strong>c3 = 1</strong>, giving <strong>N = E + c2 − 10... → N = E+1</strong> (after checking c2 possibilities via forward checking).</li>
+      <li>From column 2 (N + R + c1 = E + 10c2): substituting N = E+1 and testing c2=1 (forced since c3=1 needs support) gives <strong>R = 8</strong>, <strong>c1 = 1</strong>.</li>
+      <li>From column 1 (D + E = Y + 10c1), with c1=1: <strong>D + E = Y + 10</strong>. Testing remaining domain values (forward checking eliminates clashing digits) yields <strong>E = 5, N = 6, D = 7, Y = 2</strong>.</li>
+    </ul>
+
+    <h3>6. Final Consistent Assignment</h3>
+    <div class="key">
+      <strong>S=9, E=5, N=6, D=7, M=1, O=0, R=8, Y=2</strong><br>
+      Verification: <strong>9567 + 1085 = 10652</strong> ✔ — all digits distinct, no constraint violated.
+    </div>
+
+    <h3>7. Why Backtracking + FC + MRV/LCV Together <span class="tag">examiner magnet</span></h3>
+    <ul>
+      <li><strong>Backtracking</strong> alone explores depth-first and <em>undoes</em> bad assignments (like the S=8 dead-end); <strong>Forward Checking</strong> prunes domains of unassigned neighbors <em>immediately</em> after each assignment to detect failure early; <strong>MRV</strong> decides <em>which variable to assign next</em> (most constrained first); <strong>LCV</strong> decides <em>which value to try</em> (least restrictive first) — together they drastically cut the search space compared to naive brute-force backtracking.</li>
+    </ul>
+  </section>
+
+  <!-- ================= 02 ================= -->
+  <section class="card" id="s2">
+    <h2><span class="num">02</span> Alpha-Beta Pruning on a Game Tree</h2>
+
+    <h3>1. Concept Recap <span class="tag">examiner checks this first</span></h3>
+    <ul>
+      <li><strong>Alpha-Beta Pruning</strong> is an optimization over the <strong>Minimax algorithm</strong> that <em>eliminates branches</em> which cannot influence the final decision, <strong>without changing the computed minimax value</strong>.</li>
+      <li><strong>α (alpha)</strong> = the <em>best (highest)</em> value found so far for <strong>MAX</strong> along the path; <strong>β (beta)</strong> = the <em>best (lowest)</em> value found so far for <strong>MIN</strong>. A branch is <strong>pruned</strong> whenever <strong>α ≥ β</strong>.</li>
+    </ul>
+
+    <h3>2. The Game Tree <span class="tag">left-to-right move order</span></h3>
+    <div class="fig">
+      <div class="cap"><span>Fig. 1</span><span>MAX / MIN alternating tree</span></div>
+<pre>                 Root (MAX)
+              /              \
+          B (MIN)           C (MIN)
+         /      \           /      \
+     D(MAX)   E(MAX)     F(MAX)   G(MAX)
+     /  \      /  \       /  \     /  \
+    3    5    6    9     1    2   0   -1</pre>
+    </div>
+    <p class="swipe">swipe diagram →</p>
+
+    <h3>3. Step-by-Step Pruning Trace (left-to-right DFS)</h3>
+    <ul>
+      <li><strong>Node D</strong>: leaves <strong>3, 5</strong> explored → D's <strong>α</strong> updates 3→5 → <strong>D = 5</strong>. (No pruning possible here, nothing to compare against yet.)</li>
+      <li><strong>Node B (MIN)</strong>: receives D=5, so <strong>β(B) = 5</strong>. This β=5 is passed down to sibling <strong>E</strong>.</li>
+      <li><strong>Node E</strong>: first leaf <strong>6</strong> → E's local α = 6. Since <strong>α(6) ≥ β(5)</strong>, <strong>PRUNE</strong> — the second leaf <strong>9</strong> is <em>never evaluated</em> (<strong>Alpha cut-off</strong>). E returns 6, but it's irrelevant since B already has a better (lower) option.</li>
+      <li><strong>Node B final</strong> = min(5, 6) = <strong>5</strong>. Root updates <strong>α(root) = 5</strong>.</li>
+      <li><strong>Node F (MAX)</strong>, under C, inherits α=5, β=∞: leaves <strong>1, 2</strong> both explored (neither triggers pruning inside F) → <strong>F = 2</strong>.</li>
+      <li><strong>Node C (MIN)</strong>: updates <strong>β(C) = min(∞, 2) = 2</strong>. Now check against root's α=5: since <strong>β(2) ≤ α(5)</strong>, <strong>PRUNE</strong> — sibling <strong>G (leaves 0, −1) is never explored</strong> (<strong>Beta cut-off</strong>).</li>
+      <li><strong>Root (MAX)</strong> = max(B=5, C=2) = <strong>5</strong> → <strong>Final Minimax Value = 5</strong>.</li>
+    </ul>
+
+    <h3>4. Pruned Branches Summary</h3>
+    <div class="scroll">
+      <table>
+        <caption>What was skipped, and why</caption>
+        <thead>
+          <tr><th scope="col">Pruned Node</th><th scope="col">Values Skipped</th><th scope="col">Type of Cut-off</th><th scope="col">Reason</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Leaf 9 (under E)</th><td>9</td><td><strong>Alpha cut-off</strong></td><td>α(6) ≥ β(5)</td></tr>
+          <tr><th scope="row">Subtree G (0, −1)</th><td>0, −1</td><td><strong>Beta cut-off</strong></td><td>β(2) ≤ α(5)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">swipe table →</p>
+
+    <h3>5. Key Observations <span class="tag">examiners reward</span></h3>
+    <ul>
+      <li>Alpha-beta pruning returns the <strong>same final value (5)</strong> as plain minimax but <em>evaluates fewer nodes</em> — here <strong>2 leaves out of 8 were skipped</strong>.</li>
+      <li><strong>Move ordering matters critically</strong>: exploring the <em>best move first</em> maximizes pruning; with <strong>perfect ordering</strong>, time complexity improves from <strong>O(b<sup>d</sup>)</strong> to <strong>O(b<sup>d/2</sup>)</strong>, effectively <strong>doubling the usable search depth</strong>.</li>
+      <li>The pruning condition differs by node type: <strong>MAX nodes prune when value ≥ β</strong>; <strong>MIN nodes prune when value ≤ α</strong> — this asymmetry is a common trick question.</li>
+    </ul>
+  </section>
+
+  <!-- ================= 03 ================= -->
+  <section class="card" id="s3">
+    <h2><span class="num">03</span> AC-3 (Arc Consistency Algorithm)</h2>
+
+    <h3>1. Concept Definition</h3>
+    <ul>
+      <li><strong>AC-3 (Arc Consistency Algorithm #3)</strong> is a <strong>constraint propagation</strong> technique used to <em>reduce variable domains</em> in a CSP <strong>before or during search</strong>, by enforcing that every <strong>arc (binary constraint) is consistent</strong>.</li>
+      <li>An <strong>arc X → Y</strong> is said to be <strong>arc-consistent</strong> if for <em>every value x in Dom(X)</em>, there exists <em>some value y in Dom(Y)</em> that satisfies the constraint between X and Y. If not, <strong>x is removed</strong> from Dom(X).</li>
+    </ul>
+
+    <h3>2. The Algorithm <span class="tag">write exactly</span></h3>
+    <ul>
+      <li><strong>Step 1</strong>: Initialize a <strong>queue</strong> with <em>all arcs</em> in the CSP (each binary constraint generates two directed arcs, e.g., X→Y and Y→X).</li>
+      <li><strong>Step 2</strong>: <strong>Pop an arc (Xi, Xj)</strong> from the queue and call <strong>REVISE(Xi, Xj)</strong>.</li>
+      <li><strong>Step 3 — REVISE procedure</strong>: For each value <strong>x</strong> in Dom(Xi), check if <em>there exists</em> a value <strong>y</strong> in Dom(Xj) satisfying the constraint. If <strong>no such y exists</strong>, <strong>delete x</strong> from Dom(Xi).</li>
+      <li><strong>Step 4</strong>: If REVISE <strong>changed</strong> Dom(Xi) (domain got smaller), <strong>re-add all arcs (Xk, Xi)</strong> for every neighbor Xk of Xi (<em>except Xj</em>) back into the queue — since Xi's reduced domain might now make those arcs inconsistent.</li>
+      <li><strong>Step 5</strong>: Repeat until the <strong>queue is empty</strong> (arc-consistent) or <strong>some domain becomes empty</strong> → CSP has <strong>no solution</strong> (failure detected early).</li>
+    </ul>
+
+    <h3>3. Worked Example <span class="tag">numerical</span></h3>
+    <ul>
+      <li>Consider two variables: <strong>X ∈ {1, 2, 3}</strong>, <strong>Y ∈ {1, 2, 3}</strong>, with constraint <strong>X &lt; Y</strong>.</li>
+      <li><strong>Arc (X, Y)</strong>: Check each value of X — <em>X=1</em>: Y=2 or 3 satisfies → <strong>keep</strong>. <em>X=2</em>: Y=3 satisfies → <strong>keep</strong>. <em>X=3</em>: <strong>no value of Y &gt; 3 exists</strong> → <strong>delete 3 from Dom(X)</strong>. Now <strong>Dom(X) = {1, 2}</strong>.</li>
+      <li><strong>Arc (Y, X)</strong>: <em>Y=1</em>: no X &lt; 1 → <strong>delete 1 from Dom(Y)</strong>. <em>Y=2</em>: X=1 works → keep. <em>Y=3</em>: X=1 or 2 works → keep. Now <strong>Dom(Y) = {2, 3}</strong>.</li>
+      <li>Since <strong>Dom(X) changed</strong>, re-check arcs pointing into X (none here other than already processed) — queue empties. <strong>Final domains: X={1,2}, Y={2,3}</strong> — this is now <strong>arc-consistent</strong> (though not yet a complete solution).</li>
+    </ul>
+
+    <h3>4. Complexity</h3>
+    <ul>
+      <li>With <strong>n</strong> variables, <strong>d</strong> domain size, and <strong>c</strong> binary constraints, AC-3 runs in <strong>O(c·d³)</strong> time — each arc can be pushed back onto the queue <strong>O(d)</strong> times, and REVISE costs <strong>O(d²)</strong>.</li>
+    </ul>
+
+    <h3>5. Key Role in CSP Solving</h3>
+    <ul>
+      <li>AC-3 is typically applied <strong>as a preprocessing step</strong> or <strong>interleaved with backtracking search (MAC – Maintaining Arc Consistency)</strong> to <em>shrink domains early</em> and <strong>detect dead-ends without full search</strong>.</li>
+      <li>It <strong>does not guarantee a solution</strong> by itself (a CSP can be arc-consistent yet still have no valid assignment, e.g., in cases needing <em>path-consistency</em> or higher-order checks) — it only <strong>eliminates values that can never be part of any solution</strong>, making subsequent backtracking far more efficient.</li>
+    </ul>
+  </section>
+
+  <!-- ================= 04 ================= -->
+  <section class="card" id="s4">
+    <h2><span class="num">04</span> Minimax Search</h2>
+
+    <h3>1. Concept Definition</h3>
+    <ul>
+      <li><strong>Minimax</strong> is a <strong>decision-making algorithm</strong> used in <strong>two-player, zero-sum, perfect-information games</strong> (like chess, tic-tac-toe) where one player <strong>(MAX)</strong> tries to <em>maximize</em> the outcome and the other <strong>(MIN)</strong> tries to <em>minimize</em> it, assuming <strong>both players play optimally</strong>.</li>
+      <li>It works by <strong>recursively exploring the game tree</strong> to the <strong>terminal nodes (leaves)</strong>, then <strong>backing up</strong> values level by level to decide the best move at the root.</li>
+    </ul>
+
+    <h3>2. The Algorithm</h3>
+    <ul>
+      <li><strong>Step 1</strong>: Generate the complete <strong>game tree</strong> from the current state down to <strong>terminal states</strong> (or a fixed <strong>depth limit</strong> with a <strong>heuristic evaluation function</strong> if the tree is too large).</li>
+      <li><strong>Step 2</strong>: Assign <strong>utility values</strong> to terminal/leaf nodes (e.g., +1 = win for MAX, −1 = win for MIN, 0 = draw).</li>
+      <li><strong>Step 3</strong>: <strong>Backpropagate</strong> values upward — at a <strong>MAX node</strong>, take the <strong>maximum</strong> of its children's values; at a <strong>MIN node</strong>, take the <strong>minimum</strong> of its children's values.</li>
+      <li><strong>Step 4</strong>: The value propagated to the <strong>root</strong> represents the <strong>best achievable outcome</strong>; the root chooses the <strong>child branch</strong> that leads to this value as its move.</li>
+    </ul>
+
+    <h3>3. Worked Example</h3>
+    <div class="fig">
+      <div class="cap"><span>Fig. 2</span><span>Minimax tree</span></div>
+<pre>                MAX (root)
+             /              \
+          MIN A            MIN B
+         /     \           /     \
+        3       5         2       9</pre>
+    </div>
+    <p class="swipe">swipe diagram →</p>
+    <ul>
+      <li><strong>Node A (MIN)</strong>: children are leaves <strong>3</strong> and <strong>5</strong> → MIN picks the <strong>smaller</strong> → <strong>A = min(3,5) = 3</strong>.</li>
+      <li><strong>Node B (MIN)</strong>: children are leaves <strong>2</strong> and <strong>9</strong> → MIN picks the <strong>smaller</strong> → <strong>B = min(2,9) = 2</strong>.</li>
+      <li><strong>Root (MAX)</strong>: compares A=3 and B=2 → MAX picks the <strong>larger</strong> → <strong>Root = max(3,2) = 3</strong>.</li>
+      <li><strong>Decision</strong>: MAX should choose the <strong>branch toward Node A</strong>, guaranteeing a <strong>payoff of 3</strong>, since MIN will always counter optimally to minimize MAX's gain.</li>
+    </ul>
+
+    <h3>4. Minimax Formula</h3>
+    <div class="key">
+      <ul style="margin:0">
+        <li>For a <strong>MAX node</strong>: <strong>Minimax(n) = max( Minimax(c) )</strong> for all children <em>c</em> of <em>n</em>.</li>
+        <li>For a <strong>MIN node</strong>: <strong>Minimax(n) = min( Minimax(c) )</strong> for all children <em>c</em> of <em>n</em>.</li>
+        <li>For a <strong>terminal node</strong>: <strong>Minimax(n) = Utility(n)</strong>.</li>
+      </ul>
+    </div>
+
+    <h3>5. Complexity</h3>
+    <ul>
+      <li>Time complexity: <strong>O(b<sup>m</sup>)</strong> — where <strong>b</strong> = branching factor, <strong>m</strong> = maximum depth of the tree (since it explores <em>every</em> node exhaustively).</li>
+      <li>Space complexity: <strong>O(bm)</strong> (linear) if using <strong>depth-first exploration</strong>, since only one path needs to be stored at a time.</li>
+    </ul>
+
+    <h3>6. Key Observations <span class="tag">examiner magnet</span></h3>
+    <ul>
+      <li>Minimax <strong>guarantees an optimal move</strong> <em>only if</em> the opponent also plays <strong>optimally</strong>; it does <strong>not account for probabilistic or suboptimal opponents</strong>.</li>
+      <li>Pure minimax is <strong>computationally expensive</strong> for large games (e.g., chess has branching factor ~35) — this limitation <strong>motivates Alpha-Beta Pruning</strong>, which computes the <em>same result</em> while <em>exploring fewer nodes</em>.</li>
+    </ul>
+  </section>
+
+  <!-- ================= 05 ================= -->
+  <section class="card" id="s5">
+    <h2><span class="num">05</span> Local Consistency — Node, Arc, Path</h2>
+
+    <h3>1. Concept Definition</h3>
+    <ul>
+      <li><strong>Local consistency</strong> techniques check and enforce consistency over <strong>small subsets of variables</strong> (1, 2, or 3 at a time) <em>before/during search</em>, <strong>pruning the search space</strong> by eliminating values that can <strong>never</strong> appear in any valid solution — without solving the whole CSP.</li>
+      <li>The three standard levels, in <strong>increasing order of strength</strong>, are: <strong>Node Consistency → Arc Consistency → Path Consistency</strong>.</li>
+    </ul>
+
+    <h3>2. Node Consistency <span class="tag">1st order — unary</span></h3>
+    <ul>
+      <li>A variable is <strong>node-consistent</strong> if <strong>every value in its domain</strong> satisfies that variable's own <strong>unary constraints</strong>.</li>
+      <li><strong>Example</strong>: If domain of X = {1,2,3,4,5} and the constraint is <strong>X &gt; 2</strong>, then node consistency removes <strong>1 and 2</strong>, leaving <strong>Dom(X) = {3,4,5}</strong>.</li>
+      <li>This is the <strong>weakest and simplest</strong> form — it only looks at a <em>single variable in isolation</em>, never considering relationships between variables.</li>
+    </ul>
+
+    <h3>3. Arc Consistency <span class="tag">2nd order — binary</span></h3>
+    <ul>
+      <li>An <strong>arc X → Y</strong> is consistent if for <strong>every value x in Dom(X)</strong>, there <strong>exists</strong> some value <strong>y in Dom(Y)</strong> satisfying the binary constraint between them. If no such y exists, <strong>x is removed</strong>.</li>
+      <li><strong>Example</strong>: X ∈ {1,2,3}, Y ∈ {1,2,3}, constraint <strong>X &lt; Y</strong>. For <strong>X=3</strong>, no Y &gt; 3 exists → <strong>remove 3 from Dom(X)</strong>. Resulting <strong>Dom(X) = {1,2}</strong>.</li>
+      <li>Enforced via the <strong>AC-3 algorithm</strong>; it is <strong>stronger than node consistency</strong> since it considers <strong>pairs of variables</strong>, but still <strong>doesn't guarantee a full solution</strong> (a CSP can be arc-consistent yet unsolvable).</li>
+    </ul>
+
+    <h3>4. Path Consistency <span class="tag">3rd order — triples</span></h3>
+    <ul>
+      <li>A pair of variables <strong>{X, Y}</strong> is <strong>path-consistent</strong> with respect to a third variable <strong>Z</strong> if, for <em>every</em> consistent assignment to X and Y, there <strong>exists</strong> a value of <strong>Z</strong> that satisfies the constraints <strong>X–Z</strong> and <strong>Z–Y</strong> simultaneously.</li>
+      <li><strong>Example</strong>: X, Y, Z all ∈ {1,2,3} with constraints <strong>X≠Y, Y≠Z, X≠Z</strong> (like a 3-coloring problem) — path consistency checks whether <em>every</em> valid (X,Y) pair can be <strong>extended</strong> to include a valid Z, removing (X,Y) pairs that have <strong>no supporting Z</strong>.</li>
+      <li>This is <strong>stronger than arc consistency</strong> because it reasons over <strong>3 variables jointly</strong>, catching inconsistencies that arc consistency <strong>misses</strong> — but it is also <strong>more computationally expensive</strong>.</li>
+    </ul>
+
+    <h3>5. Comparison Table</h3>
+    <div class="scroll">
+      <table>
+        <caption>Three levels of local consistency</caption>
+        <thead>
+          <tr><th scope="col">Type</th><th scope="col">Variables Involved</th><th scope="col">Constraint Type</th><th scope="col">Strength</th><th scope="col">Algorithm</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Node Consistency</th><td>1</td><td>Unary</td><td>Weakest</td><td>Direct domain filtering</td></tr>
+          <tr><th scope="row">Arc Consistency</th><td>2</td><td>Binary</td><td>Moderate</td><td><strong>AC-3</strong></td></tr>
+          <tr><th scope="row">Path Consistency</th><td>3</td><td>Binary (chained)</td><td>Strongest (of the three)</td><td><strong>PC-2</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">swipe table →</p>
+
+    <h3>6. Key Observations <span class="tag">examiner magnet</span></h3>
+    <ul>
+      <li><strong>Higher-order consistency ⇒ more pruning ⇒ smaller search space</strong>, but also <strong>higher computational cost</strong> — there's a direct <strong>trade-off between consistency strength and processing time</strong>.</li>
+      <li>None of these techniques alone <strong>guarantees a solution</strong>; they are used as <strong>preprocessing or interleaved steps</strong> (e.g., combined with <strong>backtracking search</strong>) to make CSP solving <em>dramatically more efficient</em>, since <strong>full consistency (k-consistency for all k) is equivalent to solving the CSP outright</strong> — which is <strong>computationally infeasible</strong> for large problems.</li>
+    </ul>
+  </section>
+
+  <!-- ================= 06 ================= -->
+  <section class="card" id="s6">
+    <h2><span class="num">06</span> Constructing a Tree from a CSP Graph</h2>
+
+    <h3>1. Concept Definition</h3>
+    <ul>
+      <li>A <strong>CSP constraint graph</strong> has variables as <strong>nodes</strong> and binary constraints as <strong>edges</strong>. If this graph is <strong>already a tree</strong> (no cycles), the CSP can be solved in <strong>linear time</strong>; if it has <strong>cycles</strong>, we must <em>reduce it</em> to a tree form using <strong>Cutset Conditioning</strong> or <strong>Tree Decomposition</strong>.</li>
+      <li>The key theorem: <strong>any tree-structured CSP can be solved in O(n·d²) time</strong> — <em>linear in the number of variables</em>, instead of the exponential cost of general CSPs.</li>
+    </ul>
+
+    <h3>2. Steps to Solve an Already-Tree-Structured CSP</h3>
+    <ul>
+      <li><strong>Step 1 — Choose a root</strong> and perform a <strong>topological sort (ordering)</strong> of the tree so that <strong>every node appears after its parent</strong> (parent before children).</li>
+      <li><strong>Step 2 — Directional Arc Consistency (backward pass)</strong>: Process nodes from <strong>last to first</strong> (leaves → root). For each arc <strong>(Parent, Child)</strong>, apply <strong>REVISE</strong> so the parent's domain only keeps values consistent with <em>some</em> value of the child — this <em>removes</em> values that would later cause failure.</li>
+      <li><strong>Step 3 — Forward assignment pass</strong>: Process nodes from <strong>first to last</strong> (root → leaves). Assign each variable a value from its (now pruned) domain that is <strong>consistent with its already-assigned parent</strong> — this assignment is <strong>guaranteed never to backtrack</strong>.</li>
+    </ul>
+
+    <h3>3. Example — Tree-Structured CSP</h3>
+    <div class="fig">
+      <div class="cap"><span>Fig. 3</span><span>Already a tree</span></div>
+<pre>        A
+       / \
+      B   C
+     /
+    D</pre>
+    </div>
+    <p class="swipe">swipe diagram →</p>
+    <ul>
+      <li>Suppose all domains = {1,2}, with constraint <strong>"not equal"</strong> on every edge (A≠B, A≠C, B≠D).</li>
+      <li><strong>Backward pass (D→B→C→A)</strong>: Check D against B — fine, no removal. Check B against A — fine. Check C against A — fine. (No domain wipeout, tree is consistent.)</li>
+      <li><strong>Forward pass (A→B→C→D)</strong>: Assign <strong>A=1</strong>. Then <strong>B</strong> must ≠1 → <strong>B=2</strong>. Then <strong>C</strong> must ≠1 → <strong>C=2</strong>. Then <strong>D</strong> must ≠2 (its parent B) → <strong>D=1</strong>.</li>
+      <li><strong>Final solution</strong>: A=1, B=2, C=2, D=1 — found <strong>without any backtracking</strong>.</li>
+    </ul>
+
+    <h3>4. Converting a General (Cyclic) Graph into a Tree — Cutset Conditioning</h3>
+    <ul>
+      <li><strong>Step 1</strong>: Identify a <strong>Cycle Cutset</strong> — a <em>minimal set of variables</em> which, when <strong>removed</strong>, leaves the <strong>remaining graph cycle-free (a tree)</strong>.</li>
+      <li><strong>Step 2</strong>: For <strong>every possible value-assignment</strong> to the cutset variables, <strong>fix those values</strong> and check if the <strong>remaining tree-structured CSP</strong> can be solved (using the tree algorithm above).</li>
+      <li><strong>Step 3</strong>: If a consistent assignment to the rest of the tree is found for some cutset assignment, that <strong>combined assignment is a solution</strong>; otherwise try the <strong>next combination</strong> of cutset values.</li>
+    </ul>
+
+    <h3>5. Example — Cutset Conditioning</h3>
+    <div class="fig">
+      <div class="cap"><span>Fig. 4</span><span>Cycle graph → cutset</span></div>
+<pre>     A --- B
+     |     |
+     D --- C</pre>
+    </div>
+    <p class="swipe">swipe diagram →</p>
+    <ul>
+      <li>This graph has a <strong>cycle (A-B-C-D-A)</strong>. Removing <strong>A</strong> (the cutset, size 1) leaves <strong>B-C-D</strong>, a <strong>simple path (tree)</strong>.</li>
+      <li><strong>Try A=1</strong> → remaining tree (B,C,D) is solved using the tree algorithm with A's value fixed as a constraint on B and D.</li>
+      <li>If no solution exists for A=1, <strong>try A=2</strong>, and repeat — since domain size is small, this requires only a <strong>few tree-solves</strong>, not full exponential search.</li>
+    </ul>
+
+    <h3>6. Complexity</h3>
+    <ul>
+      <li>If the <strong>cutset size is c</strong> and domain size is <strong>d</strong>, total complexity = <strong>O(d<sup>c</sup> · (n−c)·d²)</strong> — <strong>exponential only in c</strong>, so a <strong>small cutset</strong> makes this <em>far more efficient</em> than brute-force backtracking on the whole graph.</li>
+    </ul>
+
+    <h3>7. Key Observations <span class="tag">examiner magnet</span></h3>
+    <ul>
+      <li><strong>Tree-structured CSPs are solved in polynomial time</strong>; general CSPs are <strong>NP-hard</strong> — the entire motivation behind cutset conditioning and tree decomposition is to <strong>exploit sparse/tree-like structure</strong> hidden in real-world constraint graphs.</li>
+      <li><strong>Finding the smallest cycle cutset is itself NP-hard</strong>, but <em>heuristic</em> methods usually find a <strong>reasonably small cutset quickly</strong>, making this approach <strong>practical</strong> despite the theoretical worst case.</li>
+    </ul>
+  </section>
+
+  <!-- ================= 07 ================= -->
+  <section class="card" id="s7">
+    <h2><span class="num">07</span> Backtracking Search in CSPs</h2>
+
+    <h3>1. Concept Definition</h3>
+    <ul>
+      <li><strong>Backtracking Search</strong> is a <strong>depth-first search</strong> strategy for CSPs that assigns values to variables <strong>one at a time</strong>, and whenever an assignment <strong>violates a constraint</strong>, it <strong>immediately abandons</strong> that branch and <strong>backtracks</strong> to try a different value — avoiding the need to explore the <em>entire</em> search space blindly.</li>
+      <li>It is a <strong>refinement of simple backtracking</strong> called the <strong>Backtracking Search Algorithm</strong>, which checks constraints <strong>incrementally</strong> after each assignment rather than generating a complete assignment first and testing it at the end.</li>
+    </ul>
+
+    <h3>2. The Algorithm <span class="tag">write exactly</span></h3>
+    <ul>
+      <li><strong>Step 1</strong>: If <strong>all variables are assigned</strong>, return the <strong>assignment as the solution (success)</strong>.</li>
+      <li><strong>Step 2</strong>: Else, <strong>select an unassigned variable</strong> (using a heuristic like <strong>MRV — Minimum Remaining Values</strong>).</li>
+      <li><strong>Step 3</strong>: For <strong>each value</strong> in that variable's domain (ordered using <strong>LCV — Least Constraining Value</strong>):
+        <ul>
+          <li><strong>Check consistency</strong> of this value against all <strong>already-assigned neighbors</strong>.</li>
+          <li>If <strong>consistent</strong>, assign it and <strong>recursively call</strong> backtracking on the remaining variables.</li>
+          <li>If the recursive call <strong>succeeds</strong>, <strong>return success</strong>.</li>
+          <li>If it <strong>fails</strong>, <strong>undo (backtrack)</strong> the assignment and <strong>try the next value</strong>.</li>
+        </ul>
+      </li>
+      <li><strong>Step 4</strong>: If <strong>no value</strong> works for this variable, <strong>return failure</strong> — forcing the <strong>previous level</strong> to backtrack further.</li>
+    </ul>
+
+    <h3>3. Worked Example <span class="tag">map coloring</span></h3>
+    <ul>
+      <li>Consider <strong>3 regions — A, B, C</strong> forming a triangle (all mutually adjacent), with <strong>colors {Red, Green}</strong> available, and constraint: <strong>adjacent regions must have different colors</strong>.</li>
+      <li><strong>Assign A = Red</strong> (first variable, first value) → consistent so far (no neighbors assigned yet).</li>
+      <li><strong>Assign B = Red</strong>? → <strong>conflict</strong> (B is adjacent to A, both Red) → <strong>try B = Green</strong> → consistent.</li>
+      <li><strong>Assign C</strong>: must differ from <strong>both A (Red) and B (Green)</strong> → <strong>no color in {Red, Green} works</strong> → <strong>failure at C</strong>.</li>
+      <li><strong>Backtrack to B</strong>: no other values left for B → <strong>backtrack to A</strong>: <strong>try A = Green</strong> instead.</li>
+      <li>Repeating the process: <strong>A=Green, B=Red, C=?</strong> → again <strong>no valid color for C</strong> (triangle with only 2 colors is <strong>unsolvable</strong>) → algorithm correctly returns <strong>"no solution exists"</strong> after exhausting all branches.</li>
+    </ul>
+
+    <h3>4. Improving Plain Backtracking</h3>
+    <ul>
+      <li><strong>Variable Ordering (MRV)</strong>: choose the variable with the <strong>fewest legal values remaining</strong> — fails fast, <strong>pruning the tree early</strong>.</li>
+      <li><strong>Value Ordering (LCV)</strong>: choose the value that <strong>rules out the fewest choices</strong> for neighboring variables — keeps <em>maximum flexibility</em> for future assignments.</li>
+      <li><strong>Forward Checking</strong>: after each assignment, <strong>check remaining variables' domains</strong> and eliminate values that would conflict — detects failure <strong>earlier than plain backtracking</strong>.</li>
+    </ul>
+
+    <h3>5. Complexity</h3>
+    <ul>
+      <li>Worst-case time complexity: <strong>O(d<sup>n</sup>)</strong> — where <strong>d</strong> = domain size, <strong>n</strong> = number of variables (same as brute-force in the worst case), but in <strong>practice far faster</strong> due to early pruning of inconsistent branches.</li>
+    </ul>
+
+    <h3>6. Key Observations <span class="tag">examiner magnet</span></h3>
+    <ul>
+      <li>Backtracking is <strong>complete</strong> (will find a solution if one exists) and avoids the <strong>massive redundancy</strong> of generate-and-test, since it <strong>detects constraint violations as early as possible</strong> in the assignment process.</li>
+      <li>It forms the <strong>base algorithm</strong> on which more powerful techniques — <strong>Forward Checking, MAC (Maintaining Arc Consistency), and heuristics like MRV/LCV/degree heuristic</strong> — are layered to achieve practical efficiency on large CSPs.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div class="big">CSP &amp; Game Search · Seven Topics</div>
+    <div>Cryptarithmetic · alpha-beta · AC-3 · minimax · local consistency · tree CSP · backtracking</div>
+    <div>Source: your pasted revision notes · Page made 12 Nov 2026</div>
+  </footer>
+
+</div>
+</body>
+</html>

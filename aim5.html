@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#fff4e0">
+<title>Machine Learning Fundamentals — Seven Exam Topics (Retro Notes)</title>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Chivo:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fff4e0;
+    --cream-2:#fbe8c9;
+    --teal:#0f4c5c;
+    --marigold:#e8871e;
+    --saffron:#f4a300;
+    --brick:#a4243b;
+    --ink:#20343a;
+    --rule:#e0c9a2;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    font-family:'Chivo','Mukta','Helvetica Neue',Arial,sans-serif;
+    font-size:17px;
+    line-height:1.66;
+    color:var(--ink);
+    overflow-wrap:anywhere;
+    background-color:var(--cream);
+    background-image:
+      radial-gradient(circle at 14% 20%, rgba(232,135,30,.13) 0 1.5px, rgba(0,0,0,0) 2px),
+      radial-gradient(circle at 70% 64%, rgba(15,76,92,.09) 0 1.5px, rgba(0,0,0,0) 2px);
+    background-size:26px 26px, 36px 36px;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 14px 46px}
+
+  /* ---------------- HERO ---------------- */
+  .hero{
+    margin:0 -14px 18px;
+    padding:24px 16px 0;
+    background:var(--teal);
+    color:var(--cream);
+    border-bottom:6px solid var(--marigold);
+    text-align:center;
+  }
+  .hero .kicker{
+    display:inline-block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--saffron);
+    margin-bottom:8px;
+  }
+  .hero h1{
+    font-family:'Shrikhand','Rockwell','Georgia',serif;
+    font-weight:400;
+    font-size:clamp(24px,7.4vw,44px);
+    line-height:1.06;
+    margin:0 0 10px;
+    color:#fff8ea;
+  }
+  .hero h1 .hl{color:var(--saffron)}
+  .hero .sub{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    line-height:1.9;
+    letter-spacing:.03em;
+    color:#f2dcbc;
+    margin:0 0 14px;
+  }
+  .hero .scallop{
+    height:14px;
+    background-image:radial-gradient(circle at 8px 14px, var(--marigold) 0 8px, rgba(0,0,0,0) 9px);
+    background-size:16px 14px;
+    background-repeat:repeat-x;
+  }
+
+  /* ---------------- STICKY BAR ---------------- */
+  .bar{
+    position:sticky;top:0;z-index:30;
+    margin:0 -14px 18px;
+    background:var(--teal);
+    color:var(--cream);
+    padding:4px 14px 6px;
+    border-bottom:3px solid var(--marigold);
+  }
+  .bar summary{
+    list-style:none;cursor:pointer;
+    min-height:44px;display:flex;align-items:center;gap:9px;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  }
+  .bar summary::-webkit-details-marker{display:none}
+  .bar summary .burger{
+    border:1px solid var(--marigold);color:var(--marigold);
+    padding:0 6px;line-height:18px;font-size:14px;
+  }
+  .bar ol{
+    list-style:none;margin:4px 0 2px;padding:0;
+    border-top:1px solid rgba(255,244,224,.25);
+  }
+  .bar ol li{border-bottom:1px solid rgba(255,244,224,.16)}
+  .bar ol a{
+    display:block;padding:10px 0;
+    color:#fbeeda;text-decoration:none;font-size:14px;
+  }
+  .bar ol a span{
+    font-family:'Space Mono','Courier New',monospace;
+    color:var(--saffron);font-size:11px;margin-right:9px;
+  }
+
+  /* ---------------- CARDS ---------------- */
+  .card{
+    background:var(--cream);
+    border:3px solid var(--teal);
+    border-radius:10px;
+    box-shadow:inset 0 0 0 4px var(--cream), inset 0 0 0 6px rgba(232,135,30,.5), 4px 4px 0 rgba(15,76,92,.15);
+    margin:0 0 28px;
+    padding:14px 0 18px;
+    scroll-margin-top:64px;
+    min-width:0;
+  }
+  .card > h2{
+    margin:0 14px 12px;
+    padding:0 0 10px;
+    border-bottom:3px solid var(--marigold);
+    font-family:'Shrikhand','Rockwell','Georgia',serif;
+    font-weight:400;
+    font-size:clamp(18px,5.2vw,26px);
+    line-height:1.2;
+    color:var(--teal);
+    display:flex;gap:11px;align-items:flex-start;
+  }
+  .card > h2 .num{
+    flex:0 0 auto;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:12px;
+    color:#fff;
+    background:var(--brick);
+    border-radius:50%;
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+    margin-top:5px;
+  }
+  .card > *:not(h2){margin-left:14px;margin-right:14px}
+
+  h3{
+    font-family:'Chivo','Helvetica Neue',Arial,sans-serif;
+    font-weight:700;
+    font-size:16px;
+    margin:20px 0 8px;
+    padding:2px 0 2px 10px;
+    border-left:6px solid var(--saffron);
+    color:var(--teal);
+  }
+  p{margin:0 0 11px}
+  em{font-style:italic}
+  ul{margin:0 0 12px;padding-left:19px}
+  li{margin:0 0 9px}
+  li::marker{color:var(--brick)}
+  li ul{margin-top:8px;margin-bottom:0}
+  code{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:.87em;
+    background:rgba(244,163,0,.26);
+    padding:1px 4px;
+    border-radius:3px;
+  }
+
+  /* ---------------- CALLOUTS ---------------- */
+  .formula{
+    margin:0 14px 14px;
+    padding:11px 10px;
+    background:#fdf3e2;
+    border:2px dashed var(--teal);
+    border-radius:4px;
+    text-align:center;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:13px;
+    line-height:1.9;
+    color:#123c48;
+  }
+  .formula .name{
+    display:block;
+    font-size:9.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--brick);
+    margin-bottom:5px;
+  }
+  .key{
+    background:#fdf4e4;
+    border:2px solid var(--marigold);
+    border-left-width:9px;
+    border-radius:5px;
+    padding:10px 11px;
+    margin:0 14px 14px;
+    font-size:15px;
+  }
+  .key .lbl, .exam .lbl{
+    display:block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:9.5px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--brick);
+    margin-bottom:5px;
+  }
+  .note{
+    background:#fdf0d8;
+    border:2px dashed var(--teal);
+    border-radius:4px;
+    padding:9px 10px;
+    margin:0 14px 14px;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:12px;
+    line-height:1.65;
+  }
+  .exam{
+    margin:16px 14px 4px;
+    padding:11px;
+    border:2px solid var(--brick);
+    border-radius:5px;
+    background:#fdf1f2;
+    font-size:14.5px;
+  }
+  .exam .lbl{color:var(--brick)}
+  .step{
+    display:block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--brick);
+    margin-bottom:4px;
+  }
+
+  /* ---------------- TABLES ---------------- */
+  .scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    margin:0 14px 16px;
+    border:2px solid var(--teal);
+    border-radius:5px;
+    background:#fff9ee;
+  }
+  table{border-collapse:collapse;width:100%;font-size:13px;min-width:440px}
+  caption{
+    caption-side:top;text-align:left;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    padding:5px 9px;
+    background:var(--cream-2);
+    border-bottom:2px solid var(--teal);
+    color:var(--teal);
+  }
+  th,td{border:1px solid var(--rule);padding:7px 9px;text-align:left;vertical-align:top}
+  thead th{
+    background:var(--teal);color:var(--cream);
+    font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;
+  }
+  tbody th{background:#f6e5c6;color:var(--teal);font-weight:700}
+  tbody tr:nth-child(even) td{background:#fdf4e4}
+  td.num,th.num{font-family:'Space Mono','Courier New',monospace;font-size:12px;white-space:nowrap}
+  .swipe{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--brick);
+    margin:-12px 14px 16px;
+  }
+
+  /* ---------------- FOOTER ---------------- */
+  footer{
+    margin:30px -14px 0;
+    padding:22px 16px 32px;
+    background:var(--teal);
+    color:#f7e6c8;
+    text-align:center;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    line-height:1.95;
+    border-top:6px solid var(--marigold);
+  }
+  footer .big{
+    font-family:'Shrikhand','Rockwell','Georgia',serif;
+    font-size:17px;
+    color:var(--cream);
+    margin-bottom:6px;
+  }
+
+  @media (min-width:720px){
+    body{font-size:17.5px}
+    .wrap{padding:0 22px 54px}
+    .hero{margin:0 -22px 20px;padding:34px 24px 0}
+    .bar{margin:0 -22px 20px}
+    .card > *:not(h2){margin-left:22px;margin-right:22px}
+    .card > h2{margin-left:22px;margin-right:22px}
+    .formula,.key,.note,.exam,.scroll,.swipe{margin-left:22px;margin-right:22px}
+    table{font-size:13.5px}
+    .swipe{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Machine Learning · Exam Prep</div>
+    <h1>ML Fundamentals<br><span class="hl">Seven Exam Topics</span></h1>
+    <p class="sub">Decision tree (ID3) · logistic regression · overfitting<br>info gain &amp; Gini · linear regression · classification vs regression · univariate vs multivariate</p>
+    <div class="scallop"></div>
+  </header>
+
+  <details class="bar">
+    <summary><span class="burger">≡</span> Contents — 7 topics</summary>
+    <ol>
+      <li><a href="#s1"><span>01</span>Decision Tree — ID3 &amp; Information Gain</a></li>
+      <li><a href="#s2"><span>02</span>Logistic Regression</a></li>
+      <li><a href="#s3"><span>03</span>Overfitting — Causes &amp; Prevention</a></li>
+      <li><a href="#s4"><span>04</span>Information Gain &amp; Gini Index</a></li>
+      <li><a href="#s5"><span>05</span>Linear Regression</a></li>
+      <li><a href="#s6"><span>06</span>Classification vs Regression</a></li>
+      <li><a href="#s7"><span>07</span>Univariate vs Multivariate Regression</a></li>
+    </ol>
+  </details>
+
+  <!-- ================= 01 ================= -->
+  <section class="card" id="s1">
+    <h2><span class="num">01</span> Decision Tree — ID3 &amp; Information Gain</h2>
+
+    <h3>1. Concept</h3>
+    <ul>
+      <li>A <strong>Decision Tree</strong> is a <em>supervised learning</em> model that classifies data by recursively splitting it based on attribute values, forming a tree of <strong>decision nodes</strong> (tests) and <strong>leaf nodes</strong> (class labels). It's popular because it's easy to interpret and convert into if-then rules.</li>
+      <li><strong>ID3 (Iterative Dichotomiser 3)</strong> builds the tree <strong>top-down, greedily</strong>, choosing at each node the attribute that best separates the classes using <strong>Information Gain</strong> as the selection measure.</li>
+    </ul>
+
+    <h3>2. Key Formulas</h3>
+    <div class="formula">
+      <span class="name">Entropy — impurity measure</span>
+      Entropy(S) = −Σ pᵢ log₂(pᵢ)
+    </div>
+    <p>where <strong>pᵢ</strong> = proportion of class <em>i</em> in set S.</p>
+    <div class="formula">
+      <span class="name">Information Gain for attribute A</span>
+      Gain(S, A) = Entropy(S) − Σ (|Sᵥ|/|S|) × Entropy(Sᵥ)
+    </div>
+    <p>— the <em>reduction in entropy</em> after splitting on A.</p>
+
+    <h3>3. ID3 Algorithm Steps</h3>
+    <ul>
+      <li>Compute <strong>Entropy(S)</strong> of the entire dataset using the target class distribution.</li>
+      <li>For <em>each</em> candidate attribute, compute <strong>weighted entropy</strong> of its subsets and derive its <strong>Information Gain</strong>.</li>
+      <li>Select the attribute with the <strong>highest Information Gain</strong> as the <strong>root/splitting node</strong>.</li>
+      <li><strong>Recursively repeat</strong> on each branch's subset until a node is <em>pure</em> (single class) or no attributes remain — these become <strong>leaf nodes</strong>.</li>
+    </ul>
+
+    <h3>4. Numerical Example</h3>
+    <div class="scroll">
+      <table>
+        <caption>Restaurant wait dataset</caption>
+        <thead>
+          <tr><th scope="col">Age</th><th scope="col">Competition</th><th scope="col">Type</th><th scope="col">Class</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Old</td><td>Yes</td><td>Software</td><td>Down</td></tr>
+          <tr><td>Old</td><td>No</td><td>Software</td><td>Down</td></tr>
+          <tr><td>Old</td><td>No</td><td>Hardware</td><td>Down</td></tr>
+          <tr><td>Mid</td><td>Yes</td><td>Software</td><td>Down</td></tr>
+          <tr><td>Mid</td><td>Yes</td><td>Hardware</td><td>Down</td></tr>
+          <tr><td>Mid</td><td>No</td><td>Hardware</td><td>Up</td></tr>
+          <tr><td>Mid</td><td>No</td><td>Software</td><td>Up</td></tr>
+          <tr><td>New</td><td>Yes</td><td>Software</td><td>Up</td></tr>
+          <tr><td>New</td><td>No</td><td>Hardware</td><td>Up</td></tr>
+          <tr><td>New</td><td>No</td><td>Software</td><td>Up</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">swipe table →</p>
+
+    <p><span class="step">Step 1 — Entropy of whole set S (10 rows: 5 Up, 5 Down)</span></p>
+    <div class="formula">
+      Entropy(S) = −(5/10)log₂(5/10) − (5/10)log₂(5/10) = <strong>1</strong>
+    </div>
+    <p>(<em>maximum impurity</em>, perfect 50-50 split).</p>
+
+    <p><span class="step">Step 2 — Entropy &amp; Gain for "Age"</span></p>
+    <ul>
+      <li>Old(3): all Down → Entropy = 0. New(3): all Up → Entropy = 0. Mid(4): 2 Up, 2 Down → Entropy = 1.</li>
+      <li>Weighted Entropy = (3/10)(0) + (4/10)(1) + (3/10)(0) = <strong>0.4</strong> → <strong>Gain(Age) = 1 − 0.4 = 0.6</strong>.</li>
+    </ul>
+
+    <p><span class="step">Step 3 — Entropy &amp; Gain for "Competition"</span></p>
+    <ul>
+      <li>Yes(4): 3 Down, 1 Up → Entropy ≈ 0.811. No(6): 2 Down, 4 Up → Entropy ≈ 0.918.</li>
+      <li>Weighted Entropy = (4/10)(0.811)+(6/10)(0.918) ≈ <strong>0.875</strong> → <strong>Gain(Competition) ≈ 0.125</strong>.</li>
+    </ul>
+
+    <p><span class="step">Step 4 — Entropy &amp; Gain for "Type"</span></p>
+    <ul>
+      <li>Software(6): 3 Down, 3 Up → Entropy = 1. Hardware(4): 2 Down, 2 Up → Entropy = 1.</li>
+      <li>Weighted Entropy = <strong>1</strong> → <strong>Gain(Type) = 1 − 1 = 0</strong> (<em>no information gained — useless split</em>).</li>
+    </ul>
+
+    <h3>5. Root Node Selection</h3>
+    <ul>
+      <li>Comparing: <strong>Gain(Age) = 0.6</strong> &gt; Gain(Competition) = 0.125 &gt; Gain(Type) = 0.</li>
+      <li>Since <strong>Age</strong> gives the <strong>highest Information Gain</strong>, it is chosen as the <strong>root node</strong>. "Old" and "New" branches become <em>pure leaves</em> (Down, Up respectively); only the "Mid" branch needs further splitting using the remaining attributes (Competition/Type).</li>
+    </ul>
+
+    <div class="exam">
+      <span class="lbl">Quick revision box</span>
+      <ul style="margin:0">
+        <li><em>High Entropy</em> = more disorder/impurity → bad split. <em>High Gain</em> = attribute separates classes well → good split.</li>
+        <li><strong>ID3 = greedy + recursive + top-down</strong>, always picks <strong>max Gain</strong> attribute first; stops when node is pure or attributes exhausted.</li>
+        <li>Limitation to mention for extra marks: ID3 is <em>biased toward attributes with many values</em> — this is fixed in <strong>C4.5</strong> using <strong>Gain Ratio</strong> instead of plain Information Gain.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 02 ================= -->
+  <section class="card" id="s2">
+    <h2><span class="num">02</span> Logistic Regression — Linear Classification</h2>
+
+    <div class="note">
+      Appeared in nearly every paper — sometimes Part A, sometimes a full 6–14 mark question.
+    </div>
+
+    <h3>1. Concept</h3>
+    <ul>
+      <li><strong>Logistic Regression</strong> is a <em>supervised</em> algorithm used for <strong>classification</strong> (despite the name "regression"), typically <strong>binary classification</strong> (classes 0/1). It models the <strong>probability</strong> that a given input belongs to a particular class, rather than predicting the class directly.</li>
+      <li>It is called a <strong>linear classifier</strong> because it computes a <em>linear combination</em> of input features — the decision boundary it produces is a <strong>straight line/hyperplane</strong> in feature space.</li>
+    </ul>
+
+    <h3>2. Why Not Linear Regression for Classification?</h3>
+    <ul>
+      <li><strong>Linear Regression</strong> outputs values over an <em>unbounded range</em> (−∞ to +∞), which is unsuitable since probabilities must lie between <strong>0 and 1</strong>.</li>
+      <li>It is also <em>highly sensitive to outliers</em> and can produce <em>nonsensical predictions</em> (e.g., negative probability) — this motivates the need for a <strong>squashing function</strong>.</li>
+    </ul>
+
+    <h3>3. The Sigmoid (Logistic) Function</h3>
+    <ul>
+      <li>Logistic Regression passes the linear combination <code>z = w₀ + w₁x₁ + w₂x₂ + ... + wₙxₙ</code> through the <strong>sigmoid function</strong>:</li>
+    </ul>
+    <div class="formula">
+      <span class="name">Sigmoid</span>
+      σ(z) = 1 / (1 + e<sup>−z</sup>)
+    </div>
+    <ul>
+      <li>The <strong>sigmoid</strong> <em>squashes</em> any real-valued input into the range <strong>(0, 1)</strong>, making the output interpretable as a <strong>probability</strong> <code>P(y=1|x)</code>. The curve is <strong>S-shaped</strong>, symmetric about z = 0 where σ(z) = 0.5.</li>
+    </ul>
+
+    <h3>4. Decision Rule</h3>
+    <ul>
+      <li>Once probability <code>P(y=1|x) = σ(z)</code> is computed, a <strong>threshold</strong> (commonly <strong>0.5</strong>) is applied:</li>
+      <li>If <code>P ≥ 0.5</code> → predict <strong>Class 1</strong>; if <code>P &lt; 0.5</code> → predict <strong>Class 0</strong>. This threshold corresponds to <code>z = 0</code>, which defines the <strong>linear decision boundary</strong> separating the two classes.</li>
+    </ul>
+
+    <h3>5. Cost Function — Why Not MSE?</h3>
+    <ul>
+      <li>Using <strong>Mean Squared Error</strong> with sigmoid makes the cost function <strong>non-convex</strong> (many local minima), so <strong>Gradient Descent</strong> may fail to find the global minimum.</li>
+      <li>Instead, Logistic Regression uses <strong>Log Loss / Cross-Entropy Loss</strong>:</li>
+    </ul>
+    <div class="formula">
+      <span class="name">Cross-entropy cost</span>
+      Cost = −[ y·log(ŷ) + (1−y)·log(1−ŷ) ]
+    </div>
+    <ul>
+      <li>This cost function is <strong>convex</strong>, <em>heavily penalizes confident wrong predictions</em>, and guarantees <strong>Gradient Descent converges</strong> to the global minimum.</li>
+    </ul>
+
+    <h3>6. Parameter Learning</h3>
+    <ul>
+      <li>Weights <code>w</code> are learned by <strong>minimizing the cost function</strong> (average cross-entropy over all training examples) using <strong>Gradient Descent</strong>:</li>
+    </ul>
+    <div class="formula">
+      <span class="name">Weight update</span>
+      wⱼ := wⱼ − α · ∂Cost/∂wⱼ
+    </div>
+    <ul>
+      <li>Here <strong>α (alpha)</strong> is the <strong>learning rate</strong>, controlling the <em>step size</em> of each update; this is repeated <em>iteratively</em> until the cost <strong>converges</strong>.</li>
+    </ul>
+
+    <h3>7. Diagram to Draw</h3>
+    <ul>
+      <li>Sketch the <strong>S-shaped sigmoid curve</strong> (x-axis: z, y-axis: σ(z) from 0 to 1), marking the <strong>0.5 threshold line</strong> at z=0 — <em>this single diagram is often worth separate marks</em>.</li>
+    </ul>
+
+    <div class="exam">
+      <span class="lbl">Quick revision box</span>
+      <ul style="margin:0">
+        <li><strong>Linear part</strong> → <code>z = wᵏxᵏ</code> (combination) → <strong>Sigmoid</strong> → squashes to probability → <strong>Threshold (0.5)</strong> → class label.</li>
+        <li>Keywords to drop for marks: <em>linear decision boundary</em>, <em>Maximum Likelihood Estimation</em> (alternate way cost function is derived), <em>convex cost function</em>, <em>binary classifier</em>.</li>
+        <li>Contrast line (common Part A ask): "Linear Regression predicts <strong>continuous values</strong>; Logistic Regression predicts <strong>class probabilities</strong>."</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 03 ================= -->
+  <section class="card" id="s3">
+    <h2><span class="num">03</span> Overfitting — Causes &amp; Prevention</h2>
+
+    <h3>1. Concept</h3>
+    <ul>
+      <li><strong>Overfitting</strong> occurs when a model learns the <strong>training data too well</strong>, capturing not just the underlying pattern but also the <em>noise and random fluctuations</em> specific to that dataset.</li>
+      <li>Such a model shows <strong>high accuracy on training data</strong> but <strong>poor generalization/performance on unseen test data</strong> — the gap between train and test error is the classic <em>symptom</em>.</li>
+    </ul>
+
+    <h3>2. How It Occurs — Root Causes</h3>
+    <ul>
+      <li><strong>Excessive model complexity</strong>: using a model with <em>too many parameters/features</em> (e.g., a very deep decision tree or a high-degree polynomial) relative to the amount of data — the model has enough "freedom" to <em>memorize</em> training points instead of learning general trends.</li>
+      <li><strong>Insufficient training data</strong>: when the dataset is <em>small</em>, the model cannot distinguish genuine patterns from <em>random noise</em>, so it fits the noise too.</li>
+      <li><strong>Training for too long / too many iterations</strong>: in iterative algorithms (e.g., gradient descent, neural nets), training beyond the optimal point causes the model to start fitting <em>noise</em> rather than signal.</li>
+      <li><strong>Noisy or irrelevant features</strong>: including <em>redundant or unrelated attributes</em> gives the model extra ways to latch onto spurious correlations.</li>
+    </ul>
+
+    <h3>3. Bias-Variance Connection</h3>
+    <ul>
+      <li>Overfitting corresponds to <strong>low bias, high variance</strong> — the model is <em>too flexible</em>, so small changes in training data cause <em>large changes</em> in the learned function. This is the direct opposite of <strong>underfitting</strong> (high bias, low variance), where the model is too simple to capture the pattern at all.</li>
+    </ul>
+
+    <h3>4. Detecting Overfitting</h3>
+    <ul>
+      <li>Plot a <strong>learning curve</strong>: training error keeps <em>decreasing</em> while validation/test error starts <em>increasing</em> after a point — this <em>diverging gap</em> is the clearest diagnostic sign.</li>
+    </ul>
+
+    <h3>5. Methods to Prevent Overfitting</h3>
+    <ul>
+      <li><em><strong>Cross-Validation</strong></em>: use <strong>k-fold cross-validation</strong> to evaluate the model on multiple train-test splits, ensuring performance generalizes rather than depending on one lucky split.</li>
+      <li><em><strong>Regularization</strong></em> (<strong>L1/Lasso</strong> and <strong>L2/Ridge</strong>): add a <em>penalty term</em> to the cost function that discourages large weight values, forcing the model toward <em>simpler</em> solutions.</li>
+    </ul>
+    <div class="formula">
+      <span class="name">Regularized cost</span>
+      Cost = Loss + λ·Σ|w| &nbsp;(L1)&nbsp;&nbsp;|&nbsp;&nbsp;Cost = Loss + λ·Σw² &nbsp;(L2)
+    </div>
+    <ul>
+      <li>where <strong>λ (lambda)</strong> controls penalty strength.</li>
+      <li><em><strong>Pruning</strong></em> (for Decision Trees): remove branches that have <em>little predictive power</em>, either by <strong>pre-pruning</strong> (stop growth early) or <strong>post-pruning</strong> (grow fully, then trim back).</li>
+      <li><em><strong>Early Stopping</strong></em>: halt training <em>as soon as validation error starts increasing</em>, even if training error is still falling — prevents the model from over-memorizing.</li>
+      <li><em><strong>Dropout</strong></em> (for Neural Networks): randomly <em>deactivate a fraction of neurons</em> during each training iteration, forcing the network to learn <strong>redundant, robust representations</strong> instead of relying on specific neurons.</li>
+      <li><em><strong>Increasing Training Data</strong></em>: more <em>diverse, representative</em> data helps the model learn genuine patterns and dilutes the influence of noise.</li>
+      <li><em><strong>Feature Selection/Reduction</strong></em>: remove <em>irrelevant or redundant features</em> (or use dimensionality reduction like <strong>PCA</strong>) to simplify the hypothesis space.</li>
+      <li><em><strong>Ensemble Methods</strong></em> (e.g., <strong>Random Forest</strong>, <strong>Bagging</strong>): combine multiple models to <em>average out</em> individual overfitting tendencies, improving generalization.</li>
+    </ul>
+
+    <div class="exam">
+      <span class="lbl">Quick revision box</span>
+      <ul style="margin:0">
+        <li>One-line definition to open with: <em>"Overfitting = low training error + high test error, caused by excessive model complexity relative to data."</em></li>
+        <li>Memory hook for prevention methods: <strong>"CROP-DIE"</strong> → <strong>C</strong>ross-validation, <strong>R</strong>egularization, <strong>O</strong>versized data (more data), <strong>P</strong>runing, <strong>D</strong>ropout, <strong>E</strong>arly stopping — pick any 5-6 to write for full marks.</li>
+        <li>Always pair with <strong>underfitting</strong> as contrast if asked generally: <em>"Underfitting → model too simple, high bias; Overfitting → model too complex, high variance."</em></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 04 ================= -->
+  <section class="card" id="s4">
+    <h2><span class="num">04</span> Information Gain &amp; Gini Index</h2>
+
+    <h3>1. Concept — Why We Need Them</h3>
+    <ul>
+      <li>Both are <strong>attribute selection measures</strong> used in <strong>Decision Tree</strong> construction to decide <strong>which attribute to split on</strong> at each node — the goal is to choose the attribute that produces the <strong>purest possible child nodes</strong>.</li>
+      <li><strong>Information Gain</strong> (used in <strong>ID3</strong>) is based on <strong>Entropy</strong>; <strong>Gini Index</strong> (used in <strong>CART</strong>) is an alternative <em>impurity measure</em> that is <strong>computationally simpler</strong> (avoids log calculations).</li>
+    </ul>
+
+    <h3>2. Entropy — Foundation for Information Gain</h3>
+    <ul>
+      <li><strong>Entropy</strong> measures the <strong>impurity/disorder</strong> of a dataset with respect to class labels:</li>
+    </ul>
+    <div class="formula">
+      <span class="name">Entropy</span>
+      Entropy(S) = −Σ pᵢ log₂(pᵢ)
+    </div>
+    <ul>
+      <li>Entropy = <strong>0</strong> when the set is <em>perfectly pure</em> (all one class); Entropy = <strong>1</strong> (max) when classes are <em>equally split</em> (50-50 for binary classes).</li>
+    </ul>
+
+    <h3>3. Information Gain — Definition &amp; Formula</h3>
+    <ul>
+      <li><strong>Information Gain (IG)</strong> measures the <strong>reduction in entropy</strong> achieved by splitting a dataset on a particular attribute A:</li>
+    </ul>
+    <div class="formula">
+      <span class="name">Information gain</span>
+      Gain(S, A) = Entropy(S) − Σ (|Sᵥ|/|S|) × Entropy(Sᵥ)
+    </div>
+    <ul>
+      <li>The <em>second term</em> is the <strong>weighted average entropy</strong> of the subsets Sᵥ created by splitting on A. The attribute with the <strong>highest Information Gain</strong> is chosen as the <strong>splitting node</strong>.</li>
+    </ul>
+
+    <h3>4. Gini Index — Definition &amp; Formula</h3>
+    <ul>
+      <li><strong>Gini Index</strong> measures the <strong>probability of misclassifying</strong> a randomly chosen element if it were randomly labeled according to the class distribution in the subset:</li>
+    </ul>
+    <div class="formula">
+      <span class="name">Gini index</span>
+      Gini(S) = 1 − Σ pᵢ²
+    </div>
+    <ul>
+      <li>Gini = <strong>0</strong> for a <em>pure node</em>; Gini = <strong>0.5</strong> (max for binary classes) when classes are <em>equally mixed</em>. For a split, compute the <strong>weighted Gini</strong> of children:</li>
+    </ul>
+    <div class="formula">
+      <span class="name">Weighted Gini of a split</span>
+      Gini_split = Σ (|Sᵥ|/|S|) × Gini(Sᵥ)
+    </div>
+    <ul>
+      <li>Unlike Information Gain (<em>pick highest</em>), for Gini Index we pick the attribute/split with the <strong>lowest weighted Gini Index</strong>.</li>
+    </ul>
+
+    <h3>5. Worked Example (Generic Binary Dataset)</h3>
+    <p>Suppose a dataset S has 10 instances: 6 "Yes", 4 "No". Splitting on attribute A gives two subsets: A=1 (5 instances: 4 Yes, 1 No) and A=0 (5 instances: 2 Yes, 3 No).</p>
+    <div class="formula">
+      Entropy(S) = −(6/10)log₂(6/10) − (4/10)log₂(4/10) ≈ <strong>0.971</strong><br>
+      Entropy(A=1) = −(4/5)log₂(4/5) − (1/5)log₂(1/5) ≈ <strong>0.722</strong><br>
+      Entropy(A=0) = −(2/5)log₂(2/5) − (3/5)log₂(3/5) ≈ <strong>0.971</strong><br>
+      Weighted Entropy = (5/10)(0.722) + (5/10)(0.971) ≈ <strong>0.847</strong><br>
+      Gain(S, A) = 0.971 − 0.847 = <strong>0.124</strong>
+    </div>
+    <div class="formula">
+      Gini(S) = 1 − [(6/10)² + (4/10)²] = 1 − 0.52 = <strong>0.48</strong><br>
+      Gini(A=1) = 1 − [(4/5)² + (1/5)²] = 1 − 0.68 = <strong>0.32</strong><br>
+      Gini(A=0) = 1 − [(2/5)² + (3/5)²] = 1 − 0.52 = <strong>0.48</strong><br>
+      Weighted Gini = (5/10)(0.32) + (5/10)(0.48) = <strong>0.40</strong><br>
+      Gini Gain = Gini(S) − Gini_split = 0.48 − 0.40 = <strong>0.08</strong>
+    </div>
+    <p>(<em>improvement — lower weighted Gini = better split</em>)</p>
+
+    <h3>6. Key Comparison Table</h3>
+    <div class="scroll">
+      <table>
+        <caption>Information gain vs Gini index</caption>
+        <thead>
+          <tr><th scope="col">Feature</th><th scope="col">Information Gain</th><th scope="col">Gini Index</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Based on</th><td><strong>Entropy</strong> (log-based)</td><td><strong>Probability squares</strong></td></tr>
+          <tr><th scope="row">Used in</th><td><strong>ID3, C4.5</strong></td><td><strong>CART</strong></td></tr>
+          <tr><th scope="row">Computation</th><td><em>Slower</em> (logarithms)</td><td><em>Faster</em> (no logs)</td></tr>
+          <tr><th scope="row">Range</th><td>0 to 1</td><td>0 to 0.5 (binary)</td></tr>
+          <tr><th scope="row">Selection rule</th><td><strong>Maximize</strong> Gain</td><td><strong>Minimize</strong> Gini</td></tr>
+          <tr><th scope="row">Bias</th><td>Favors <em>multi-valued</em> attributes</td><td>More <em>balanced</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">swipe table →</p>
+
+    <div class="exam">
+      <span class="lbl">Quick revision box</span>
+      <ul style="margin:0">
+        <li>One-liner: <em>"Entropy/Gini measure impurity; Information Gain/Gini Gain measure the reduction in impurity after a split — higher Gain or lower Gini wins the split."</em></li>
+        <li>Formula pair to memorize together: <strong>Entropy uses log₂(p)</strong>, <strong>Gini uses p²</strong> — this single distinction answers most "difference between" Part-A questions.</li>
+        <li>If dataset given: always compute <strong>parent impurity first</strong>, then <strong>each child's impurity</strong>, then <strong>weighted average</strong>, then <strong>subtract from parent</strong> — this exact sequence structure earns <em>step-wise marks</em> even if arithmetic slips.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 05 ================= -->
+  <section class="card" id="s5">
+    <h2><span class="num">05</span> Linear Regression</h2>
+
+    <h3>1. Concept</h3>
+    <ul>
+      <li><strong>Linear Regression</strong> is a <em>supervised learning</em> algorithm used to model the <strong>relationship between a dependent variable (y)</strong> and one or more <strong>independent variables (x)</strong> by fitting a <strong>straight line</strong> through the data.</li>
+      <li>It is primarily used for <strong>prediction of continuous numerical values</strong> (e.g., price, premium, salary) — unlike classification, the output is <strong>not a class label</strong> but a <strong>real number</strong>.</li>
+    </ul>
+
+    <h3>2. Types</h3>
+    <ul>
+      <li><em><strong>Simple Linear Regression</strong></em>: involves <strong>one independent variable</strong> — models <code>y = b₀ + b₁x</code>.</li>
+      <li><em><strong>Multiple Linear Regression</strong></em>: involves <strong>two or more independent variables</strong> — models <code>y = b₀ + b₁x₁ + b₂x₂ + ... + bₙxₙ</code>.</li>
+    </ul>
+
+    <h3>3. The Regression Line Equation</h3>
+    <div class="formula">
+      <span class="name">Fitted line</span>
+      ŷ = b₀ + b₁x
+    </div>
+    <ul>
+      <li><strong>b₀ (intercept)</strong> = value of y when x = 0.</li>
+      <li><strong>b₁ (slope/coefficient)</strong> = <em>change in y for a unit change in x</em> — indicates the <strong>strength and direction</strong> of the relationship.</li>
+      <li>The goal is to find the <strong>"best fit line"</strong> that minimizes the <strong>overall prediction error</strong> across all data points.</li>
+    </ul>
+
+    <h3>4. Cost Function — Least Squares Method</h3>
+    <ul>
+      <li>Linear Regression uses <strong>Mean Squared Error (MSE)</strong> as its cost function:</li>
+    </ul>
+    <div class="formula">
+      <span class="name">MSE cost</span>
+      Cost = (1/n) Σ(yᵢ − ŷᵢ)²
+    </div>
+    <ul>
+      <li>Minimizing this <strong>sum of squared residuals</strong> is called the <em><strong>Ordinary Least Squares (OLS)</strong></em> method — it penalizes larger errors more heavily (due to squaring) and gives a unique, <em>closed-form</em> solution.</li>
+    </ul>
+
+    <h3>5. Formulas for b₀ and b₁ (Least Squares)</h3>
+    <div class="formula">
+      <span class="name">Slope</span>
+      b₁ = Σ(xᵢ − x̄)(yᵢ − ȳ) / Σ(xᵢ − x̄)²<br>
+      <span class="name" style="margin-top:8px">Intercept</span>
+      b₀ = ȳ − b₁x̄
+    </div>
+    <ul>
+      <li>Here <strong>x̄</strong> and <strong>ȳ</strong> are the <strong>means</strong> of x and y respectively — these two formulas are the <em>core computation</em> for any numerical.</li>
+    </ul>
+
+    <h3>6. Worked Numerical — Driving Experience vs Insurance Premium</h3>
+    <div class="scroll">
+      <table>
+        <caption>Given data</caption>
+        <thead>
+          <tr><th scope="col">Experience (x, years)</th><th scope="col">Premium (y, ₹100s)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">5</td><td class="num">64</td></tr>
+          <tr><td class="num">2</td><td class="num">87</td></tr>
+          <tr><td class="num">12</td><td class="num">50</td></tr>
+          <tr><td class="num">9</td><td class="num">71</td></tr>
+          <tr><td class="num">15</td><td class="num">44</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">swipe table →</p>
+
+    <p><span class="step">Step 1 — Compute Means</span></p>
+    <div class="formula">
+      x̄ = (5+2+12+9+15)/5 = 43/5 = <strong>8.6</strong><br>
+      ȳ = (64+87+50+71+44)/5 = 316/5 = <strong>63.2</strong>
+    </div>
+
+    <p><span class="step">Step 2 — Compute Deviations &amp; Products</span></p>
+    <div class="scroll">
+      <table>
+        <caption>Deviation table</caption>
+        <thead>
+          <tr><th scope="col">x</th><th scope="col">y</th><th scope="col">(x−x̄)</th><th scope="col">(y−ȳ)</th><th scope="col">(x−x̄)(y−ȳ)</th><th scope="col">(x−x̄)²</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="num">5</td><td class="num">64</td><td class="num">−3.6</td><td class="num">0.8</td><td class="num">−2.88</td><td class="num">12.96</td></tr>
+          <tr><td class="num">2</td><td class="num">87</td><td class="num">−6.6</td><td class="num">23.8</td><td class="num">−157.08</td><td class="num">43.56</td></tr>
+          <tr><td class="num">12</td><td class="num">50</td><td class="num">3.4</td><td class="num">−13.2</td><td class="num">−44.88</td><td class="num">11.56</td></tr>
+          <tr><td class="num">9</td><td class="num">71</td><td class="num">0.4</td><td class="num">7.8</td><td class="num">3.12</td><td class="num">0.16</td></tr>
+          <tr><td class="num">15</td><td class="num">44</td><td class="num">6.4</td><td class="num">−19.2</td><td class="num">−122.88</td><td class="num">40.96</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">swipe table →</p>
+    <ul>
+      <li><strong>Σ(x−x̄)(y−ȳ) = −324.6</strong></li>
+      <li><strong>Σ(x−x̄)² = 109.2</strong></li>
+    </ul>
+
+    <p><span class="step">Step 3 — Compute b₁ and b₀</span></p>
+    <div class="formula">
+      b₁ = −324.6 / 109.2 ≈ <strong>−2.97</strong><br>
+      b₀ = 63.2 − (−2.97)(8.6) ≈ 63.2 + 25.54 ≈ <strong>88.74</strong>
+    </div>
+
+    <p><span class="step">Step 4 — Final Regression Equation</span></p>
+    <div class="key">
+      <strong>ŷ = 88.74 − 2.97x</strong><br>
+      <strong>Interpretation</strong>: As <strong>driving experience increases by 1 year</strong>, the <strong>insurance premium decreases by ~2.97 units</strong> — a <strong>negative slope</strong> confirms an <em>inverse relationship</em>, consistent with real-world intuition (experienced drivers = lower risk = lower premium).
+    </div>
+
+    <p><span class="step">Step 5 — Prediction Example (common follow-up ask)</span></p>
+    <ul>
+      <li>Predict premium for <strong>x = 10 years</strong>: <code>ŷ = 88.74 − 2.97(10) = 88.74 − 29.7 = 59.04</code> (₹5904 approx, if scaled).</li>
+    </ul>
+
+    <h3>7. Model Evaluation <span class="step" style="display:inline;margin:0">if asked for goodness of fit</span></h3>
+    <ul>
+      <li><em><strong>R² (Coefficient of Determination)</strong></em>: measures the <strong>proportion of variance in y explained by x</strong>, ranges from 0 to 1 — closer to <strong>1 = better fit</strong>.</li>
+      <li><em><strong>RMSE (Root Mean Squared Error)</strong></em>: square root of MSE, expressed in the <strong>same units as y</strong>, giving an <em>interpretable</em> error magnitude.</li>
+    </ul>
+
+    <div class="exam">
+      <span class="lbl">Quick revision box</span>
+      <ul style="margin:0">
+        <li>Sequence to always follow in numericals: <strong>means → deviations → Σ(xy) and Σ(x²) → b₁ → b₀ → equation → predict</strong>, this exact order earns <em>step-marks</em> even with calculation errors.</li>
+        <li>One-liner for Part A: <em>"Linear Regression fits a straight line ŷ = b₀ + b₁x by minimizing the sum of squared errors (Least Squares Method)."</em></li>
+        <li>Common confusion to clarify: <strong>slope (b₁)</strong> = rate of change; <strong>intercept (b₀)</strong> = baseline value — examiners often ask to <em>interpret</em> these separately for extra marks.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 06 ================= -->
+  <section class="card" id="s6">
+    <h2><span class="num">06</span> Classification vs Regression</h2>
+
+    <h3>1. Concept</h3>
+    <ul>
+      <li>Both are types of <strong>Supervised Learning</strong>, where the model learns from <strong>labeled training data</strong> (input-output pairs) to make predictions — the key difference lies in the <strong>nature of the output variable</strong>.</li>
+      <li><strong>Classification</strong> predicts a <strong>discrete/categorical label</strong> (which class an input belongs to), while <strong>Regression</strong> predicts a <strong>continuous numerical value</strong>.</li>
+    </ul>
+
+    <h3>2. Core Definitions</h3>
+    <ul>
+      <li><em><strong>Classification</strong></em>: maps input features to one of a <strong>finite set of predefined classes/categories</strong> (e.g., Spam/Not Spam, Yes/No, Disease/No Disease).</li>
+      <li><em><strong>Regression</strong></em>: maps input features to a <strong>real-valued continuous output</strong> (e.g., price, temperature, salary) — there is no fixed set of categories, output can take <em>infinitely many values</em>.</li>
+    </ul>
+
+    <h3>3. Output Type</h3>
+    <ul>
+      <li><strong>Classification</strong> → <strong>Discrete/Qualitative</strong> output (class labels, can be <em>binary</em> like 0/1 or <em>multi-class</em> like A/B/C).</li>
+      <li><strong>Regression</strong> → <strong>Continuous/Quantitative</strong> output (any real number within a range).</li>
+    </ul>
+
+    <h3>4. Examples</h3>
+    <ul>
+      <li><strong>Classification</strong>: email spam detection, disease diagnosis (positive/negative), credit approval (approve/reject), handwritten digit recognition.</li>
+      <li><strong>Regression</strong>: predicting house prices, insurance premium estimation, stock price forecasting, predicting a student's exam score.</li>
+    </ul>
+
+    <h3>5. Algorithms Used</h3>
+    <ul>
+      <li><strong>Classification</strong>: <strong>Logistic Regression</strong>, <strong>Decision Trees</strong>, <strong>k-NN</strong>, <strong>Naive Bayes</strong>, <strong>SVM</strong>.</li>
+      <li><strong>Regression</strong>: <strong>Linear Regression</strong>, <strong>Polynomial Regression</strong>, <strong>Ridge/Lasso Regression</strong> (note: some algorithms like <em>Decision Trees</em> and <em>k-NN</em> can be adapted for <strong>both</strong> tasks).</li>
+    </ul>
+
+    <h3>6. Evaluation Metrics <span class="step" style="display:inline;margin:0">high-value point</span></h3>
+    <ul>
+      <li><strong>Classification</strong> is evaluated using: <strong>Accuracy, Precision, Recall, F1-Score, Confusion Matrix, ROC-AUC</strong>.</li>
+      <li><strong>Regression</strong> is evaluated using: <strong>MSE (Mean Squared Error), RMSE, MAE (Mean Absolute Error), R² (Coefficient of Determination)</strong> — these measure <em>distance/error</em> rather than <em>correctness of label</em>.</li>
+    </ul>
+
+    <h3>7. Decision Boundary vs Fitted Line</h3>
+    <ul>
+      <li><strong>Classification</strong> models learn a <strong>decision boundary</strong> (a line/curve/hyperplane) that <em>separates classes</em> in feature space.</li>
+      <li><strong>Regression</strong> models learn a <strong>best-fit line/curve</strong> that <em>passes through</em> or <em>close to</em> the data points to approximate the trend.</li>
+    </ul>
+
+    <h3>8. Comparison Table <span class="step" style="display:inline;margin:0">guaranteed marks</span></h3>
+    <div class="scroll">
+      <table>
+        <caption>Classification vs regression</caption>
+        <thead>
+          <tr><th scope="col">Basis</th><th scope="col">Classification</th><th scope="col">Regression</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Output</th><td><strong>Discrete/Categorical</strong></td><td><strong>Continuous/Numerical</strong></td></tr>
+          <tr><th scope="row">Goal</th><td>Assign to a <strong>class</strong></td><td>Predict a <strong>quantity</strong></td></tr>
+          <tr><th scope="row">Function learned</th><td><strong>Decision boundary</strong></td><td><strong>Best-fit line/curve</strong></td></tr>
+          <tr><th scope="row">Example algorithms</th><td>Logistic Regression, Decision Tree, k-NN</td><td>Linear Regression, Polynomial Regression</td></tr>
+          <tr><th scope="row">Evaluation</th><td>Accuracy, Precision, Recall, F1</td><td>MSE, RMSE, R²</td></tr>
+          <tr><th scope="row">Example use case</th><td>Spam detection</td><td>House price prediction</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">swipe table →</p>
+
+    <div class="exam">
+      <span class="lbl">Quick revision box</span>
+      <ul style="margin:0">
+        <li>One-liner to open with: <em>"Classification predicts 'which category', Regression predicts 'how much/how many' — both are supervised learning tasks differing only in output type."</em></li>
+        <li>Memory hook: <strong>C</strong>lassification = <strong>C</strong>ategory (discrete); <strong>R</strong>egression = <strong>R</strong>eal number (continuous).</li>
+        <li>Overlap point for bonus marks: mention that <strong>Logistic Regression</strong>, despite its name, is used for <strong>classification, not regression</strong> — a <em>favorite trick question</em> in KTU papers.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= 07 ================= -->
+  <section class="card" id="s7">
+    <h2><span class="num">07</span> Univariate vs Multivariate Linear Regression</h2>
+
+    <h3>1. Concept</h3>
+    <ul>
+      <li>Both are <strong>Linear Regression</strong> variants used to predict a <strong>continuous dependent variable (y)</strong> — they differ only in the <strong>number of independent variables (features)</strong> used as predictors.</li>
+      <li><strong>Univariate</strong> uses <strong>one input feature</strong>; <strong>Multivariate</strong> (also called <strong>Multiple Linear Regression</strong>) uses <strong>two or more input features</strong> simultaneously.</li>
+    </ul>
+
+    <h3>2. Definitions &amp; Equations</h3>
+    <ul>
+      <li><em><strong>Univariate Linear Regression</strong></em>: models the relationship between <strong>a single independent variable x</strong> and dependent variable y using a <strong>straight line</strong>:</li>
+    </ul>
+    <div class="formula">ŷ = b₀ + b₁x</div>
+    <ul>
+      <li><em><strong>Multivariate Linear Regression</strong></em>: models y as a function of <strong>multiple independent variables</strong> <code>x₁, x₂, ..., xₙ</code>, fitting a <strong>hyperplane</strong> instead of a line:</li>
+    </ul>
+    <div class="formula">ŷ = b₀ + b₁x₁ + b₂x₂ + ... + bₙxₙ</div>
+
+    <h3>3. Geometric Interpretation</h3>
+    <ul>
+      <li><strong>Univariate</strong>: the fitted model is a <strong>2D straight line</strong> (plotted on x-y axes).</li>
+      <li><strong>Multivariate</strong>: the fitted model is a <strong>hyperplane in n-dimensional space</strong> — with 2 features it's a <strong>3D plane</strong>, beyond that it's not visually plottable but mathematically extends the same way.</li>
+    </ul>
+
+    <h3>4. Coefficients — Interpretation</h3>
+    <ul>
+      <li><strong>Univariate</strong>: <strong>b₁</strong> represents the <em>change in y for a unit change in the single x</em>.</li>
+      <li><strong>Multivariate</strong>: each <strong>bᵢ</strong> represents the <em>change in y for a unit change in xᵢ, while holding all other variables constant</em> — this <strong>"holding constant"</strong> nuance is a key exam point often missed.</li>
+    </ul>
+
+    <h3>5. Complexity &amp; Computation</h3>
+    <ul>
+      <li><strong>Univariate</strong> is <em>computationally simple</em> — slope and intercept can be found with basic <strong>Least Squares formulas</strong> directly.</li>
+      <li><strong>Multivariate</strong> requires <strong>matrix algebra</strong>:</li>
+    </ul>
+    <div class="formula">
+      <span class="name">Normal equation</span>
+      B = (XᵀX)⁻¹XᵀY
+    </div>
+    <ul>
+      <li>where <strong>X</strong> is the <em>design matrix</em> of input features and <strong>B</strong> is the <em>vector of coefficients</em> — this is computationally heavier and often solved via <strong>Gradient Descent</strong> for large feature sets.</li>
+    </ul>
+
+    <h3>6. Additional Considerations Unique to Multivariate</h3>
+    <ul>
+      <li><strong>Multicollinearity</strong>: a problem <em>exclusive to multivariate regression</em> — occurs when <strong>independent variables are correlated with each other</strong>, making coefficient estimates <em>unstable/unreliable</em>. Checked using <strong>VIF (Variance Inflation Factor)</strong>.</li>
+      <li><strong>Feature Selection/Dimensionality</strong>: with many features, multivariate regression risks <strong>overfitting</strong>, requiring techniques like <strong>regularization (Ridge/Lasso)</strong> or <strong>feature selection</strong> — not a concern in univariate regression.</li>
+    </ul>
+
+    <h3>7. Examples</h3>
+    <ul>
+      <li><strong>Univariate</strong>: predicting <strong>insurance premium using only driving experience</strong>.</li>
+      <li><strong>Multivariate</strong>: predicting <strong>house price using area, number of bedrooms, location, and age of property</strong> <em>together</em>.</li>
+    </ul>
+
+    <h3>8. Comparison Table <span class="step" style="display:inline;margin:0">high-value for marks</span></h3>
+    <div class="scroll">
+      <table>
+        <caption>Univariate vs multivariate</caption>
+        <thead>
+          <tr><th scope="col">Basis</th><th scope="col">Univariate</th><th scope="col">Multivariate</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">No. of independent variables</th><td><strong>One (x)</strong></td><td><strong>Two or more (x₁, x₂,...xₙ)</strong></td></tr>
+          <tr><th scope="row">Equation</th><td><code>ŷ = b₀ + b₁x</code></td><td><code>ŷ = b₀ + b₁x₁ +...+ bₙxₙ</code></td></tr>
+          <tr><th scope="row">Geometric form</th><td><strong>Straight line</strong></td><td><strong>Hyperplane</strong></td></tr>
+          <tr><th scope="row">Computation</th><td>Simple formulas</td><td><strong>Matrix algebra</strong> <code>(XᵀX)⁻¹XᵀY</code></td></tr>
+          <tr><th scope="row">Extra issues</th><td>None significant</td><td><strong>Multicollinearity</strong>, higher overfitting risk</td></tr>
+          <tr><th scope="row">Example</th><td>Experience → Premium</td><td>Area + Bedrooms + Location → Price</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">swipe table →</p>
+
+    <div class="exam">
+      <span class="lbl">Quick revision box</span>
+      <ul style="margin:0">
+        <li>One-liner to open with: <em>"Univariate regression uses one predictor and fits a line; Multivariate regression uses multiple predictors and fits a hyperplane — the underlying least-squares principle stays the same."</em></li>
+        <li>Keyword to always drop: <strong>multicollinearity</strong> — examiners specifically look for this term when multivariate is involved.</li>
+        <li>Don't confuse with <strong>Multivariate ≠ Multiple Regression with polynomial terms</strong> (that's <strong>Polynomial Regression</strong>, a different concept) — mentioning this distinction is a good differentiator for bonus marks.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div class="big">ML Fundamentals · Seven Topics</div>
+    <div>ID3 · logistic regression · overfitting · info gain &amp; Gini · linear regression · classification vs regression</div>
+    <div>Source: your pasted revision notes · Page made 12 Nov 2026</div>
+  </footer>
+
+</div>
+</body>
+</html>

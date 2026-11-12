@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#d7d7d7">
+<title>Logic for AI — Modus Ponens / Tollens &amp; Entailment (Retro Notes)</title>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Chivo:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --silver:#d7d7d7;
+    --panel:#ededed;
+    --paper:#f7f7f4;
+    --navy:#0a1a4f;
+    --navy-2:#152a6e;
+    --teal:#0a7b83;
+    --red:#c1121f;
+    --mustard:#a8791a;
+    --rule:#9aa3b5;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    font-family:'Chivo','Helvetica Neue',Arial,sans-serif;
+    font-size:17px;
+    line-height:1.66;
+    color:var(--navy);
+    overflow-wrap:anywhere;
+    background-color:var(--silver);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.5) 0 2px, rgba(255,255,255,0) 2px 8px),
+      repeating-linear-gradient(-45deg, rgba(10,26,79,.05) 0 1px, rgba(10,26,79,0) 1px 8px);
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 12px 42px}
+
+  /* ---------------- HERO ---------------- */
+  .hero{
+    margin:0 -12px 18px;
+    padding:20px 16px 18px;
+    background:linear-gradient(180deg,#152a6e,#0a1a4f);
+    border-bottom:5px double var(--teal);
+    color:#fff;
+  }
+  .hero .stamp{
+    display:inline-block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:9.5px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    background:#d7d7d7;
+    color:#0a1a4f;
+    border:2px outset #f2f2f2;
+    padding:2px 8px;
+    margin-bottom:10px;
+  }
+  .hero h1{
+    font-family:'Bungee','Impact','Arial Black',sans-serif;
+    font-weight:400;
+    font-size:clamp(21px,6.6vw,38px);
+    line-height:1.06;
+    margin:0 0 10px;
+    letter-spacing:.02em;
+    text-shadow:3px 3px 0 rgba(0,0,0,.35);
+  }
+  .hero h1 .hl{color:#7fd3d9}
+  .hero .sub{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    line-height:1.9;
+    color:#cfd8f0;
+    margin:0;
+  }
+  .hero .marquee{
+    margin-top:14px;
+    border:2px inset #0a1a4f;
+    background:#07123a;
+    padding:4px 8px;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10.5px;
+    letter-spacing:.12em;
+    color:#8fe3e8;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+
+  /* ---------------- STICKY BAR ---------------- */
+  .bar{
+    position:sticky;top:0;z-index:20;
+    margin:0 -12px 16px;
+    background:#0a1a4f;
+    border-bottom:3px solid var(--teal);
+    padding:6px 12px;
+  }
+  .bar summary{
+    cursor:pointer;list-style:none;
+    min-height:44px;
+    display:flex;align-items:center;gap:8px;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#fff;
+  }
+  .bar summary::-webkit-details-marker{display:none}
+  .bar summary .box{
+    font-family:'Space Mono','Courier New',monospace;
+    border:1px solid #cfd8f0;
+    padding:0 5px;line-height:16px;
+  }
+  .bar ul{
+    list-style:none;margin:6px 0 4px;padding:0;
+    border-top:1px solid rgba(255,255,255,.25);
+  }
+  .bar ul li{border-bottom:1px solid rgba(255,255,255,.15)}
+  .bar ul a{
+    display:block;padding:11px 2px;
+    color:#dbe3f7;text-decoration:none;font-size:14.5px;
+  }
+  .bar ul a span{
+    font-family:'Space Mono','Courier New',monospace;
+    color:#8fb0d8;font-size:11.5px;margin-right:8px;
+  }
+
+  /* ---------------- PANELS ---------------- */
+  .card{
+    background:var(--panel);
+    border:2px outset #f4f4f4;
+    box-shadow:0 2px 0 rgba(10,26,79,.18);
+    margin:0 0 24px;
+    padding:0 0 16px;
+    scroll-margin-top:64px;
+    min-width:0;
+  }
+  .card > h2{
+    margin:0 0 14px;
+    padding:10px 12px;
+    background:linear-gradient(180deg,#152a6e,#0a1a4f);
+    border-bottom:3px solid var(--teal);
+    color:#fff;
+    font-family:'Bungee','Impact','Arial Black',sans-serif;
+    font-weight:400;
+    font-size:clamp(15px,4.4vw,20px);
+    line-height:1.2;
+    letter-spacing:.02em;
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .card > h2 .num{
+    flex:0 0 auto;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11.5px;
+    background:var(--teal);
+    color:#fff;
+    padding:2px 6px;
+    margin-top:3px;
+  }
+  .card > *:not(h2){margin-left:12px;margin-right:12px}
+
+  h3{
+    font-family:'Chivo','Helvetica Neue',Arial,sans-serif;
+    font-weight:700;
+    font-size:16px;
+    margin:20px 0 8px;
+    padding:3px 0 3px 10px;
+    border-left:6px solid var(--teal);
+    color:var(--navy);
+  }
+  p{margin:0 0 11px}
+  em{font-style:italic}
+  ul{margin:0 0 12px;padding-left:18px}
+  li{margin:0 0 9px}
+  li::marker{color:var(--red)}
+  li ul{margin-top:8px;margin-bottom:0}
+  code{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:.88em;
+    background:#dfe3ec;
+    border:1px solid #b9c0d0;
+    padding:0 3px;
+  }
+
+  /* ---------------- CALLOUTS ---------------- */
+  .note{
+    border:2px outset #e6e6e6;
+    border-left:6px solid var(--mustard);
+    background:#fff9e8;
+    padding:10px 11px;
+    margin:0 12px 14px;
+    font-size:14.5px;
+  }
+  .rule{
+    background:#eef6f7;
+    border:2px inset #cfe3e5;
+    border-left:6px solid var(--teal);
+    padding:11px;
+    margin:0 12px 14px;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:13.5px;
+    line-height:1.85;
+    text-align:center;
+    color:#0a1a4f;
+  }
+  .rule .name{
+    display:block;
+    font-size:10px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:6px;
+  }
+  .rule .big{font-size:15px;letter-spacing:.03em}
+  .key{
+    background:#fbfbf5;
+    border:1px solid var(--rule);
+    border-left:6px solid var(--navy);
+    padding:10px 11px;
+    margin:0 12px 14px;
+    font-size:15px;
+  }
+  .warn{
+    background:#fdeeee;
+    border:2px dashed var(--red);
+    padding:10px 11px;
+    margin:0 12px 14px;
+    font-size:14.5px;
+  }
+  .exam{
+    margin:16px 12px 4px;
+    padding:11px;
+    border:2px outset #e6e6e6;
+    border-left:6px solid var(--red);
+    background:#fff7f5;
+    font-size:14.5px;
+  }
+  .exam .lbl{
+    display:block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:9.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    background:var(--red);
+    color:#fff;
+    padding:2px 6px;
+    margin-bottom:6px;
+    width:fit-content;
+  }
+  .tag{
+    display:inline-block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:9.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    border:1px solid var(--teal);
+    color:var(--teal);
+    padding:1px 5px;
+    margin-left:5px;
+    vertical-align:2px;
+  }
+
+  /* ---------------- FIGURE ---------------- */
+  .fig{
+    margin:0 12px 16px;
+    border:2px inset #e2e2e2;
+    background:#fbfbf7;
+    padding:10px;
+    text-align:center;
+  }
+  .fig svg{max-width:100%;height:auto;display:block;margin:0 auto}
+  .fig .cap{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#3c4870;
+    margin-top:8px;
+  }
+
+  /* ---------------- TABLES ---------------- */
+  .scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    margin:0 12px 16px;
+    border:2px solid var(--navy);
+    background:var(--paper);
+  }
+  table{border-collapse:collapse;width:100%;font-size:13px;min-width:460px}
+  caption{
+    caption-side:top;text-align:left;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    padding:5px 9px;
+    background:#dfe3ec;
+    border-bottom:1px solid var(--navy);
+  }
+  th,td{border:1px solid #b9c0d0;padding:8px 9px;text-align:left;vertical-align:top}
+  thead th{
+    background:#0a1a4f;color:#fff;
+    font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;
+  }
+  tbody th{background:#dfe3ec;font-weight:700}
+  tbody tr:nth-child(even) td{background:#e9ecf3}
+  .swipe{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--red);
+    margin:-12px 12px 16px;
+  }
+
+  /* ---------------- FOOTER ---------------- */
+  footer{
+    margin:28px -12px 0;
+    padding:20px 16px 30px;
+    background:#0a1a4f;
+    color:#c9d3ee;
+    text-align:center;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    line-height:1.95;
+    border-top:5px double var(--teal);
+  }
+  footer .big{
+    font-family:'Bungee','Impact','Arial Black',sans-serif;
+    font-size:14px;
+    color:#fff;
+    margin-bottom:6px;
+  }
+
+  @media (min-width:720px){
+    body{font-size:17.5px}
+    .wrap{padding:0 20px 48px}
+    .hero{margin:0 -20px 20px;padding:32px 24px 26px}
+    .bar{margin:0 -20px 20px}
+    .card > *:not(h2){margin-left:20px;margin-right:20px}
+    .card > h2{padding-left:20px;padding-right:20px}
+    .note,.rule,.key,.warn,.exam,.fig,.scroll,.swipe{margin-left:20px;margin-right:20px}
+    table{font-size:13.5px}
+    .swipe{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="stamp">Artificial Intelligence · Logic &amp; Inference</div>
+    <h1>Inference Rules<br><span class="hl">&amp; Entailment</span></h1>
+    <p class="sub">Modus Ponens · Modus Tollens · fallacies to avoid<br>Entailment · models · satisfiability · validity</p>
+    <div class="marquee">★ LOGIC FOR AI — TWO 15-MARK ANSWERS ★ SYMBOLIC FORM FIRST, EXAMPLE NEXT, VALIDITY LAST ★</div>
+  </header>
+
+  <details class="bar">
+    <summary><span class="box">☰</span> Contents — 2 topics</summary>
+    <ul>
+      <li><a href="#s1"><span>01</span>Modus Ponens &amp; Modus Tollens</a></li>
+      <li><a href="#s2"><span>02</span>Entailment — Definition with Example</a></li>
+    </ul>
+  </details>
+
+  <!-- ================= 01 ================= -->
+  <section class="card" id="s1">
+    <h2><span class="num">01</span> Modus Ponens &amp; Modus Tollens</h2>
+
+    <div class="note">
+      <strong>Note on this set:</strong> the topic heading that came with these notes was the <em>resolution proof on a knowledge base</em> ("Col. West is a criminal" and its variants — Gita/almond, John/peanuts, graduating/happy/smiling). The answer body here is <strong>Modus Ponens and Modus Tollens</strong>, so the FOL → CNF → resolution proof itself is not in this paste and is not on this page.
+    </div>
+
+    <p>Both are <strong>fundamental rules of inference</strong> in <strong>Propositional and First Order Logic</strong>, used to derive new true conclusions from existing true premises. They form the logical basis of <strong>forward chaining</strong> (Modus Ponens) and <strong>backward/refutation-style reasoning</strong> (Modus Tollens).</p>
+
+    <h3>1. Modus Ponens ("Mode that affirms")</h3>
+    <ul>
+      <li><strong>Rule form:</strong> Given <em>P → Q</em> (if P then Q) and <em>P</em> (P is true), we can conclude <strong>Q</strong> (Q is true).</li>
+    </ul>
+    <div class="rule">
+      <span class="name">Symbolic notation</span>
+      <span class="big">P → Q ,&nbsp; P &nbsp;∴&nbsp; Q</span>
+    </div>
+    <ul>
+      <li>It is the <strong>most commonly used inference rule</strong>, forming the basis of <strong>forward chaining</strong> in expert systems and rule-based reasoning — <em>facts trigger rule conclusions</em>.</li>
+      <li><strong>Generalized Modus Ponens (FOL version):</strong> used with <strong>unification</strong>, e.g., <em>∀x King(x) ∧ Greedy(x) → Evil(x)</em>, <em>King(John)</em>, <em>Greedy(John)</em> ⟹ <strong>Evil(John)</strong>.</li>
+    </ul>
+    <div class="key">
+      <strong>Example:</strong><br>
+      Premise 1: <em>"If it rains, the ground gets wet."</em> (<strong>P → Q</strong>)<br>
+      Premise 2: <em>"It is raining."</em> (<strong>P</strong>)<br>
+      <strong>Conclusion:</strong> <em>"The ground gets wet."</em> (<strong>Q</strong>) ✔ <strong>Valid</strong>
+    </div>
+
+    <h3>2. Modus Tollens ("Mode that denies")</h3>
+    <ul>
+      <li><strong>Rule form:</strong> Given <em>P → Q</em> (if P then Q) and <strong>¬Q</strong> (Q is false), we can conclude <strong>¬P</strong> (P is false).</li>
+    </ul>
+    <div class="rule">
+      <span class="name">Symbolic notation</span>
+      <span class="big">P → Q ,&nbsp; ¬Q &nbsp;∴&nbsp; ¬P</span>
+    </div>
+    <ul>
+      <li>Based on the <strong>logical equivalence</strong> <em>P → Q ≡ ¬Q → ¬P</em> (<strong>contrapositive</strong>) — this is why it's valid: denying the <em>consequent</em> forces denial of the <em>antecedent</em>.</li>
+      <li>Commonly used in <strong>diagnostic reasoning</strong> and <strong>proof by contradiction/refutation</strong> (the same principle underlying <strong>resolution refutation</strong>, where we assume ¬Goal and derive a contradiction).</li>
+    </ul>
+    <div class="key">
+      <strong>Example:</strong><br>
+      Premise 1: <em>"If it rains, the ground gets wet."</em> (<strong>P → Q</strong>)<br>
+      Premise 2: <em>"The ground is NOT wet."</em> (<strong>¬Q</strong>)<br>
+      <strong>Conclusion:</strong> <em>"It did not rain."</em> (<strong>¬P</strong>) ✔ <strong>Valid</strong>
+    </div>
+
+    <h3>3. Key Differences</h3>
+    <div class="scroll">
+      <table>
+        <caption>Modus ponens vs modus tollens</caption>
+        <thead>
+          <tr><th scope="col">Basis</th><th scope="col">Modus Ponens</th><th scope="col">Modus Tollens</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Given</th><td>P → Q and <strong>P</strong> (affirm antecedent)</td><td>P → Q and <strong>¬Q</strong> (deny consequent)</td></tr>
+          <tr><th scope="row">Concludes</th><td><strong>Q</strong></td><td><strong>¬P</strong></td></tr>
+          <tr><th scope="row">Direction of reasoning</th><td>Forward (cause → effect)</td><td>Backward (effect absent → cause absent)</td></tr>
+          <tr><th scope="row">Also known as</th><td>Law of Detachment</td><td>Law of Contrapositive</td></tr>
+          <tr><th scope="row">Used in</th><td><strong>Forward chaining</strong>, rule-firing systems</td><td><strong>Diagnosis, refutation proofs</strong>, resolution-style reasoning</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">swipe table →</p>
+
+    <h3>4. Common Fallacies to Avoid <span class="tag">exam trap</span></h3>
+    <div class="warn">
+      <ul style="margin:0">
+        <li><strong>Affirming the consequent</strong> (INVALID): <em>P → Q, Q ⊢ P</em> — e.g., <em>"If it rains, ground is wet; ground is wet; therefore it rained"</em> is <strong>NOT valid</strong> (ground could be wet from other causes).</li>
+        <li><strong>Denying the antecedent</strong> (INVALID): <em>P → Q, ¬P ⊢ ¬Q</em> — e.g., <em>"If it rains, ground is wet; it didn't rain; therefore ground isn't wet"</em> is <strong>NOT valid</strong>.</li>
+      </ul>
+    </div>
+
+    <div class="exam">
+      <span class="lbl">Exam tip</span>
+      Always write the <strong>symbolic inference rule form</strong> first, then the <strong>example</strong>, then explicitly state <strong>validity</strong> — and mention the <strong>contrapositive equivalence</strong> for Modus Tollens, since examiners often ask <em>"why is Modus Tollens valid?"</em> as a follow-up sub-question.
+    </div>
+  </section>
+
+  <!-- ================= 02 ================= -->
+  <section class="card" id="s2">
+    <h2><span class="num">02</span> Entailment — Definition with Example</h2>
+
+    <h3>1. Definition</h3>
+    <ul>
+      <li><strong>Entailment</strong> is a relationship between two sentences in logic, where one sentence <strong>follows logically</strong> from another — written as <strong>α ⊨ β</strong> ("α entails β").</li>
+      <li>Formally: <em>α ⊨ β</em> if and only if, in <strong>every model (world)</strong> where <strong>α is true</strong>, <strong>β is also true</strong> — i.e., <strong>β is true whenever α is true</strong>, with <em>no exceptions</em>.</li>
+      <li>Entailment is a relation of <strong>necessity</strong>, not causation — it captures <strong>pure logical consequence</strong> independent of real-world meaning.</li>
+    </ul>
+
+    <h3>2. Key Related Concepts <span class="tag">build the foundation</span></h3>
+    <ul>
+      <li><strong>Model:</strong> A possible world/interpretation that assigns <strong>truth values</strong> to all sentences — it is a formal structure in which a sentence can be evaluated as true or false.</li>
+      <li><strong>Satisfiability:</strong> A sentence is <strong>satisfiable</strong> if it is <strong>true in at least one model</strong>; it is <strong>unsatisfiable</strong> if <strong>no model</strong> makes it true (e.g., contradictions like <em>P ∧ ¬P</em>).</li>
+      <li><strong>Validity:</strong> A sentence is <strong>valid</strong> (a <em>tautology</em>) if it is <strong>true in all models</strong> — valid sentences are entailed by <em>any</em> sentence, including the empty sentence.</li>
+      <li><strong>Relationship:</strong> <em>α ⊨ β</em> if and only if the sentence <em>(α ∧ ¬β)</em> is <strong>unsatisfiable</strong> — this equivalence is the <strong>basis of proof by refutation/resolution</strong>.</li>
+    </ul>
+
+    <h3>3. Formal Representation</h3>
+    <ul>
+      <li><strong>M(α)</strong> = set of all models in which α is true.</li>
+      <li><strong>Entailment condition:</strong> <strong>α ⊨ β</strong> holds <strong>iff M(α) ⊆ M(β)</strong> — i.e., every model satisfying α must also be a model satisfying β.</li>
+    </ul>
+    <div class="fig">
+      <svg viewBox="0 0 320 160" role="img" aria-label="Set diagram: M of alpha is a subset of M of beta">
+        <rect x="0" y="0" width="320" height="160" fill="#fbfbf7"/>
+        <circle cx="170" cy="80" r="66" fill="#dfe9f5" stroke="#0a1a4f" stroke-width="2"/>
+        <circle cx="150" cy="80" r="34" fill="#0a7b83" stroke="#0a1a4f" stroke-width="2"/>
+        <text x="150" y="76" text-anchor="middle" font-family="Space Mono, monospace" font-size="13" fill="#ffffff">M(α)</text>
+        <text x="150" y="94" text-anchor="middle" font-family="Space Mono, monospace" font-size="10" fill="#cdeff2">subset</text>
+        <text x="214" y="122" text-anchor="middle" font-family="Space Mono, monospace" font-size="13" fill="#0a1a4f">M(β)</text>
+        <text x="16" y="20" font-family="Space Mono, monospace" font-size="10" fill="#5a648a">α ⊨ β  ⇔  M(α) ⊆ M(β)</text>
+      </svg>
+      <div class="cap">Fig. 1 — every model of α is also a model of β</div>
+    </div>
+
+    <h3>4. Worked Example</h3>
+    <ul>
+      <li>Let <strong>KB</strong> = <em>"All men are mortal"</em> (∀x Man(x) → Mortal(x)) and <em>"Socrates is a man"</em> (Man(Socrates)).</li>
+      <li>Claim: <strong>KB ⊨ Mortal(Socrates)</strong> — <em>"Socrates is mortal"</em> is <strong>entailed</strong>.</li>
+      <li><strong>Verification:</strong> In <em>every</em> model where both KB sentences are true, it is <strong>impossible</strong> for <em>Mortal(Socrates)</em> to be false (since Man(Socrates) is true, the rule forces Mortal(Socrates) to be true) → hence entailment <strong>holds</strong>.</li>
+    </ul>
+    <div class="key">
+      <strong>Simple propositional example:</strong> KB = <em>(P ∧ Q)</em>. Does KB ⊨ P?<br>
+      Every model satisfying <em>P ∧ Q</em> must assign <strong>true to both P and Q</strong> → so <strong>P is true in every such model</strong> → <strong>KB ⊨ P</strong> ✔.
+    </div>
+
+    <h3>5. Significance in AI <span class="tag">why it matters</span></h3>
+    <ul>
+      <li>Entailment is the <strong>theoretical basis of logical inference</strong> — an inference algorithm is called <strong>sound</strong> if it only derives entailed sentences, and <strong>complete</strong> if it can derive <em>all</em> entailed sentences.</li>
+      <li>It directly underlies <strong>Resolution Refutation</strong>: to prove <em>KB ⊨ α</em>, we show <em>(KB ∧ ¬α)</em> is <strong>unsatisfiable</strong>, i.e., derive the <strong>empty clause</strong> — <em>linking this topic directly to the resolution-proof question (Col. West)</em>.</li>
+    </ul>
+
+    <h3>6. Quick Reference Table</h3>
+    <div class="scroll">
+      <table>
+        <caption>Core logical vocabulary</caption>
+        <thead>
+          <tr><th scope="col">Concept</th><th scope="col">Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Model</th><td>A world where sentences get truth values</td></tr>
+          <tr><th scope="row">Satisfiable</th><td>True in ≥1 model</td></tr>
+          <tr><th scope="row">Valid (Tautology)</th><td>True in all models</td></tr>
+          <tr><th scope="row">Entailment (α ⊨ β)</th><td>β true whenever α true (M(α) ⊆ M(β))</td></tr>
+          <tr><th scope="row">Unsatisfiable</th><td>True in no model (e.g., α ∧ ¬β for valid entailment)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">swipe table →</p>
+
+    <div class="exam">
+      <span class="lbl">Exam tip</span>
+      Always draw the <strong>Venn/circle diagram</strong> showing <em>M(α)</em> as a subset of <em>M(β)</em> — this visual is a quick, high-impact way to show the examiner you understand entailment <strong>structurally</strong>, not just by definition, and takes seconds to sketch for easy marks.
+    </div>
+  </section>
+
+  <footer>
+    <div class="big">Logic for AI · Inference &amp; Entailment</div>
+    <div>Modus ponens · modus tollens · fallacies · entailment, models, satisfiability</div>
+    <div>Source: your pasted revision notes · Page made 12 Nov 2026</div>
+  </footer>
+
+</div>
+</body>
+</html>

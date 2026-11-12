@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f2efe6">
+<title>Search Algorithms — A*, DLS, Best-First, Uninformed Search, 8-Puzzle</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Chivo:ital,wght@0,400;0,700;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --news:#f2efe6;
+    --news-2:#eae6d9;
+    --card:#fbfaf5;
+    --ink:#141210;
+    --ink-soft:#4a453d;
+    --riso:#e5484d;
+    --rule:#c9c2b1;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    font-family:'Chivo','Helvetica Neue',Arial,sans-serif;
+    font-size:17px;
+    line-height:1.68;
+    color:var(--ink);
+    overflow-wrap:anywhere;
+    background-color:var(--news);
+    background-image:radial-gradient(circle at 50% 50%, rgba(20,18,16,.055) 0 1.1px, rgba(0,0,0,0) 1.5px);
+    background-size:5px 5px;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:0 14px 46px}
+
+  /* ---------------- HERO ---------------- */
+  .hero{
+    margin:0 -14px 16px;
+    padding:22px 16px 20px;
+    background:var(--card);
+    border-bottom:4px solid var(--ink);
+    position:relative;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;left:0;right:0;bottom:-4px;height:4px;
+    background:repeating-linear-gradient(90deg, var(--riso) 0 12px, var(--ink) 12px 24px);
+    opacity:.85;
+  }
+  .hero .top{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10.5px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .hero h1{
+    font-family:'Archivo Black','Arial Black',sans-serif;
+    font-weight:400;
+    font-size:clamp(30px,9.2vw,56px);
+    line-height:.98;
+    margin:0 0 12px;
+    letter-spacing:-.02em;
+    text-transform:uppercase;
+    color:var(--ink);
+  }
+  .hero h1 .cur{
+    display:inline-block;
+    width:.42em;height:.42em;
+    background:var(--riso);
+    margin-left:.12em;
+    vertical-align:.02em;
+  }
+  .hero .sub{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11.5px;
+    line-height:1.85;
+    color:var(--ink-soft);
+    margin:0;
+    letter-spacing:.02em;
+  }
+  .hero .sub b{color:var(--riso);font-weight:700}
+
+  /* ---------------- STICKY BAR ---------------- */
+  .bar{
+    position:sticky;top:0;z-index:40;
+    margin:0 -14px 16px;
+    background:var(--news);
+    border-bottom:3px solid var(--ink);
+    padding:4px 14px 6px;
+  }
+  .bar summary{
+    list-style:none;cursor:pointer;
+    min-height:44px;display:flex;align-items:center;gap:9px;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11.5px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--ink);
+  }
+  .bar summary::-webkit-details-marker{display:none}
+  .bar summary .sq{color:var(--riso);font-weight:700}
+  .bar ol{list-style:none;margin:4px 0 2px;padding:0;border-top:1px solid var(--rule)}
+  .bar ol li{border-bottom:1px solid var(--rule)}
+  .bar ol a{
+    display:block;padding:11px 0;
+    color:var(--ink);text-decoration:none;font-size:14px;
+  }
+  .bar ol a span{
+    font-family:'Space Mono','Courier New',monospace;
+    color:var(--riso);font-size:11.5px;margin-right:9px;font-weight:700;
+  }
+
+  /* ---------------- SECTIONS (pasted-up cards) ---------------- */
+  .sec{
+    position:relative;
+    background:var(--card);
+    border:2px solid var(--ink);
+    box-shadow:4px 4px 0 rgba(20,18,16,.18);
+    margin:0 0 26px;
+    padding:16px 0 16px;
+    scroll-margin-top:62px;
+    min-width:0;
+  }
+  .sec::before{
+    content:"";
+    position:absolute;top:-9px;left:16px;
+    width:74px;height:16px;
+    background:rgba(229,72,77,.28);
+    border-left:1px solid rgba(229,72,77,.5);
+    border-right:1px solid rgba(229,72,77,.5);
+    transform:rotate(-2deg);
+    pointer-events:none;
+  }
+  .sec > .label{
+    display:inline-block;
+    margin:0 12px 8px;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10.5px;
+    letter-spacing:.16em;
+    color:var(--riso);
+    text-transform:uppercase;
+    font-weight:700;
+  }
+  .sec > h2{
+    margin:0 12px 16px;
+    padding:0 0 12px;
+    font-family:'Archivo Black','Arial Black',sans-serif;
+    font-weight:400;
+    font-size:clamp(21px,5.9vw,31px);
+    line-height:1.06;
+    letter-spacing:-.015em;
+    text-transform:uppercase;
+    color:var(--ink);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='7'><path d='M0 4 Q 10 1 20 4 T 40 4 T 60 4 T 80 4' fill='none' stroke='%23e5484d' stroke-width='2'/></svg>");
+    background-repeat:repeat-x;
+    background-position:left bottom;
+  }
+  .sec > *:not(.label):not(h2){margin-left:12px;margin-right:12px}
+
+  h3{
+    font-family:'Chivo','Helvetica Neue',Arial,sans-serif;
+    font-weight:700;
+    font-size:16px;
+    margin:22px 0 8px;
+    padding:2px 0 2px 9px;
+    border-left:6px solid var(--ink);
+    color:var(--ink);
+    letter-spacing:-.01em;
+  }
+  p{margin:0 0 11px}
+  em{font-style:italic}
+  ul{margin:0 0 12px;padding-left:16px;list-style:none}
+  li{margin:0 0 10px;padding-left:15px;position:relative}
+  li::before{
+    content:"—";
+    position:absolute;left:0;top:0;
+    color:var(--riso);
+    font-weight:700;
+  }
+  li ul{margin-top:8px;margin-bottom:0}
+  li ul li::before{content:"·";color:var(--ink-soft)}
+  code{
+    font-family:'Courier Prime','Courier New',monospace;
+    font-size:.92em;
+    background:var(--news-2);
+    border:1px solid var(--rule);
+    padding:0 3px;
+    color:var(--ink);
+  }
+  sup{font-size:.72em;vertical-align:super}
+
+  /* ---------------- CALLOUTS ---------------- */
+  .note{
+    border:2px dashed var(--ink-soft);
+    background:var(--news);
+    padding:10px 11px;
+    margin:0 12px 14px;
+    font-size:14px;
+    line-height:1.6;
+  }
+  .key{
+    border:2px solid var(--ink);
+    border-left:9px solid var(--riso);
+    background:var(--news);
+    padding:10px 11px;
+    margin:0 12px 14px;
+    font-size:15px;
+  }
+  .tag{
+    display:inline-block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    border:1px solid var(--ink);
+    background:var(--news-2);
+    color:var(--ink);
+    padding:1px 6px;
+    margin-left:4px;
+    vertical-align:2px;
+  }
+  .exam{
+    margin:16px 12px 4px;
+    padding:11px;
+    border:2px solid var(--riso);
+    background:#fdf1f1;
+    font-size:15px;
+    color:#4a1013;
+  }
+  .exam .lbl{
+    display:block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--riso);
+    font-weight:700;
+    margin-bottom:5px;
+  }
+
+  /* ---------------- CODE ---------------- */
+  .code{
+    margin:0 12px 14px;
+    border:2px solid var(--ink);
+    background:#fffdf6;
+  }
+  .code .cap{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ink);
+    background:var(--news-2);
+    padding:4px 9px;
+    border-bottom:2px solid var(--ink);
+    display:flex;justify-content:space-between;gap:8px;
+  }
+  .code pre{
+    margin:0;
+    padding:11px 9px;
+    overflow-x:auto;
+    font-family:'Courier Prime','Courier New',monospace;
+    font-size:11.5px;
+    line-height:1.6;
+    color:#1d1a16;
+    white-space:pre;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  /* ---------------- TABLES ---------------- */
+  .scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    margin:0 12px 14px;
+    border:2px solid var(--ink);
+    background:#fffdf6;
+  }
+  table{border-collapse:collapse;width:100%;font-size:13px;min-width:480px}
+  caption{
+    caption-side:top;text-align:left;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink);
+    background:var(--news-2);
+    padding:5px 8px;
+    border-bottom:2px solid var(--ink);
+  }
+  th,td{border:1px solid var(--rule);padding:8px;text-align:left;vertical-align:top}
+  thead th{
+    background:var(--ink);
+    color:var(--news);
+    font-weight:700;
+    font-size:11.5px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+  tbody th{background:var(--news-2);font-weight:700}
+  tbody tr:nth-child(even) td{background:#f4f1e8}
+  .swipe{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--riso);
+    margin:-10px 12px 14px;
+  }
+
+  /* ---------------- FOOTER ---------------- */
+  footer{
+    margin:28px -14px 0;
+    padding:20px 16px 30px;
+    border-top:4px double var(--ink);
+    text-align:center;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    line-height:1.95;
+    color:var(--ink-soft);
+    letter-spacing:.03em;
+    background:var(--card);
+  }
+  footer .big{
+    font-family:'Archivo Black','Arial Black',sans-serif;
+    font-size:16px;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+
+  @media (min-width:720px){
+    body{font-size:17.5px}
+    .wrap{padding:0 22px 54px}
+    .hero{margin:0 -22px 18px;padding:34px 24px 28px}
+    .bar{margin:0 -22px 18px}
+    .sec > *:not(.label):not(h2){margin-left:22px;margin-right:22px}
+    .sec > .label,.sec > h2{margin-left:22px;margin-right:22px}
+    .note,.key,.exam,.code,.scroll,.swipe{margin-left:22px;margin-right:22px}
+    .code pre{font-size:13px}
+    table{font-size:13.5px}
+    .swipe{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="top">Artificial Intelligence · Search · Module Notes</div>
+    <h1>Search Algorithms<span class="cur"></span></h1>
+    <p class="sub">
+      <b>01</b> A* search — f(n) = g(n) + h(n) &nbsp;·&nbsp; worked example &nbsp;·&nbsp; optimality<br>
+      <b>02</b> Depth-limited search &nbsp;·&nbsp; <b>03</b> Best-first search<br>
+      <b>04</b> Uninformed search — BFS / DFS / UCS &nbsp;·&nbsp; tree vs graph search<br>
+      <b>05</b> 8-puzzle — formulation &amp; heuristics from relaxed problems<br>
+      <b>06</b> Performance measures — completeness, optimality, time, space
+    </p>
+  </header>
+
+  <details class="bar">
+    <summary><span class="sq">[≡]</span> Contents — 6 topics</summary>
+    <ol>
+      <li><a href="#s1"><span>01</span>A* Search Algorithm</a></li>
+      <li><a href="#s2"><span>02</span>Depth-Limited Search</a></li>
+      <li><a href="#s3"><span>03</span>Best-First Search</a></li>
+      <li><a href="#s4"><span>04</span>Uninformed Search Strategies</a></li>
+      <li><a href="#s5"><span>05</span>8-Puzzle Problem</a></li>
+      <li><a href="#s6"><span>06</span>Performance Measures</a></li>
+    </ol>
+  </details>
+
+  <!-- ============ 01 ============ -->
+  <section class="sec" id="s1">
+    <p class="label">[ 01 / a* search ]</p>
+    <h2>A* Search Algorithm</h2>
+
+    <h3>1. Definition &amp; Core Idea</h3>
+    <ul>
+      <li><strong>A*</strong> is a <em>best-first search</em> algorithm that finds the shortest path by combining the <strong>actual cost from start</strong> (<em>g(n)</em>) with an <strong>estimated cost to goal</strong> (<em>h(n)</em>, the heuristic). It evaluates nodes using the formula: <strong>f(n) = g(n) + h(n)</strong>.</li>
+      <li>It is called <strong>"informed search"</strong> because it uses <em>problem-specific knowledge</em> (the heuristic) beyond the graph structure itself, unlike <strong>BFS/DFS/Uniform Cost Search</strong> which are <em>uninformed</em>.</li>
+      <li>A* expands the node with the <strong>lowest f(n) value</strong> first, maintained using a <strong>priority queue (open list)</strong>, making it both <em>efficient</em> and <em>accurate</em> when the heuristic is well-chosen.</li>
+    </ul>
+
+    <div class="key">
+      <strong>Evaluation function:</strong> <code>f(n) = g(n) + h(n)</code> &nbsp;—&nbsp; g(n) = cost so far from start, h(n) = estimated remaining cost to goal, f(n) = estimated total cost of a path through n.
+    </div>
+
+    <h3>2. Algorithm Steps</h3>
+    <ul>
+      <li><strong>Step 1:</strong> Initialize an <strong>open list</strong> (priority queue) with the start node; set its <em>g = 0</em> and compute <em>f = g + h</em>.</li>
+      <li><strong>Step 2:</strong> Repeatedly pick the node with the <strong>minimum f(n)</strong> from the open list, move it to the <strong>closed list</strong> (visited set).</li>
+      <li><strong>Step 3:</strong> If the picked node is the <strong>goal</strong>, terminate — path found is <em>optimal</em>. Otherwise, <strong>expand its neighbors</strong>, calculating their <em>g, h, f</em> values.</li>
+      <li><strong>Step 4:</strong> For each neighbor, if a <strong>shorter path</strong> is found than previously recorded, <strong>update</strong> its <em>g(n)</em> and <em>parent pointer</em>; push it into the open list.</li>
+      <li><strong>Step 5:</strong> Repeat until the <strong>open list is empty</strong> (no solution) or the <strong>goal is reached</strong>.</li>
+    </ul>
+
+    <h3>3. Worked Example</h3>
+    <ul>
+      <li>Consider a graph: <strong>S → A → B → G</strong>, with edge costs <em>S-A=1, A-B=2, B-G=3</em>, and heuristics <em>h(S)=6, h(A)=4, h(B)=2, h(G)=0</em>.</li>
+      <li>At <strong>S</strong>: f(S) = 0+6 = 6. Expand to <strong>A</strong>: f(A) = 1+4 = 5.</li>
+      <li>At <strong>A</strong>: expand to <strong>B</strong>: f(B) = 3+2 = 5. At <strong>B</strong>: expand to <strong>G</strong>: f(G) = 6+0 = 6.</li>
+      <li>Since <strong>f(G) = actual cost</strong> (no overestimation occurred), A* returns path <strong>S-A-B-G</strong> with cost <strong>6</strong>, confirming it picked the <em>least-cost path</em> by always exploring the <strong>lowest f-value frontier node</strong>.</li>
+    </ul>
+
+    <h3>4. Optimality of A*</h3>
+    <ul>
+      <li><strong>A* is optimal</strong> (guarantees the <em>least-cost path</em>) <strong>if the heuristic h(n) is admissible</strong> — meaning it <strong>never overestimates</strong> the true cost to reach the goal, i.e., <em>h(n) ≤ h*(n)</em> for all <em>n</em>.</li>
+      <li><strong>Proof sketch:</strong> Suppose a <em>suboptimal goal G2</em> is expanded before the <em>optimal goal G</em>. Since h(G2)=0, f(G2)=g(G2). Because <strong>h is admissible</strong>, for any node n on the optimal path, <em>f(n) ≤ f(G)</em> &lt; <em>f(G2)</em>. Hence <strong>A* would always pick n before G2</strong>, contradicting the assumption — proving <strong>optimality</strong>.</li>
+      <li>For <strong>graph search</strong> (with repeated states), A* requires the heuristic to also be <strong>consistent (monotonic)</strong>: <em>h(n) ≤ c(n,n') + h(n')</em> for every edge — this ensures <strong>f(n) never decreases</strong> along any path, guaranteeing correctness without needing to <strong>reopen closed nodes</strong>.</li>
+      <li><strong>Key properties summary:</strong> A* is <strong>complete</strong> (finds a solution if one exists), <strong>optimal</strong> (with admissible/consistent h), and <strong>optimally efficient</strong> (expands fewest nodes among algorithms using the same heuristic).</li>
+    </ul>
+  </section>
+
+  <!-- ============ 02 ============ -->
+  <section class="sec" id="s2">
+    <p class="label">[ 02 / depth-limited search ]</p>
+    <h2>Depth-Limited Search (DLS)</h2>
+
+    <h3>1. Definition &amp; Core Idea</h3>
+    <ul>
+      <li><strong>Depth-Limited Search (DLS)</strong> is a variant of <strong>DFS</strong> that solves DFS's problem of <em>running infinitely down one path</em> by imposing a <strong>predetermined depth limit ℓ</strong>, beyond which nodes are <strong>not expanded</strong>.</li>
+      <li>Nodes at depth <strong>ℓ are treated as if they have no successors</strong>, even if the goal lies deeper — this makes DLS <strong>incomplete</strong> if <em>ℓ &lt; depth of shallowest goal</em>.</li>
+      <li>It is essentially <strong>DFS + a cutoff parameter</strong>, giving it <em>controlled memory usage</em> while avoiding the <em>infinite-path trap</em> of plain DFS on graphs with cycles or unbounded depth.</li>
+    </ul>
+
+    <h3>2. Algorithm / Working</h3>
+    <ul>
+      <li><strong>Step 1:</strong> Start at the <strong>root node</strong> with <em>depth = 0</em>; treat it like standard DFS, expanding the <strong>leftmost unexpanded node</strong> first.</li>
+      <li><strong>Step 2:</strong> At each node, check if <strong>current depth = ℓ (limit)</strong>. If yes, <strong>stop expanding</strong> that branch — return <strong>"cutoff"</strong> signal instead of failure.</li>
+      <li><strong>Step 3:</strong> If the <strong>goal is found</strong> within the limit, return the <strong>solution path</strong>.</li>
+      <li><strong>Step 4:</strong> If a branch is <strong>exhausted</strong> (no more children, not at limit) and goal not found, <strong>backtrack</strong> — try the next sibling node.</li>
+      <li><strong>Step 5:</strong> If <strong>all branches</strong> return either <em>failure</em> or <em>cutoff</em> without finding the goal, DLS reports the final result accordingly — distinguishing <strong>"no solution exists"</strong> from <strong>"solution may exist beyond limit."</strong></li>
+    </ul>
+
+    <h3>3. Worked Example</h3>
+    <ul>
+      <li>Consider a tree: <strong>A → (B, C)</strong>; <strong>B → (D, E)</strong>; <strong>C → (F, G)</strong>; goal is <strong>G</strong>, with <strong>limit ℓ = 2</strong>.</li>
+      <li>DLS starts at <strong>A (depth 0)</strong> → expands <strong>B (depth 1)</strong> → expands <strong>D, E (depth 2)</strong> — since <em>depth = ℓ</em>, both are treated as <strong>leaf nodes (cutoff)</strong>, no further expansion even if they had children.</li>
+      <li><strong>Backtrack to A</strong>, expand <strong>C (depth 1)</strong> → expand <strong>G (depth 2)</strong> — goal found! Since <em>depth(G) = 2 = ℓ</em>, it is reachable <strong>within the limit</strong>, so DLS returns path <strong>A-C-G</strong>.</li>
+      <li>Had the <strong>goal been at depth 3</strong>, DLS would <strong>fail to find it</strong> and report <em>cutoff</em>, even though a solution exists — illustrating its <strong>incompleteness</strong> when <em>ℓ</em> is chosen too small.</li>
+    </ul>
+
+    <h3>4. DLS vs Plain DFS</h3>
+    <div class="scroll">
+      <table>
+        <caption>DFS vs depth-limited search</caption>
+        <thead>
+          <tr><th scope="col">Aspect</th><th scope="col">DFS</th><th scope="col">DLS</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Depth bound</th><td><em>None</em> — can go infinitely deep</td><td><em>Fixed limit ℓ</em> imposed</td></tr>
+          <tr><th scope="row">Completeness</th><td><em>Incomplete</em> on infinite/cyclic state spaces</td><td><em>Incomplete</em> if ℓ &lt; goal depth (<strong>but avoids infinite loops</strong>)</td></tr>
+          <tr><th scope="row">Time Complexity</th><td><em>O(b<sup>m</sup>)</em>, m = max depth of tree</td><td><em>O(b<sup>ℓ</sup>)</em> — bounded by chosen limit</td></tr>
+          <tr><th scope="row">Space Complexity</th><td><em>O(bm)</em></td><td><em>O(bℓ)</em> — generally smaller/safer</td></tr>
+          <tr><th scope="row">Termination</th><td>May <strong>never terminate</strong> on infinite paths</td><td><strong>Always terminates</strong> (guaranteed by cutoff)</td></tr>
+          <tr><th scope="row">Use case</th><td>Small, finite, known-depth trees</td><td>When <strong>max solution depth is known/estimated</strong>, e.g., basis for <strong>Iterative Deepening Search</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">[ swipe table → ]</p>
+
+    <div class="key">
+      <strong>Key insight:</strong> DLS trades <strong>completeness</strong> for <strong>guaranteed termination and bounded space</strong>, and is primarily significant as the <strong>building block for Iterative Deepening DFS (IDDFS)</strong>, which <strong>repeatedly runs DLS</strong> with <em>increasing limits</em> to combine DFS's low memory use with BFS's completeness and optimality.
+    </div>
+  </section>
+
+  <!-- ============ 03 ============ -->
+  <section class="sec" id="s3">
+    <p class="label">[ 03 / best-first search ]</p>
+    <h2>Best-First Search (Informed / Greedy)</h2>
+
+    <h3>1. Definition &amp; Core Idea</h3>
+    <ul>
+      <li><strong>Best-First Search</strong> is a <strong>heuristic/informed search</strong> strategy that selects the <strong>"most promising" node</strong> to expand next, using an <strong>evaluation function f(n)</strong> to rank nodes — unlike <em>uninformed search</em> which expands nodes blindly (e.g., FIFO/LIFO order).</li>
+      <li>It uses a <strong>priority queue (open list)</strong>, always picking the node with the <strong>lowest (or highest) f(n) value</strong>, making it <strong>greedy in nature</strong> — it chooses what <em>looks best at the moment</em>, without guaranteeing global optimality.</li>
+      <li>The most common form is <strong>Greedy Best-First Search</strong>, where <strong>f(n) = h(n)</strong> — purely the <strong>heuristic estimate of cost to reach the goal</strong>, ignoring the cost already incurred (<em>g(n)</em>).</li>
+    </ul>
+
+    <h3>2. Algorithm / Working</h3>
+    <ul>
+      <li><strong>Step 1:</strong> Initialize the <strong>open list</strong> with the <strong>start node</strong>; compute its <strong>h(n)</strong> value using the chosen <strong>heuristic function</strong>.</li>
+      <li><strong>Step 2:</strong> Repeatedly <strong>remove the node with minimum h(n)</strong> from the open list and place it in the <strong>closed list (visited)</strong>.</li>
+      <li><strong>Step 3:</strong> If this node is the <strong>goal</strong>, <strong>terminate</strong> and return the path found via <strong>parent pointers</strong>.</li>
+      <li><strong>Step 4:</strong> Otherwise, <strong>generate successors</strong>, compute their <strong>h(n)</strong> values, and <strong>insert them into the priority queue</strong> (skip if already visited, depending on implementation).</li>
+      <li><strong>Step 5:</strong> Repeat until the <strong>goal is found</strong> or the <strong>open list becomes empty</strong> (<strong>failure — no solution</strong>).</li>
+    </ul>
+
+    <h3>3. Worked Example</h3>
+    <ul>
+      <li>Consider nodes <strong>S (start) → A, B → G (goal)</strong>, with straight-line heuristic estimates: <em>h(S)=10, h(A)=6, h(B)=8, h(G)=0</em>.</li>
+      <li>At <strong>S</strong>, successors are <strong>A (h=6)</strong> and <strong>B (h=8)</strong> — Greedy BFS picks <strong>A first</strong> since it has the <strong>lower h(n)</strong>, <em>ignoring</em> actual edge costs.</li>
+      <li>From <strong>A</strong>, suppose it connects to <strong>G</strong> — since <strong>h(G)=0</strong> is the lowest possible, <strong>G is selected next and search terminates</strong>.</li>
+      <li>Final path: <strong>S → A → G</strong> — chosen purely because <strong>h(n) kept decreasing</strong>, demonstrating the <strong>"greedy"</strong> behavior of always moving toward the <em>seemingly closest</em> node to goal.</li>
+    </ul>
+
+    <h3>4. Key Characteristics &amp; Heuristic Angle</h3>
+    <ul>
+      <li><strong>Completeness:</strong> <strong>Not complete</strong> in general (can get stuck in <strong>loops</strong> or <strong>dead ends</strong> on infinite graphs), unless combined with <strong>visited-node checking</strong>.</li>
+      <li><strong>Optimality:</strong> <strong>Not optimal</strong> — since it <strong>ignores g(n)</strong> (path cost so far), it can be <strong>misled by a heuristic</strong> into a longer overall path, unlike <strong>A*</strong> which balances both <em>g(n) and h(n)</em>.</li>
+      <li><strong>Time &amp; Space Complexity:</strong> <strong>O(b<sup>m</sup>)</strong> in the worst case (<em>b</em> = branching factor, <em>m</em> = max depth), since a <strong>poor heuristic</strong> can cause it to explore almost as much as <strong>uninformed search</strong>.</li>
+      <li><strong>Heuristic dependency:</strong> Performance is <strong>entirely dependent on the quality of h(n)</strong> — a <strong>good heuristic</strong> (close to true cost) gives <strong>near-linear</strong> performance, while a <strong>poor/misleading heuristic</strong> can perform <strong>worse than BFS/DFS</strong>.</li>
+    </ul>
+
+    <h3>5. Comparison Note <span class="tag">common follow-up</span></h3>
+    <ul>
+      <li><strong>Greedy Best-First</strong> = f(n) = h(n) → <em>fast but not optimal</em>.</li>
+      <li><strong>A*</strong> = f(n) = g(n) + h(n) → <em>optimal (with admissible h)</em>, since it <strong>corrects greedy's flaw</strong> by also accounting for <strong>cost already spent</strong>.</li>
+    </ul>
+
+    <div class="exam">
+      <span class="lbl">Exam key line</span>
+      <em>"Best-First Search is a generalized framework; Greedy BFS and A* are both special cases distinguished by their evaluation function f(n)."</em>
+    </div>
+  </section>
+
+  <!-- ============ 04 ============ -->
+  <section class="sec" id="s4">
+    <p class="label">[ 04 / uninformed search ]</p>
+    <h2>Uninformed Search Strategies — BFS, DFS, UCS</h2>
+
+    <h3>1. Definition &amp; Core Idea</h3>
+    <ul>
+      <li><strong>Uninformed (Blind) Search</strong> strategies have <strong>no additional information</strong> about the goal beyond the problem definition — they only know how to <strong>distinguish a goal from a non-goal state</strong>, unlike <em>informed search</em> which uses a <strong>heuristic function</strong>.</li>
+      <li>They differ only in the <strong>order in which nodes are expanded</strong>, controlled by the <strong>data structure used for the fringe/frontier</strong> — a <strong>Queue (FIFO)</strong> for BFS, a <strong>Stack (LIFO)</strong> for DFS, and a <strong>Priority Queue</strong> for UCS.</li>
+      <li>Despite being <em>simple</em>, these strategies form the <strong>foundation</strong> for more advanced informed algorithms like <strong>A*</strong> and <strong>Greedy Best-First Search</strong>.</li>
+    </ul>
+
+    <h3>2. Breadth-First Search (BFS)</h3>
+    <ul>
+      <li>Expands the <strong>shallowest unexpanded node first</strong> using a <strong>FIFO queue</strong> — explores all nodes at <strong>depth d before moving to depth d+1</strong>, level by level.</li>
+      <li><strong>Complete:</strong> Yes (if branching factor <em>b</em> is finite). <strong>Optimal:</strong> Yes, <em>only if</em> all <strong>step costs are equal/uniform</strong>.</li>
+      <li><strong>Time/Space Complexity:</strong> <strong>O(b<sup>d</sup>)</strong> for both — <em>major drawback is exponential space</em>, since it must <strong>store all nodes at the current frontier level</strong>.</li>
+    </ul>
+
+    <h3>3. Depth-First Search (DFS)</h3>
+    <ul>
+      <li>Expands the <strong>deepest unexpanded node first</strong> using a <strong>LIFO stack</strong>, diving down <strong>one branch fully</strong> before backtracking to try others.</li>
+      <li><strong>Complete:</strong> <strong>No</strong> (fails on <em>infinite</em> or <em>cyclic</em> state spaces unless depth-limited). <strong>Optimal:</strong> <strong>No</strong> — finds <em>a</em> solution, not necessarily the <em>cheapest</em>.</li>
+      <li><strong>Time Complexity:</strong> <strong>O(b<sup>m</sup>)</strong>, <em>m</em> = max depth (can be worse than BFS if <em>m &gt;&gt; d</em>). <strong>Space Complexity:</strong> <strong>O(bm)</strong> — <em>much better than BFS</em>, its biggest advantage.</li>
+    </ul>
+
+    <h3>4. Uniform Cost Search (UCS)</h3>
+    <ul>
+      <li>Expands the node with the <strong>lowest cumulative path cost g(n)</strong> first (not depth), using a <strong>priority queue</strong> — essentially <strong>Dijkstra's algorithm</strong> applied to search.</li>
+      <li><strong>Complete:</strong> Yes (if step costs ≥ small positive constant <strong>ε</strong>). <strong>Optimal:</strong> <strong>Yes, always</strong> — regardless of step cost uniformity, since it <strong>always expands cheapest path first</strong>.</li>
+      <li><strong>Time/Space Complexity:</strong> <em>O(b<sup>1+⌊C*/ε⌋</sup>)</em>, where <strong>C*</strong> is optimal solution cost — can be <strong>far worse than BFS</strong> when step costs vary greatly.</li>
+    </ul>
+
+    <h3>5. Comparison Table</h3>
+    <div class="scroll">
+      <table>
+        <caption>BFS vs DFS vs UCS</caption>
+        <thead>
+          <tr><th scope="col">Criterion</th><th scope="col">BFS</th><th scope="col">DFS</th><th scope="col">UCS</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Data structure</th><td><em>Queue (FIFO)</em></td><td><em>Stack (LIFO)</em></td><td><em>Priority Queue</em></td></tr>
+          <tr><th scope="row">Expansion order</th><td>Shallowest node</td><td>Deepest node</td><td>Lowest <strong>g(n)</strong></td></tr>
+          <tr><th scope="row">Complete?</th><td>Yes (finite b)</td><td><strong>No</strong></td><td>Yes (ε-bounded costs)</td></tr>
+          <tr><th scope="row">Optimal?</th><td>Only if <em>uniform cost</em></td><td><strong>No</strong></td><td><strong>Yes, always</strong></td></tr>
+          <tr><th scope="row">Time complexity</th><td>O(b<sup>d</sup>)</td><td>O(b<sup>m</sup>)</td><td>O(b<sup>1+⌊C*/ε⌋</sup>)</td></tr>
+          <tr><th scope="row">Space complexity</th><td><strong>O(b<sup>d</sup>)</strong> (worst)</td><td><strong>O(bm)</strong> (best)</td><td>O(b<sup>1+⌊C*/ε⌋</sup>)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">[ swipe table → ]</p>
+
+    <h3>6. Tree Search vs Graph Search <span class="tag">pseudocode angle</span></h3>
+    <ul>
+      <li><strong>Tree Search</strong> does <strong>not track visited/explored nodes</strong> — it may <strong>re-expand the same state repeatedly</strong>, causing <strong>infinite loops on cyclic graphs</strong> and <em>redundant work</em>.</li>
+    </ul>
+
+    <div class="code">
+      <div class="cap"><span>tree-search</span><span>no explored set</span></div>
+<pre>function TREE-SEARCH(problem):
+    frontier ← {initial state of problem}
+    loop:
+        if frontier is empty → return failure
+        node ← REMOVE-CHOICE(frontier)
+        if GOAL-TEST(node) → return SOLUTION(node)
+        frontier ← INSERT-ALL(EXPAND(node), frontier)</pre>
+    </div>
+
+    <ul>
+      <li><strong>Graph Search</strong> adds an <strong>"explored set" (closed list)</strong> — before expanding a node, it <strong>checks if the state was already visited</strong>, preventing <strong>repeated states and infinite loops</strong>.</li>
+    </ul>
+
+    <div class="code">
+      <div class="cap"><span>graph-search</span><span>with explored set</span></div>
+<pre>function GRAPH-SEARCH(problem):
+    frontier ← {initial state}; explored ← {}
+    loop:
+        if frontier is empty → return failure
+        node ← REMOVE-CHOICE(frontier)
+        if GOAL-TEST(node) → return SOLUTION(node)
+        add node to explored
+        for each successor in EXPAND(node):
+            if successor not in frontier ∪ explored:
+                frontier ← INSERT(successor, frontier)</pre>
+    </div>
+
+    <div class="key">
+      <strong>Key exam line:</strong> <em>"Graph Search = Tree Search + explored set"</em> — this trade-off <strong>costs extra memory</strong> (storing the explored set) but <strong>guarantees termination and avoids redundant computation</strong> on graphs with cycles/repeated states.
+    </div>
+  </section>
+
+  <!-- ============ 05 ============ -->
+  <section class="sec" id="s5">
+    <p class="label">[ 05 / 8-puzzle ]</p>
+    <h2>8-Puzzle Problem — Formulation &amp; Heuristics</h2>
+
+    <h3>1. Problem Description</h3>
+    <ul>
+      <li>The <strong>8-puzzle</strong> consists of a <strong>3×3 board</strong> with <strong>8 numbered tiles (1–8)</strong> and <strong>one blank space</strong>; a tile <strong>adjacent to the blank</strong> can <strong>slide into it</strong>, and the goal is to reach a <strong>specified goal configuration</strong> from a given <strong>initial configuration</strong>.</li>
+      <li>It is a classic <strong>toy problem</strong> used to <strong>illustrate and benchmark search algorithms</strong>, especially <strong>heuristic/informed search</strong> like <strong>A*</strong> and <strong>Greedy Best-First Search</strong>, since its <strong>state space is large (9!/2 ≈ 181,440 reachable states)</strong> but small enough to analyze.</li>
+    </ul>
+
+    <h3>2. Standard Problem Formulation</h3>
+    <ul>
+      <li><strong>States:</strong> A <em>state description</em> specifies the <strong>location of each of the 8 tiles and the blank</strong> in the 3×3 grid (one of the <strong>9 positions</strong>).</li>
+      <li><strong>Initial State:</strong> <strong>Any configuration</strong> of the board can be designated as the <strong>start state</strong> — e.g., a given scrambled arrangement of tiles.</li>
+      <li><strong>Actions/Operators:</strong> Defined in terms of <strong>the blank's movement</strong> — <strong>{Left, Right, Up, Down}</strong> (move the blank <em>left, right, up, or down</em>), with <em>illegal moves</em> (moving off the grid) simply <strong>not generated</strong> at the boundary.</li>
+      <li><strong>Transition Model:</strong> Given a state and an action, returns the <strong>resulting state</strong> — i.e., <strong>swaps the blank with the adjacent tile</strong> in the specified direction.</li>
+      <li><strong>Goal Test:</strong> Checks whether the <strong>current state matches the specified goal configuration</strong> (a particular arrangement of tiles, e.g., 1–8 in order with blank in a corner).</li>
+      <li><strong>Path Cost:</strong> Each <strong>move costs 1</strong>, so the <strong>path cost equals the number of moves (steps)</strong> made from initial to goal state — making this an <strong>unweighted/uniform cost</strong> problem.</li>
+    </ul>
+
+    <h3>3. Deriving a Heuristic — Relaxed Problem Approach</h3>
+    <ul>
+      <li>A <strong>relaxed problem</strong> is created by <strong>removing or loosening constraints</strong> from the original problem — <em>the cost of an optimal solution to the relaxed problem is an <strong>admissible heuristic</strong></em> for the original, since it <strong>never overestimates</strong> true cost (fewer restrictions ⇒ cheaper or equal solution).</li>
+      <li><strong>Heuristic 1 — h1(n) = Number of misplaced tiles:</strong> Obtained by <strong>relaxing the rule</strong> <em>"a tile can move only to the adjacent blank square"</em> to <em>"a tile can move anywhere"</em> — then the <strong>solution cost = number of tiles out of place</strong>, since each misplaced tile needs <strong>at least one move</strong>.</li>
+      <li><strong>Heuristic 2 — h2(n) = Manhattan Distance (sum of distances of tiles from goal):</strong> Obtained by <strong>relaxing the rule</strong> to <em>"a tile can move to any adjacent square (even if occupied)"</em> — then each tile can move <strong>independently in a straight line</strong>, so the cost = <strong>sum of |Δx|+|Δy| for each tile</strong> from its current to goal position.</li>
+      <li><strong>Dominance:</strong> <strong>h2 (Manhattan) dominates h1 (misplaced tiles)</strong> — i.e., <strong>h2(n) ≥ h1(n) for all n</strong> — because Manhattan distance accounts for <strong>how far</strong> a tile is, not just <strong>whether</strong> it's misplaced; a <strong>dominant heuristic is always preferred</strong> since it <strong>expands fewer nodes</strong> while remaining <em>admissible</em>.</li>
+    </ul>
+
+    <h3>4. Why Relaxation Works <span class="tag">key theoretical point</span></h3>
+    <ul>
+      <li><strong>Key principle:</strong> <em>"If the rules of the original problem are a subset of the rules of the relaxed problem (i.e., it has fewer restrictions on action), then any solution to the original problem is also a solution to the relaxed problem."</em> Hence the <strong>optimal relaxed solution ≤ optimal real solution</strong>, guaranteeing <strong>admissibility</strong>.</li>
+      <li><strong>Automated heuristic generation:</strong> This relaxation technique can be <strong>mechanically applied via problem-description languages</strong> — tools can <strong>strip preconditions from actions</strong> to <strong>automatically generate admissible heuristics</strong>, rather than needing <em>hand-crafted</em> ones.</li>
+    </ul>
+
+    <div class="exam">
+      <span class="lbl">Exam key line</span>
+      <em>"A heuristic derived from a relaxed version of the original problem is never larger than the true cost, hence always admissible — making both h1 and h2 valid for use in A* search."</em>
+    </div>
+  </section>
+
+  <!-- ============ 06 ============ -->
+  <section class="sec" id="s6">
+    <p class="label">[ 06 / performance measures ]</p>
+    <h2>Parameters for Evaluating a Search Algorithm</h2>
+
+    <h3>1. Why Evaluate Search Algorithms?</h3>
+    <ul>
+      <li>A <strong>search algorithm's quality</strong> cannot be judged by <em>speed alone</em> — it must be assessed on <strong>multiple independent dimensions</strong>, since an algorithm <strong>good on one measure may fail badly on another</strong> (e.g., <strong>DFS</strong> saves space but <em>sacrifices</em> completeness/optimality).</li>
+      <li>These <strong>four standard criteria</strong> allow <strong>systematic comparison</strong> between strategies like <strong>BFS, DFS, UCS, A*</strong> — and are almost always asked <strong>together as a package</strong> in exams.</li>
+    </ul>
+
+    <h3>2. Completeness</h3>
+    <ul>
+      <li><strong>Completeness</strong> asks: <em>"Is the algorithm <strong>guaranteed to find a solution</strong> whenever one exists?"</em> — an algorithm is <strong>complete</strong> if it <strong>never fails to find a goal</strong> in a <strong>finite search space</strong> (or infinite space with proper safeguards).</li>
+      <li><strong>Example:</strong> <strong>BFS is complete</strong> (finite branching factor) since it explores <strong>level by level</strong>, but <strong>DFS is incomplete</strong> on <strong>infinite-depth or cyclic spaces</strong> since it can <strong>get stuck going down one infinite path</strong> and never backtrack to find the goal.</li>
+    </ul>
+
+    <h3>3. Optimality</h3>
+    <ul>
+      <li><strong>Optimality</strong> asks: <em>"Does the algorithm find the <strong>least-cost solution</strong> among all possible solutions?"</em> — being complete does <strong>not imply optimal</strong> (a solution may be found, but <strong>not the cheapest</strong>).</li>
+      <li><strong>Example:</strong> <strong>UCS is always optimal</strong> (expands lowest <strong>g(n)</strong> first, like Dijkstra), <strong>BFS is optimal only if step costs are uniform</strong>, while <strong>DFS and Greedy Best-First are generally not optimal</strong>.</li>
+    </ul>
+
+    <h3>4. Time Complexity</h3>
+    <ul>
+      <li><strong>Time Complexity</strong> measures <strong>how long</strong> the algorithm takes to find a solution — typically expressed as the <strong>number of nodes generated/expanded</strong>, as a function of problem parameters: <strong>branching factor (b), depth of shallowest goal (d), maximum depth (m)</strong>.</li>
+      <li><strong>Example:</strong> <strong>BFS/UCS = O(b<sup>d</sup>)</strong>, <strong>DFS = O(b<sup>m</sup>)</strong> — note that if <strong>m &gt;&gt; d</strong>, DFS can be <strong>far worse</strong>, but if the <strong>goal is deep and few paths dead-end</strong>, DFS may be faster in practice despite the <em>same worst-case class</em>.</li>
+    </ul>
+
+    <h3>5. Space Complexity</h3>
+    <ul>
+      <li><strong>Space Complexity</strong> measures the <strong>maximum size of memory (frontier + explored set)</strong> needed during search — often the <strong>real bottleneck</strong> in practice, since <em>time can be waited out but memory cannot be exceeded</em>.</li>
+      <li><strong>Example:</strong> <strong>BFS requires O(b<sup>d</sup>)</strong> space (must <strong>store the entire frontier</strong>, which grows exponentially), while <strong>DFS needs only O(bm)</strong> — this <strong>memory efficiency</strong> is DFS's <strong>primary practical advantage</strong> despite weaker completeness/optimality.</li>
+    </ul>
+
+    <h3>6. Consolidated Comparison Table</h3>
+    <div class="scroll">
+      <table>
+        <caption>Four measures across BFS / DFS / UCS</caption>
+        <thead>
+          <tr><th scope="col">Measure</th><th scope="col">Question it Answers</th><th scope="col">BFS</th><th scope="col">DFS</th><th scope="col">UCS</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Completeness</th><td>Always finds solution if exists?</td><td>Yes</td><td><strong>No</strong></td><td>Yes (ε-bounded)</td></tr>
+          <tr><th scope="row">Optimality</th><td>Finds cheapest solution?</td><td>Only if uniform cost</td><td><strong>No</strong></td><td><strong>Always Yes</strong></td></tr>
+          <tr><th scope="row">Time Complexity</th><td>Nodes expanded (worst case)</td><td>O(b<sup>d</sup>)</td><td>O(b<sup>m</sup>)</td><td>O(b<sup>1+⌊C*/ε⌋</sup>)</td></tr>
+          <tr><th scope="row">Space Complexity</th><td>Max memory needed</td><td><strong>O(b<sup>d</sup>)</strong></td><td><strong>O(bm)</strong></td><td>O(b<sup>1+⌊C*/ε⌋</sup>)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="swipe">[ swipe table → ]</p>
+
+    <h3>7. Key Exam Takeaway</h3>
+    <ul>
+      <li><strong>No single algorithm dominates on all four measures</strong> — choosing a search strategy involves a <strong>trade-off</strong>: <strong>BFS/UCS guarantee correctness</strong> (<em>complete + optimal</em>) at the <strong>cost of exponential memory</strong>, while <strong>DFS trades correctness for memory efficiency</strong>.</li>
+      <li><strong>b (branching factor), d (shallowest goal depth), and m (maximum tree depth)</strong> are the <strong>three key parameters</strong> that <em>every complexity formula</em> is built from — always <strong>define these explicitly</strong> in the answer for full marks.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <div class="big">Search Algorithms</div>
+    <div>A* · depth-limited · best-first · uninformed · 8-puzzle · measures</div>
+    <div>Source: your pasted revision notes · Page made 12 Nov 2026</div>
+  </footer>
+
+</div>
+</body>
+</html>
