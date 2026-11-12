@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#fff4e0">
+<title>Module Notes — Index</title>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Chivo:ital,wght@0,400;0,700;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#fff4e0;
+    --cream-2:#fbe8c9;
+    --teal:#0f4c5c;
+    --marigold:#e8871e;
+    --saffron:#f4a300;
+    --brick:#a4243b;
+    --ink:#20343a;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:'Chivo','Mukta','Helvetica Neue',Arial,sans-serif;
+    font-size:17px;
+    line-height:1.6;
+    color:var(--ink);
+    overflow-wrap:anywhere;
+    background-color:var(--cream);
+    background-image:
+      radial-gradient(circle at 14% 20%, rgba(232,135,30,.13) 0 1.5px, rgba(0,0,0,0) 2px),
+      radial-gradient(circle at 70% 64%, rgba(15,76,92,.09) 0 1.5px, rgba(0,0,0,0) 2px);
+    background-size:26px 26px, 36px 36px;
+    display:flex;
+    flex-direction:column;
+  }
+  .wrap{
+    width:100%;
+    max-width:820px;
+    margin:0 auto;
+    padding:24px 16px 30px;
+    flex:1 0 auto;
+  }
+
+  /* ---------- COVER ---------- */
+  .cover{
+    text-align:center;
+    padding:22px 14px 20px;
+    background:var(--teal);
+    color:var(--cream);
+    border-radius:14px;
+    border:3px solid var(--teal);
+    box-shadow:inset 0 0 0 4px var(--teal), inset 0 0 0 6px var(--marigold);
+  }
+  .cover .kicker{
+    display:inline-block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:9.5px;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color:var(--saffron);
+    margin-bottom:10px;
+  }
+  .cover h1{
+    font-family:'Shrikhand','Rockwell','Georgia',serif;
+    font-weight:400;
+    font-size:clamp(25px,8vw,44px);
+    line-height:1.05;
+    margin:0 0 8px;
+    color:#fff8ea;
+  }
+  .cover h1 .hl{color:var(--saffron)}
+  .cover p{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    line-height:1.8;
+    color:#f2dcbc;
+    margin:0;
+  }
+
+  h2.section{
+    font-family:'Shrikhand','Rockwell','Georgia',serif;
+    font-weight:400;
+    font-size:clamp(17px,4.8vw,21px);
+    color:var(--teal);
+    margin:26px 0 10px;
+    padding-bottom:6px;
+    border-bottom:3px solid var(--marigold);
+  }
+
+  /* ---------- MODULE BUTTONS ---------- */
+  .grid{
+    margin-top:20px;
+    display:grid;
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  .mod{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-height:76px;
+    padding:14px 16px;
+    text-decoration:none;
+    color:var(--ink);
+    background:var(--cream);
+    border:3px solid var(--teal);
+    border-radius:10px;
+    box-shadow:inset 0 0 0 3px var(--cream), inset 0 0 0 5px rgba(232,135,30,.55), 4px 4px 0 rgba(15,76,92,.16);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .mod:active,
+  .mod:focus-visible{
+    transform:translate(2px,2px);
+    box-shadow:inset 0 0 0 3px var(--cream), inset 0 0 0 5px rgba(232,135,30,.55), 1px 1px 0 rgba(15,76,92,.2);
+    outline:none;
+  }
+  .mod .badge{
+    flex:0 0 auto;
+    width:52px;height:52px;
+    border-radius:50%;
+    background:var(--brick);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.04em;
+    box-shadow:0 0 0 3px var(--cream), 0 0 0 5px var(--marigold);
+  }
+  .mod .text{min-width:0}
+  .mod .name{
+    display:block;
+    font-family:'Shrikhand','Rockwell','Georgia',serif;
+    font-size:clamp(17px,4.8vw,22px);
+    line-height:1.2;
+    color:var(--teal);
+  }
+  .mod .file{
+    display:block;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11px;
+    letter-spacing:.06em;
+    color:var(--brick);
+    margin-top:2px;
+  }
+  .mod .arrow{
+    margin-left:auto;
+    flex:0 0 auto;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:18px;
+    color:var(--marigold);
+  }
+
+  /* ---------- PICKER FALLBACK ---------- */
+  .panel{
+    margin-top:8px;
+    padding:14px;
+    background:#fdf4e4;
+    border:2px dashed var(--teal);
+    border-radius:8px;
+  }
+  .panel p{
+    margin:0 0 10px;
+    font-size:14.5px;
+  }
+  .panel .mono{
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:11.5px;
+    line-height:1.75;
+    color:#2c4a52;
+  }
+  .pickbtn{
+    display:inline-block;
+    min-height:52px;
+    padding:14px 18px;
+    background:var(--teal);
+    color:var(--cream);
+    border:3px solid var(--teal);
+    border-radius:8px;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:12.5px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow:0 0 0 2px var(--cream), 0 0 0 4px var(--marigold);
+  }
+  .pickbtn:active{transform:translate(1px,1px)}
+  input[type="file"]{
+    display:block;
+    width:100%;
+    margin:12px 0 4px;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:12px;
+    padding:10px;
+    background:#fff;
+    border:2px solid var(--teal);
+    border-radius:6px;
+  }
+  #picked{
+    display:grid;
+    gap:10px;
+    margin-top:12px;
+  }
+  #picked a{
+    display:block;
+    padding:13px 14px;
+    min-height:48px;
+    background:#fff;
+    border:2px solid var(--brick);
+    border-radius:8px;
+    color:var(--brick);
+    text-decoration:none;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:12.5px;
+    overflow-wrap:anywhere;
+  }
+  .checklist{
+    margin:12px 0 0;
+    padding-left:18px;
+    font-size:14.5px;
+  }
+  .checklist li{margin-bottom:7px}
+  .checklist li::marker{color:var(--brick)}
+
+  footer{
+    flex:0 0 auto;
+    padding:16px 16px 26px;
+    text-align:center;
+    font-family:'Space Mono','Courier New',monospace;
+    font-size:10.5px;
+    line-height:1.9;
+    color:#5c6f74;
+  }
+
+  @media (min-width:560px){
+    .grid{grid-template-columns:1fr 1fr}
+    .wrap{padding:32px 22px 38px}
+    .cover{padding:30px 20px 26px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="cover">
+    <div class="kicker">Study Notes · Module Index</div>
+    <h1>Module Notes<br><span class="hl">Open a Module</span></h1>
+    <p>Tap M1 – M5 to open that module's notes</p>
+  </header>
+
+  <h2 class="section">Modules</h2>
+
+  <nav class="grid" aria-label="Modules">
+    <a class="mod" href="aim1.html">
+      <span class="badge">M1</span>
+      <span class="text">
+        <span class="name">Module 1</span>
+        <span class="file">aim1.html</span>
+      </span>
+      <span class="arrow">▸</span>
+    </a>
+
+    <a class="mod" href="aim2.html">
+      <span class="badge">M2</span>
+      <span class="text">
+        <span class="name">Module 2</span>
+        <span class="file">aim2.html</span>
+      </span>
+      <span class="arrow">▸</span>
+    </a>
+
+    <a class="mod" href="aim3.html">
+      <span class="badge">M3</span>
+      <span class="text">
+        <span class="name">Module 3</span>
+        <span class="file">aim3.html</span>
+      </span>
+      <span class="arrow">▸</span>
+    </a>
+
+    <a class="mod" href="aim4.html">
+      <span class="badge">M4</span>
+      <span class="text">
+        <span class="name">Module 4</span>
+        <span class="file">aim4.html</span>
+      </span>
+      <span class="arrow">▸</span>
+    </a>
+
+    <a class="mod" href="aim5.html">
+      <span class="badge">M5</span>
+      <span class="text">
+        <span class="name">Module 5</span>
+        <span class="file">aim5.html</span>
+      </span>
+      <span class="arrow">▸</span>
+    </a>
+  </nav>
+
+  <h2 class="section">Buttons not opening? Use this</h2>
+
+  <div class="panel">
+    <p><strong>The buttons only work if aim1.html – aim5.html sit in the very same folder as this file</strong>, with those exact names. If a button shows "file not found", "site can't be reached", or nothing happens, pick the file from your device below — this works from any folder, on phone or laptop, and needs no internet.</p>
+    <label class="pickbtn" for="picker">Choose module files</label>
+    <input id="picker" type="file" accept=".html,.htm,text/html" multiple>
+    <div id="picked"></div>
+    <p class="mono" id="pickedNote" style="margin-top:10px">No files chosen yet.</p>
+  </div>
+
+  <h2 class="section">If it still won't open — check these</h2>
+
+  <div class="panel">
+    <ol class="checklist">
+      <li><strong>Same folder.</strong> index.html and aim1.html must be in one folder — not one in Downloads and the other in Documents.</li>
+      <li><strong>Exact name.</strong> The link asks for <span class="mono">aim1.html</span>. A file saved as <span class="mono">aim1 (1).html</span>, <span class="mono">aim1.htm</span> or <span class="mono">Aim1.html</span> won't match — rename it to aim1.html exactly.</li>
+      <li><strong>Don't open it from inside a zip, email preview or chat app.</strong> Extract the folder to your device first, then open index.html from the file manager.</li>
+      <li><strong>On Android:</strong> if a file manager opens the HTML as text, open it in Chrome instead — long-press the file → Open with → Chrome.</li>
+    </ol>
+  </div>
+
+  <footer>
+    Module index · 5 modules<br>
+    Page made 12 Nov 2026
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var picker = document.getElementById('picker');
+    var out = document.getElementById('picked');
+    var note = document.getElementById('pickedNote');
+    if (!picker) return;
+
+    picker.addEventListener('change', function () {
+      out.innerHTML = '';
+      var files = picker.files ? Array.prototype.slice.call(picker.files) : [];
+      if (!files.length) {
+        note.textContent = 'No files chosen yet.';
+        return;
+      }
+      files.sort(function (a, b) {
+        return a.name.localeCompare(b.name, undefined, { numeric: true });
+      });
+      files.forEach(function (file) {
+        var url = URL.createObjectURL(file);
+        var a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = '▸ ' + file.name;
+        out.appendChild(a);
+      });
+      note.textContent = files.length + ' file(s) ready — tap one above to open it.';
+    });
+  })();
+</script>
+</body>
+</html>
