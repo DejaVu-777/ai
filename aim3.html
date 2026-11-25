@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2b2b2b">
+<title>EIA &amp; Indian Environmental Law — Notes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ground:#e9e8e4;
+  --panel:#f7f6f3;
+  --ink:#2b2b2b;
+  --dim:#6b6a66;
+  --rule:#d3d1ca;
+  --accent:#e8541f;
+  --disp:'Space Grotesk','Helvetica Neue',Arial,sans-serif;
+  --body:'Instrument Sans',-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.65;
+  overflow-wrap:anywhere;
+  background-image:linear-gradient(90deg,rgba(43,43,43,.035) 1px,transparent 1px),linear-gradient(rgba(43,43,43,.035) 1px,transparent 1px);
+  background-size:48px 48px;
+}
+h1,h2,h3,h4{font-family:var(--disp);font-weight:600;margin:0;letter-spacing:-.02em}
+p{margin:0 0 14px}
+p:last-child{margin-bottom:0}
+strong{font-weight:600}
+a{color:inherit}
+
+/* ---------- hero ---------- */
+.hero{background:var(--ink);color:#f2f1ed;padding:52px 20px 44px;border-bottom:1px solid #1e1e1e}
+.hero-in{max-width:900px;margin:0 auto}
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(242,241,237,.62);margin:0 0 22px}
+.hero h1{font-size:clamp(2.1rem,8.4vw,3.7rem);line-height:.98;letter-spacing:-.035em;font-weight:600}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero .sub{margin:20px 0 0;max-width:46ch;color:rgba(242,241,237,.74);font-size:16px;line-height:1.55}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(242,241,237,.16);margin:32px 0 0;border:1px solid rgba(242,241,237,.16)}
+.stat{background:var(--ink);padding:12px 10px 13px}
+.stat .n{display:block;font-family:var(--mono);font-size:19px;letter-spacing:-.02em;line-height:1.1;overflow-wrap:anywhere}
+.stat .n.hot{color:var(--accent)}
+.stat .l{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:rgba(242,241,237,.55);margin-top:5px}
+
+/* ---------- sticky bar ---------- */
+.bar{position:sticky;top:0;z-index:60;background:rgba(233,232,228,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
+.bar-in{max-width:900px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:14px;min-height:54px}
+.bar-title{font-family:var(--disp);font-weight:600;font-size:14px;letter-spacing:-.01em;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.toc{position:relative}
+.toc summary{list-style:none;cursor:pointer;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--rule);border-radius:999px;padding:10px 14px;min-height:44px;display:flex;align-items:center;background:var(--panel);user-select:none}
+.toc summary::-webkit-details-marker{display:none}
+.toc[open] summary{border-color:var(--ink)}
+.toc-panel{position:absolute;right:0;top:calc(100% + 8px);width:min(320px,calc(100vw - 40px));max-height:min(70vh,520px);overflow-y:auto;-webkit-overflow-scrolling:touch;background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:8px;z-index:70}
+.toc-panel a{display:block;padding:9px 10px;text-decoration:none;font-size:14px;border-radius:5px}
+.toc-panel a:hover{background:rgba(43,43,43,.06)}
+.toc-panel a span{font-family:var(--mono);font-size:10px;color:var(--dim);margin-right:8px}
+
+/* ---------- layout ---------- */
+main{max-width:900px;margin:0 auto;padding:40px 20px 72px}
+.sec{scroll-margin-top:74px;margin:0 0 34px;border-radius:8px;padding:26px 20px 30px;background:var(--panel);border:1px solid var(--rule)}
+.sec--plain{background:transparent;border:0;border-top:1px solid var(--rule);border-radius:0;padding:28px 0 8px;margin-bottom:44px}
+.sec-head{display:flex;gap:14px;align-items:baseline;margin-bottom:6px}
+.sec-num{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.06em;flex:none;padding-top:6px}
+.sec-head h2{font-size:clamp(1.45rem,5.4vw,1.95rem);line-height:1.12;letter-spacing:-.028em}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 22px}
+.chip{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--rule);border-radius:999px;padding:4px 9px;color:var(--dim);white-space:nowrap}
+.chip.marks{color:var(--accent);border-color:rgba(232,84,31,.45)}
+h3{font-size:1.06rem;letter-spacing:-.012em;margin:26px 0 8px}
+h4{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:400;margin:24px 0 8px}
+ul{margin:0 0 14px;padding:0;list-style:none}
+ul li{position:relative;padding-left:20px;margin-bottom:8px}
+ul li::before{content:"";position:absolute;left:2px;top:.68em;width:6px;height:1px;background:var(--dim)}
+ul.tight li{margin-bottom:5px}
+.lead{font-size:16px;color:var(--dim);border-left:2px solid var(--rule);padding-left:14px;margin:0 0 18px}
+
+/* ---------- timeline ---------- */
+.tl{list-style:none;margin:18px 0 0;padding:0;border-top:1px solid var(--rule)}
+.tl li{display:grid;grid-template-columns:1fr;gap:2px;padding:16px 0;margin:0;border-bottom:1px solid var(--rule)}
+.tl li::before{display:none}
+.tl .yr{font-family:var(--mono);font-size:11.5px;letter-spacing:.05em;color:var(--dim);padding-top:5px}
+.tl li.hot .yr{color:var(--accent)}
+.tl h3{margin:0 0 6px;font-size:1rem}
+.tl p{margin:0 0 8px;font-size:15.5px}
+.tl ul{margin:8px 0 0}
+.tl ul li{display:block;border:0;padding:0 0 0 18px;margin:0 0 6px;font-size:15.5px}
+@media(min-width:600px){
+  .tl li{grid-template-columns:104px 1fr;gap:20px}
+}
+
+/* ---------- callouts ---------- */
+.key,.warn{background:rgba(43,43,43,.045);border-left:3px solid var(--ink);border-radius:0 6px 6px 0;padding:13px 15px;margin:18px 0;font-size:15.5px}
+.warn{background:rgba(232,84,31,.07);border-left-color:var(--accent)}
+.key .lab,.warn .lab{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;color:var(--dim)}
+.warn .lab{color:var(--accent)}
+.aside{margin:22px 0 0;padding-top:12px;border-top:1px solid var(--rule);font-size:14px;color:var(--dim)}
+.aside b{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;font-weight:400;display:block;margin-bottom:4px}
+
+/* ---------- skeleton ---------- */
+.skel{background:var(--ink);color:#eeedea;border-radius:8px;padding:16px 15px;margin:22px 0 0}
+.skel .lab{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(238,237,234,.55);margin-bottom:9px}
+.skel p{font-family:var(--mono);font-size:12.5px;line-height:1.75;margin:0;letter-spacing:-.01em}
+.skel .ar{color:var(--accent);padding:0 2px}
+
+/* ---------- tables ---------- */
+.scroll{overflow-x:auto;margin:16px 0 6px;border:1px solid var(--rule);border-radius:8px;background:#fbfaf7;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:420px;font-size:15px}
+caption{text-align:left;font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);padding:11px 12px 0}
+th,td{padding:10px 12px;text-align:left;border-top:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);font-weight:400;border-top:0;background:rgba(43,43,43,.035)}
+td.n{font-family:var(--mono);font-size:13.5px;white-space:nowrap}
+td.n.hot{color:var(--accent)}
+.swipe{display:none;font-family:var(--mono);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--dim);margin:8px 0 0}
+@media(max-width:719px){.swipe{display:block}}
+
+/* ---------- misc ---------- */
+.rule{height:1px;background:var(--rule);margin:26px 0}
+.subgrid{display:grid;grid-template-columns:1fr;gap:0}
+footer{max-width:900px;margin:0 auto;padding:28px 20px 60px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);line-height:1.9}
+footer .big{font-family:var(--disp);font-size:14px;letter-spacing:-.01em;text-transform:none;color:var(--ink);margin-bottom:6px}
+
+/* entrance */
+@media(prefers-reduced-motion:no-preference){
+  .rise{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+  .rise.in{opacity:1;transform:none}
+}
+@media print{
+  body{background:#fff;background-image:none}
+  .bar{display:none}
+  .sec{break-inside:avoid;border:1px solid #ccc}
+  .skel{background:#fff;color:#000;border:1px solid #999}
+  .skel .lab,.skel p{color:#000}
+}
+
+/* flow chain */
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 6px;padding:14px;border:1px solid var(--rule);border-radius:8px;background:#fbfaf7}
+.flow b{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;font-weight:400;border:1px solid var(--rule);border-radius:4px;padding:7px 9px;background:var(--panel)}
+.flow b.hot{border-color:rgba(232,84,31,.5);color:var(--accent)}
+.flow i{font-family:var(--mono);font-style:normal;color:var(--accent);font-size:12px}
+.flowcap{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+.split{display:grid;grid-template-columns:1fr;gap:10px;margin:16px 0}
+.split>div{border:1px solid var(--rule);border-radius:8px;padding:13px 14px;background:rgba(43,43,43,.03)}
+.split h4{margin:0 0 6px}
+.split p{margin:0;font-size:15px}
+ol.num{list-style:none;margin:0 0 14px;padding:0;counter-reset:n}
+ol.num li{counter-increment:n;position:relative;padding-left:34px;margin-bottom:9px}
+ol.num li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;top:.1em;font-family:var(--mono);font-size:11px;color:var(--dim)}
+ol.num li ul{margin-top:7px}
+@media(min-width:600px){.split{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <p class="eyebrow">KTU · Environmental engineering · Module I &amp; II</p>
+    <h1>EIA &amp; Indian<br>environmental law<br><em>repeat questions</em></h1>
+    <p class="sub">Every question that keeps coming back — the timeline, the Acts, the standards, the clearance process, and a rough-sheet skeleton for each.</p>
+    <div class="stats">
+      <div class="stat"><span class="n">18</span><span class="l">topics</span></div>
+      <div class="stat"><span class="n hot">15</span><span class="l">marks each</span></div>
+      <div class="stat"><span class="n">03</span><span class="l">acts</span></div>
+    </div>
+  </div>
+</header>
+
+<nav class="bar" aria-label="Contents">
+  <div class="bar-in">
+    <span class="bar-title">EIA &amp; Indian environmental law</span>
+    <details class="toc">
+      <summary>Contents</summary>
+      <div class="toc-panel">
+        <a href="#eia-evolution"><span>01</span>Evolution of EIA in India</a>
+        <a href="#epa-1986"><span>02</span>Environment (Protection) Act 1986</a>
+        <a href="#eia-2006"><span>03</span>EIA Notification 2006</a>
+        <a href="#standards"><span>04</span>Water, air &amp; noise standards</a>
+        <a href="#water-act"><span>05</span>Water Act 1974</a>
+        <a href="#air-act"><span>06</span>Air Act 1981</a>
+        <a href="#glance"><span>07</span>Acts at a glance</a>
+        <a href="#ec-procedure"><span>08</span>EC procedure for a project</a>
+        <a href="#types"><span>09</span>Different types of EIA</a>
+        <a href="#iee"><span>10</span>Initial Environmental Examination</a>
+        <a href="#tor"><span>11</span>Terms of Reference</a>
+        <a href="#report"><span>12</span>Structure of an EIA report</a>
+        <a href="#methodologies"><span>13</span>EIA methodologies</a>
+        <a href="#socio-economic"><span>14</span>Socio-economic impact assessment</a>
+        <a href="#water-impacts"><span>15</span>Impacts on the water environment</a>
+        <a href="#air-impacts"><span>16</span>Impacts on the air environment</a>
+        <a href="#leopold"><span>17</span>Leopold matrix</a>
+        <a href="#network"><span>18</span>Network method</a>
+      </div>
+    </details>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============ 01 ============ -->
+<section class="sec rise" id="eia-evolution">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <h2>Evolution of EIA in India</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">15 marks</span>
+    <span class="chip">Nov 2025</span><span class="chip">Nov 2024</span><span class="chip">Dec 2023</span><span class="chip">Apr 2025</span><span class="chip">Dec 2022</span>
+  </div>
+
+  <p class="lead">Asked in literally every paper — worth 7–9 marks every time. If you memorise nothing else in Module I, memorise this. Structure that's easy to reproduce in exam order and still hits every scoring point: <strong>phase-wise timeline → 1994 notification → 2006 notification → recent amendments / Draft 2020</strong>.</p>
+
+  <ol class="tl">
+    <li>
+      <span class="yr">1976–77<br>to 1993</span>
+      <div>
+        <h3>Phase 1 — Pre-statutory / administrative</h3>
+        <ul class="tight">
+          <li>Foundation laid in <strong>1976–77</strong>, when the <strong>Planning Commission</strong> directed the <strong>Department of Science and Technology (DST)</strong> to examine <strong>river valley and hydroelectric projects</strong> from an environmental angle.</li>
+          <li>Scope later extended to all projects requiring clearance from the <strong>Public Investment Board (PIB)</strong>.</li>
+          <li>Till <strong>1994</strong>, environmental clearance (EC) was purely an <strong>administrative decision</strong> — no legislative/statutory backing, so compliance was weak and inconsistent.</li>
+        </ul>
+      </div>
+    </li>
+    <li class="hot">
+      <span class="yr">1986</span>
+      <div>
+        <h3>Phase 2 — Statutory foundation: EPA 1986</h3>
+        <ul class="tight">
+          <li>The <strong>Bhopal Gas Tragedy (1984)</strong> was a major trigger for stronger environmental law in India.</li>
+          <li>This led to the <strong>Environment (Protection) Act, 1986</strong>, enacted <strong>23 May 1986</strong>, giving the central government legal power to regulate activities harming environmental quality.</li>
+          <li>The EPA became the <strong>legal umbrella</strong> under which EIA would later be made mandatory.</li>
+        </ul>
+      </div>
+    </li>
+    <li class="hot">
+      <span class="yr">27 Jan<br>1994</span>
+      <div>
+        <h3>Phase 3 — The EIA Notification, 1994 (first formal notification)</h3>
+        <ul class="tight">
+          <li>Issued on <strong>27 January 1994</strong> by the <strong>MoEF</strong>, under <strong>Section 3</strong> of the EPA, 1986.</li>
+          <li>Made <strong>Environmental Clearance mandatory</strong> for <strong>29–30 categories</strong> of projects listed in <strong>Schedule 1</strong>.</li>
+          <li>Marked the <strong>formal institutionalization</strong> of EIA as a <strong>legally binding</strong> requirement — ending the purely administrative approach.</li>
+          <li>Amended about <strong>12 times</strong> to strengthen procedures, but faced criticism for <strong>unpredictable appraisal schedules, delays, and poor-quality EIA reports</strong> by consultants.</li>
+        </ul>
+      </div>
+    </li>
+    <li class="hot">
+      <span class="yr">14 Sep<br>2006</span>
+      <div>
+        <h3>Phase 4 — The EIA Notification, 2006 (major overhaul)</h3>
+        <ul class="tight">
+          <li>Notified on <strong>14 September 2006</strong>, replacing the 1994 notification entirely.</li>
+          <li>Key reform: <strong>decentralization</strong> — <strong>Category A</strong> appraised at the <strong>national level</strong> (MoEF, through EAC); <strong>Category B</strong> at the <strong>state level</strong> (via <strong>SEIAA</strong> and <strong>SEAC</strong>).</li>
+          <li>Introduced a <strong>structured 4-stage process</strong>: <strong>Screening → Scoping → Public Consultation → Appraisal</strong>.</li>
+          <li>Made <strong>public hearing / public consultation</strong> a formal, mandatory part of the process (absent or weak in 1994).</li>
+          <li>Removed the requirement of a separate <strong>"Site Clearance"</strong> stage — merged into scoping.</li>
+        </ul>
+      </div>
+    </li>
+    <li>
+      <span class="yr">2006<br>onward</span>
+      <div>
+        <h3>Phase 5 — Post-2006 amendments and current scenario</h3>
+        <ul class="tight">
+          <li>Since 2006, <strong>100+ amendments / office memorandums</strong> issued, with <strong>2022–23 recording the highest number</strong> of changes.</li>
+          <li>Notable: <strong>compliance rating system for SEIAA</strong>, dilution of public hearing for <strong>legacy mining cases</strong>, and a move toward <strong>online submission/approval</strong>.</li>
+          <li>The <strong>Draft EIA Notification, 2020</strong> attempted to consolidate all amendments but drew major <strong>legal and public controversy</strong>, especially over <strong>post-facto clearance</strong> (allowing clearance <em>after</em> a project has already started/operated) — currently <strong>under judicial and public scrutiny, not yet finalized</strong>.</li>
+        </ul>
+      </div>
+    </li>
+  </ol>
+
+  <div class="warn">
+    <span class="lab">Scoring trap</span>
+    Don't call the 1994 notification the "first EIA in India" without the qualifier — EIA existed administratively from <strong>1976–77</strong>. 1994 is the first <em>statutory</em> notification.
+  </div>
+
+  <div class="skel">
+    <span class="lab">Quick recall — write this on the rough sheet first</span>
+    <p>1976-77 (DST, admin) <span class="ar">→</span> 1986 (EPA, Bhopal trigger) <span class="ar">→</span> 1994 (first notification, 29 categories) <span class="ar">→</span> 2006 (Cat A/B, decentralized, 4 stages) <span class="ar">→</span> post-2006 (100+ amendments, Draft 2020 controversy)</p>
+  </div>
+
+  <p class="aside"><b>Likely follow-up</b>One-page cheat diagram / timeline of this arc — the timeline above is exactly that.</p>
+</section>
+
+<!-- ============ 02 ============ -->
+<section class="sec sec--plain rise" id="epa-1986">
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <h2>Environment (Protection) Act, 1986</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">15 marks</span>
+    <span class="chip">Nov 2025</span><span class="chip">Dec 2023</span><span class="chip">Apr 2025</span><span class="chip">Dec 2022</span><span class="chip">missing only Nov 2024</span>
+  </div>
+
+  <p class="lead">Structure plan: Background/Need → Enactment details → Objectives → Salient features (powers) → Powers of Central Govt (Sec 3–5) → Penalties → Conclusion. KTU splits marks roughly <strong>2–3 background, 6–7 features/powers, 2–3 penalties</strong>, rest conclusion.</p>
+
+  <h3>1. Background and need</h3>
+  <ul>
+    <li>Before 1986, India had only <strong>sector-specific / fragmented</strong> laws — <strong>Wildlife (Protection) Act 1972, Water Act 1974, Air Act 1981</strong> — with <strong>no single comprehensive law</strong> covering the environment as a whole.</li>
+    <li>The <strong>Bhopal Gas Tragedy (1984)</strong>, India's worst industrial disaster, exposed this legal gap and became the <strong>direct trigger</strong> for a unified environmental law.</li>
+    <li>It was also enacted to implement India's commitments from the <strong>1972 Stockholm Conference</strong> on the Human Environment.</li>
+  </ul>
+
+  <h3>2. Enactment</h3>
+  <ul>
+    <li>Passed by Parliament under <strong>Article 253</strong> of the Constitution (power to legislate for implementing international agreements).</li>
+    <li>Received <strong>Presidential assent on 23 May 1986</strong>; came into force on <strong>19 November 1986</strong>.</li>
+    <li>Structured into <strong>4 Chapters and 26 Sections</strong>; applicable to the <strong>whole of India</strong>.</li>
+    <li>Known as the <strong>"Umbrella Act"</strong> — a single overarching framework under which other environmental rules/notifications (including the <strong>EIA Notification</strong>) are issued, mainly via <strong>Section 3</strong>.</li>
+  </ul>
+
+  <h3>3. Objectives of the Act</h3>
+  <ul>
+    <li>To provide for the <strong>protection and improvement</strong> of the environment and prevention of hazards to human beings, other living creatures, plants and property.</li>
+    <li>To implement decisions of the <strong>Stockholm Conference, 1972</strong>.</li>
+    <li>To coordinate the activities of various regulatory agencies under existing laws (Water Act, Air Act, etc.) under <strong>one single authority</strong>.</li>
+    <li>To create authorities with <strong>adequate powers for environmental protection</strong>.</li>
+  </ul>
+
+  <h3>4. Salient features / powers of the Central Government (Sec 3–5)</h3>
+  <ul>
+    <li><strong>Section 3 — General powers:</strong> the Central Government can take <em>"all measures necessary"</em> to protect and improve environmental quality — includes laying down <strong>standards for emissions/discharge</strong>, restricting areas for industries, and <strong>EIA-related notifications</strong>.</li>
+    <li><strong>Section 4 — Appointment of officers:</strong> power to appoint officers to exercise powers under the Act.</li>
+    <li><strong>Section 5 — Power to give directions:</strong> may issue <strong>directions</strong> to any person/officer/authority, including power to <strong>shut down, prohibit or regulate</strong> any industry/operation/process.</li>
+    <li><strong>Sections 7 &amp; 8:</strong> prohibit discharge of <strong>environmental pollutants</strong> beyond prescribed standards, and regulate <strong>handling of hazardous substances</strong>.</li>
+    <li><strong>Section 10:</strong> empowers officers to <strong>enter and inspect</strong> any premises.</li>
+    <li><strong>Section 15:</strong> lays down <strong>penalties</strong> for contravention — imprisonment up to <strong>5 years</strong> or fine up to <strong>₹1 lakh</strong>, or both, with additional fine for continuing violation.</li>
+  </ul>
+
+  <h3>5. Significance / conclusion</h3>
+  <ul>
+    <li>The <strong>principal / umbrella legislation</strong> of Indian environmental law: all other key frameworks — <strong>EIA Notification (1994, 2006)</strong>, Hazardous Waste Rules, <strong>Coastal Regulation Zone (CRZ)</strong> notifications — derive their legal authority from this Act.</li>
+    <li>Filled the critical <strong>pre-1986 legislative vacuum</strong> and remains the backbone connecting environmental policy to enforceable law in India.</li>
+  </ul>
+
+  <div class="skel">
+    <span class="lab">Quick recall</span>
+    <p>Bhopal 1984 <span class="ar">→</span> Article 253 <span class="ar">→</span> assent 23 May 1986, force 19 Nov 1986 <span class="ar">→</span> 4 Ch / 26 Sec <span class="ar">→</span> "Umbrella Act" <span class="ar">→</span> Sec 3 (general powers, basis for EIA) <span class="ar">→</span> Sec 5 (directions) <span class="ar">→</span> Sec 15 (penalty: 5 yr / ₹1 lakh)</p>
+  </div>
+
+  <p class="aside"><b>Likely follow-up</b>The third predictable one — "Objectives of EIA" or "Stages / Process of EIA".</p>
+</section>
+
+<!-- ============ 03 ============ -->
+<section class="sec rise" id="eia-2006">
+  <div class="sec-head">
+    <span class="sec-num">03</span>
+    <h2>Salient features of EIA Notification, 2006</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">15 marks</span>
+    <span class="chip">Nov 2025</span><span class="chip">Nov 2024</span><span class="chip">Dec 2023</span>
+  </div>
+
+  <p class="lead">Structure plan: Background/legal basis → Category A/B classification → 4-stage process (the heart of this answer, ~7–8 marks) → Other key features → Comparison note with 1994. This is the order examiners score against most consistently.</p>
+
+  <h3>1. Legal basis and context</h3>
+  <ul>
+    <li>Issued by the <strong>MoEF</strong> on <strong>14 September 2006</strong>, under <strong>Section 3</strong> of the <strong>Environment (Protection) Act, 1986</strong>.</li>
+    <li>Replaced the <strong>EIA Notification, 1994</strong>, mainly to fix its problems: <strong>poor-quality EIA reports, unpredictable appraisal schedules, excessive centralization</strong>.</li>
+    <li>Core philosophy: <strong>decentralization</strong> of environmental clearance (EC) power from the Centre to the States.</li>
+  </ul>
+
+  <h3>2. Categorization of projects (key feature)</h3>
+  <ul>
+    <li>Projects split into <strong>Category A</strong> and <strong>Category B</strong> based on <em>spatial extent and intensity of potential impact</em> (not type of project alone).</li>
+    <li><strong>Category A:</strong> high-impact projects → appraised at the <strong>national level</strong> by the <strong>Expert Appraisal Committee (EAC)</strong>; clearance granted by <strong>MoEF</strong>; <strong>no screening</strong> — EIA is <strong>mandatory</strong>.</li>
+    <li><strong>Category B:</strong> lower-impact projects → appraised at the <strong>state level</strong> by <strong>SEIAA</strong> (State EIA Authority) and <strong>SEAC</strong> (State Expert Appraisal Committee).
+      <ul class="tight" style="margin-top:8px">
+        <li><strong>Category B1</strong> — requires a <strong>full EIA study</strong>.</li>
+        <li><strong>Category B2</strong> — <strong>exempted</strong> from detailed EIA; only needs environmental management conditions.</li>
+      </ul>
+    </li>
+    <li><em>Safety clause:</em> if a state has <strong>no duly constituted SEIAA/SEAC</strong>, a Category B project is automatically treated as <strong>Category A</strong>.</li>
+  </ul>
+
+  <h3>3. The four-stage EIA process (most important part — write in sequence)</h3>
+  <ol class="tl">
+    <li>
+      <span class="yr">Stage 1</span>
+      <div>
+        <h3>Screening</h3>
+        <p>Applies <strong>only to Category B</strong>; SEAC decides whether it is <strong>B1 (needs EIA)</strong> or <strong>B2 (exempted)</strong>. Category A skips this stage.</p>
+      </div>
+    </li>
+    <li>
+      <span class="yr">Stage 2<br>60 days</span>
+      <div>
+        <h3>Scoping</h3>
+        <p>EAC/SEAC finalizes the <strong>Terms of Reference (ToR)</strong> defining what the EIA study must cover; done within <strong>60 days</strong>.</p>
+      </div>
+    </li>
+    <li>
+      <span class="yr">Stage 3<br>45 days</span>
+      <div>
+        <h3>Public consultation</h3>
+        <p>Comments collected from <strong>affected local communities</strong> and other stakeholders on the draft EIA report; mandatory for Category A and B1 (with a few exemptions); completed in <strong>45 days</strong>.</p>
+      </div>
+    </li>
+    <li>
+      <span class="yr">Stage 4<br>~105 days</span>
+      <div>
+        <h3>Appraisal</h3>
+        <p>Final <strong>detailed scrutiny</strong> by EAC/SEAC leading to a recommendation to grant or reject EC; completed in <strong>~105 days</strong>.</p>
+      </div>
+    </li>
+  </ol>
+  <div class="key">
+    <span class="lab">Total statutory timeline</span>
+    Around <strong>210 days</strong> for Category A / B1 projects.
+  </div>
+
+  <h3>4. Other salient features</h3>
+  <ul>
+    <li>Introduction of <strong>Expert Appraisal Committees (EAC)</strong> at the Centre and <strong>SEAC</strong> at the State level for systematic review.</li>
+    <li>Mandates <strong>transparency</strong>: draft EIA reports must be made available to the public before the hearing.</li>
+    <li><strong>Validity of EC</strong> is time-bound (varies by project type — e.g. mining, river valley projects), after which <strong>renewal / fresh appraisal</strong> is needed.</li>
+    <li>Unlike 1994, 2006 explicitly provides <strong>standardized formats</strong> for application (<strong>Form 1</strong>) and ToR.</li>
+  </ul>
+
+  <h3>5. Significance</h3>
+  <ul>
+    <li>Marked the shift from a <strong>centralized, ad-hoc</strong> clearance system to a <strong>structured, decentralized, time-bound</strong> one.</li>
+    <li>However, criticised for <strong>100+ amendments since 2006</strong> (highest in 2022–23) and dilution of public hearing norms in certain cases (e.g. legacy mining projects).</li>
+  </ul>
+
+  <div class="skel">
+    <span class="lab">Quick recall</span>
+    <p>14 Sept 2006, Sec 3 EPA <span class="ar">→</span> Cat A (Centre, EAC, no screening) vs Cat B (State, SEIAA/SEAC, B1/B2) <span class="ar">→</span> 4 stages: Screening (B only) <span class="ar">→</span> Scoping (60 d) <span class="ar">→</span> Public Consultation (45 d) <span class="ar">→</span> Appraisal (105 d) <span class="ar">→</span> total ~210 days <span class="ar">→</span> 100+ post-2006 amendments</p>
+  </div>
+
+  <p class="aside"><b>Likely follow-up</b>"Objectives of EIA Notification 2006" or "Differences between 1994 and 2006 notifications" — both common sub-questions to this exact topic.</p>
+</section>
+
+<!-- ============ 04 ============ -->
+<section class="sec sec--plain rise" id="standards">
+  <div class="sec-head">
+    <span class="sec-num">04</span>
+    <h2>Environmental standards — water, air, noise</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">15 marks</span>
+    <span class="chip">Nov 2025</span><span class="chip">Apr 2025</span><span class="chip">Dec 2022</span>
+  </div>
+
+  <p class="lead">Three media, so split marks roughly <strong>5-5-5</strong>. Each medium gets: governing law/authority → standard type(s) → key numeric limits → purpose.</p>
+
+  <h3>A. Water quality standards</h3>
+  <ul>
+    <li>Governed by the <strong>Water (Prevention and Control of Pollution) Act, 1974</strong>, enforced by <strong>CPCB</strong> (Central) and <strong>SPCB</strong> (State).</li>
+    <li>Two main standard types:
+      <ul class="tight" style="margin-top:8px">
+        <li><strong>Drinking water — IS 10500 (BIS):</strong> specifies an <strong>Acceptable Limit</strong> and a <strong>Permissible Limit</strong> (used only when no alternate source exists) for parameters like <strong>pH 6.5–8.5</strong>, <strong>TDS</strong> (desirable 500 mg/l, permissible 2000 mg/l), <strong>total hardness</strong>, <strong>fluoride</strong> (1.5 mg/l max) and <strong>E. coli</strong> (must be absent / 100 ml).</li>
+        <li><strong>Designated Best Use Classification of Inland Surface Water (CPCB)</strong> — rivers/streams in <strong>5 classes</strong> by intended use.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <div class="scroll">
+    <table>
+      <caption>CPCB best-use classes</caption>
+      <thead><tr><th>Class</th><th>Designated best use</th><th>Key limits</th></tr></thead>
+      <tbody>
+        <tr><td class="n hot">A</td><td>Drinking water source <em>without</em> conventional treatment (only disinfection)</td><td class="n">DO ≥ 6 mg/l · BOD ≤ 2 mg/l</td></tr>
+        <tr><td class="n">B</td><td>Outdoor organised bathing</td><td class="n">DO ≥ 5 mg/l · BOD ≤ 3 mg/l</td></tr>
+        <tr><td class="n">C</td><td>Drinking water source <em>with</em> conventional treatment + disinfection</td><td class="n">—</td></tr>
+        <tr><td class="n">D</td><td>Propagation of wildlife and fisheries</td><td class="n">—</td></tr>
+        <tr><td class="n">E</td><td>Irrigation, industrial cooling, controlled waste disposal</td><td class="n">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="swipe">Swipe the table sideways →</p>
+
+  <ul style="margin-top:14px">
+    <li><strong>Effluent discharge standards</strong> exist separately for industries discharging into inland surface water, public sewers, land for irrigation, and marine/coastal areas — each with different permissible limits for BOD, suspended solids, pH, etc.</li>
+  </ul>
+
+  <h3>B. Air quality standards</h3>
+  <ul>
+    <li>Governed by the <strong>Air (Prevention and Control of Pollution) Act, 1981</strong>; CPCB is empowered to <strong>lay down and revise</strong> air quality standards.</li>
+    <li>Current <strong>National Ambient Air Quality Standards (NAAQS)</strong> notified on <strong>18 November 2009</strong>, replacing the earlier 1994 and 1998 versions — made standards <strong>uniform</strong> across industrial, residential and rural areas (earlier less strict for industrial zones).</li>
+    <li>Covers <strong>12 pollutants</strong>; key limits (annual mean, µg/m³):</li>
+  </ul>
+
+  <div class="scroll">
+    <table>
+      <caption>NAAQS 2009 — key limits (µg/m³)</caption>
+      <thead><tr><th>Pollutant</th><th>Annual</th><th>Short-term</th></tr></thead>
+      <tbody>
+        <tr><td>SO₂</td><td class="n">50 industrial/residential · 20 ecologically sensitive</td><td class="n">—</td></tr>
+        <tr><td>NO₂</td><td class="n">40 industrial/residential · 30 sensitive</td><td class="n">—</td></tr>
+        <tr><td>PM10</td><td class="n">60</td><td class="n">100 (24 hr)</td></tr>
+        <tr><td>PM2.5</td><td class="n hot">40</td><td class="n">60 (24 hr)</td></tr>
+        <tr><td>Ozone</td><td class="n">—</td><td class="n">100 (8 hr) · 180 (1 hr)</td></tr>
+        <tr><td>Lead</td><td class="n">0.5</td><td class="n">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="swipe">Swipe the table sideways →</p>
+
+  <ul style="margin-top:14px">
+    <li>The <strong>National Air Quality Index (AQI)</strong>, launched <strong>October 2014</strong>, translates <strong>8 key pollutants</strong> (PM10, PM2.5, NO₂, SO₂, CO, O₃, NH₃, Pb) into <strong>colour-coded categories</strong> for easy public understanding — AQI is <em>real-time / short-term</em>, while NAAQS is the <em>regulatory / long-term</em> legal benchmark.</li>
+  </ul>
+
+  <h3>C. Noise standards</h3>
+  <ul>
+    <li>Noise was first brought under the <strong>Air Act, 1981</strong> (as an "air pollutant", via the <strong>1987 amendment</strong>), then separately governed by the <strong>Noise Pollution (Regulation and Control) Rules, 2000</strong>.</li>
+    <li>States must categorise areas into <strong>4 zones</strong>, each with <strong>day (6 AM–10 PM)</strong> and <strong>night (10 PM–6 AM)</strong> limits in <strong>dB(A) Leq</strong>.</li>
+  </ul>
+
+  <div class="scroll">
+    <table>
+      <caption>Ambient noise limits — dB(A) Leq</caption>
+      <thead><tr><th>Zone</th><th>Day</th><th>Night</th></tr></thead>
+      <tbody>
+        <tr><td>Industrial</td><td class="n">75 dB</td><td class="n">70 dB</td></tr>
+        <tr><td>Commercial</td><td class="n">65 dB</td><td class="n">55 dB</td></tr>
+        <tr><td>Residential</td><td class="n">55 dB</td><td class="n">45 dB</td></tr>
+        <tr><td>Silence zone</td><td class="n hot">50 dB</td><td class="n">40 dB</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="swipe">Swipe the table sideways →</p>
+
+  <ul style="margin-top:14px">
+    <li><strong>Silence zone</strong> = area within <strong>100 m</strong> of hospitals, educational institutions, courts and religious places — <strong>firecrackers and construction equipment banned</strong> here, especially at night.</li>
+    <li><strong>Loudspeakers / PA systems</strong> restricted between <strong>10 PM and 6 AM</strong>, except in closed premises with special permission.</li>
+  </ul>
+
+  <div class="skel">
+    <span class="lab">Quick recall</span>
+    <p>Water <span class="ar">→</span> Water Act 1974, IS 10500 (BIS, drinking), CPCB Classes A–E (best use) | Air <span class="ar">→</span> Air Act 1981, NAAQS 2009 (12 pollutants, PM10 = 60/100, PM2.5 = 40/60, SO₂ = 50/20) | Noise <span class="ar">→</span> Noise Rules 2000, 4 zones (I 75/70, C 65/55, R 55/45, S 50/40), silence zone = 100 m</p>
+  </div>
+
+  <p class="aside"><b>Likely follow-up</b>This trio often pairs with "Pollution Control Boards — CPCB/SPCB functions", which logically extends this answer.</p>
+</section>
+
+<!-- ============ 05 ============ -->
+<section class="sec rise" id="water-act">
+  <div class="sec-head">
+    <span class="sec-num">05</span>
+    <h2>Water (Prevention &amp; Control of Pollution) Act, 1974</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">15 marks</span>
+    <span class="chip">Nov 2024</span><span class="chip">Apr 2025</span>
+  </div>
+
+  <p class="lead">Structure plan: Background/Constitutional basis → Objectives → Structure (Chapters/Sections) → CPCB &amp; SPCB powers and functions (the fattest section, ~6–7 marks) → Consent mechanism → Penalties → Significance. The standard KTU scoring order for "Act" questions.</p>
+
+  <h3>1. Background and constitutional basis</h3>
+  <ul>
+    <li>India's <strong>first dedicated environmental legislation</strong>, enacted as <strong>Act No. 6 of 1974</strong>, receiving assent on <strong>23 March 1974</strong>.</li>
+    <li>Since <strong>"Water" is a State subject</strong>, Parliament could legislate nationally only because <strong>12 state legislatures</strong> passed resolutions under <strong>Article 252</strong>, authorising the Centre to enact a uniform law.</li>
+    <li>Later <strong>extended/adopted</strong> by other states and applicable across <strong>the whole of India</strong>.</li>
+  </ul>
+
+  <h3>2. Objectives</h3>
+  <ul>
+    <li>To provide for the <strong>prevention and control of water pollution</strong>.</li>
+    <li>To <strong>maintain or restore the wholesomeness</strong> (natural purity) of water bodies — rivers, lakes, ponds, groundwater.</li>
+    <li>To establish <strong>Boards</strong> (Central and State) for carrying out these purposes and <strong>conferring powers</strong> on them to implement the Act.</li>
+  </ul>
+
+  <h3>3. Structure of the Act</h3>
+  <ul>
+    <li><strong>8 Chapters and 64 Sections</strong>.</li>
+    <li>Key chapters: <strong>Ch. II</strong> — Constitution of Central/State Boards; <strong>Ch. IV</strong> — Powers &amp; Functions of Boards; <strong>Ch. V</strong> — Prevention and Control of Water Pollution (consent mechanism); <strong>Ch. VII</strong> — Penalties and Procedure.</li>
+  </ul>
+
+  <h3>4. Central Pollution Control Board (CPCB) — Sec 3 &amp; 16</h3>
+  <ul>
+    <li>Constituted in <strong>September 1974</strong> by the Central Government as a <strong>statutory, apex body</strong>.</li>
+    <li>Key functions (Section 16):
+      <ul class="tight" style="margin-top:8px">
+        <li><strong>Advises</strong> the Central Government on prevention and control of water pollution.</li>
+        <li><strong>Coordinates</strong> the activities of State Boards and <strong>resolves disputes</strong> among them.</li>
+        <li>Lays down, modifies and reviews <strong>standards for streams/wells</strong>; coordinates research and training.</li>
+        <li>Later given powers under the <strong>Air Act, 1981</strong> too — making it the <strong>central nodal body for both water and air</strong>.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>5. State Pollution Control Board (SPCB) — Sec 4 &amp; 17</h3>
+  <ul>
+    <li>Constituted by State Governments; functions at the <strong>state/UT level</strong>, operating under CPCB's directions.</li>
+    <li>Key functions (Section 17):
+      <ul class="tight" style="margin-top:8px">
+        <li><strong>Advises</strong> the state government on siting of industries to avoid pollution of water bodies.</li>
+        <li><strong>Plans and executes</strong> programmes for prevention, control or abatement of water pollution.</li>
+        <li><strong>Inspects</strong> sewage/trade-effluent treatment plants and lays down effluent standards.</li>
+        <li>Grants, refuses or cancels <strong>"Consent"</strong> for establishing/operating an industry.</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h3>6. The consent mechanism (Sec 25 &amp; 26) — operational heart of the Act</h3>
+  <ul>
+    <li>Any person/industry intending to establish a plant or process likely to discharge <strong>sewage or trade effluent</strong> into a stream, well, sewer or land must obtain prior <strong>"Consent to Establish / Operate" (CTE/CTO)</strong> from the <strong>SPCB</strong>.</li>
+    <li>Consent is granted for a <strong>fixed period</strong>, subject to conditions (installation of <strong>ETP</strong>, compliance with effluent standards); can be <strong>refused or revoked</strong> if a unit crosses <strong>permissible pollution limits</strong>.</li>
+    <li>This remains the <strong>primary regulatory tool</strong> through which the Act is enforced on the ground even today.</li>
+  </ul>
+
+  <h3>7. Penalties</h3>
+  <ul>
+    <li>Establishing or operating an industry <strong>without consent</strong>, or contravening Board directions → <strong>imprisonment up to 6 years and fine</strong>, with continuing-offence provisions for ongoing violations.</li>
+  </ul>
+
+  <h3>8. Significance / related developments</h3>
+  <ul>
+    <li>Supplemented by the <strong>Water (Prevention and Control of Pollution) Cess Act, 1977</strong> — a cess on water consumption by polluting industries to fund Board activities — <strong>repealed in 2017</strong> after <strong>GST</strong> was introduced.</li>
+    <li>Provided the <strong>scientific/legal backbone</strong> for later programmes like the <strong>Ganga Action Plan</strong> and <strong>Namami Gange</strong>.</li>
+    <li>The <strong>Water (Amendment) Bill, 2024</strong> proposes to <strong>decriminalize minor offences</strong> and allow certain categories of plants to be <strong>exempted</strong> from statutory restrictions — a recent reform still under discussion.</li>
+  </ul>
+
+  <div class="skel">
+    <span class="lab">Quick recall</span>
+    <p>Act 6/1974, Art. 252 (12 states) <span class="ar">→</span> 8 Ch / 64 Sec <span class="ar">→</span> objective: prevent pollution + restore wholesomeness <span class="ar">→</span> CPCB (Sec 16, advises Centre, coordinates states) + SPCB (Sec 17, advises state, grants consent) <span class="ar">→</span> consent mechanism (Sec 25–26, CTE/CTO) <span class="ar">→</span> penalty 6 yrs + fine <span class="ar">→</span> Cess Act 1977 (repealed 2017, GST) <span class="ar">→</span> 2024 Amendment Bill</p>
+  </div>
+
+  <p class="aside"><b>Likely follow-up</b>Pairs naturally with the Air Act, 1981 — same structure, same CPCB/SPCB machinery, so the two sit side by side for comparison.</p>
+</section>
+
+<!-- ============ 06 ============ -->
+<section class="sec sec--plain rise" id="air-act">
+  <div class="sec-head">
+    <span class="sec-num">06</span>
+    <h2>Air (Prevention &amp; Control of Pollution) Act, 1981</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">15 marks</span>
+    <span class="chip">Nov 2024</span><span class="chip">Dec 2022</span>
+  </div>
+
+  <p class="lead">Same skeleton as the Water Act, so they're easy to compare in the exam: Background → Objectives → Structure → Boards &amp; functions → Air Pollution Control Area + consent → Penalties → Relation to Water Act / 1987 amendment.</p>
+
+  <h3>1. Background</h3>
+  <ul>
+    <li>Enacted to implement India's commitment from the <strong>Stockholm Conference, 1972</strong>, specifically to tackle <strong>air pollution</strong>, which the Water Act, 1974 did not cover.</li>
+    <li>Came into force on <strong>16 May 1981</strong> (passed under the Union's residuary / implementing-international-decisions power, similar basis as other post-Stockholm laws).</li>
+    <li>Preceded by the <strong>Water Act, 1974</strong>; later followed and complemented by the <strong>Environment (Protection) Act, 1986</strong>.</li>
+  </ul>
+
+  <h3>2. Objectives</h3>
+  <ul>
+    <li>To <strong>prevent, control and abate air pollution</strong> in India.</li>
+    <li>To <strong>maintain the quality of air</strong> necessary for sustaining human health, animals, plants and property.</li>
+    <li>To establish <strong>Boards</strong> to carry out these functions and confer them with necessary powers.</li>
+  </ul>
+
+  <h3>3. Structure of the Act</h3>
+  <ul>
+    <li><strong>7 Chapters and 54 Sections</strong>.</li>
+    <li>Does <strong>not create new Boards</strong> — it <strong>designates the existing CPCB and SPCBs</strong> (already constituted under the Water Act, 1974) to additionally function as air pollution regulators.</li>
+    <li>In states with <strong>no SPCB</strong> under the Water Act, a <strong>new Board</strong> is constituted under <strong>Section 5</strong> of the Air Act.</li>
+  </ul>
+
+  <h3>4. CPCB functions (central level)</h3>
+  <ul>
+    <li><strong>Advises</strong> the Central Government on <strong>improvement of air quality</strong> and prevention/control of air pollution.</li>
+    <li><strong>Plans and executes</strong> nationwide programmes for air pollution control.</li>
+    <li><strong>Coordinates</strong> activities of SPCBs and resolves disputes among them.</li>
+    <li>Lays down and revises <strong>National Ambient Air Quality Standards (NAAQS)</strong> — the statutory link to the air standards topic.</li>
+  </ul>
+
+  <h3>5. SPCB functions (state level)</h3>
+  <ul>
+    <li><strong>Executes</strong> CPCB's air pollution programmes at the state level.</li>
+    <li>Carries out <strong>inspections</strong> of air pollution control areas and industrial plants.</li>
+    <li>Advises the <strong>State Government</strong> on feasibility/location of industries from an air-pollution standpoint.</li>
+    <li>Lays down <strong>emission standards</strong> for industries within the state.</li>
+  </ul>
+
+  <h3>6. Air Pollution Control Area + consent mechanism (core operational provisions)</h3>
+  <ul>
+    <li><strong>Section 19:</strong> the <strong>State Government</strong> can declare any area an <strong>"Air Pollution Control Area"</strong>, after consultation with the <strong>SPCB</strong>.</li>
+    <li><strong>Section 21:</strong> <strong>no person</strong> can establish or operate an <strong>industrial plant</strong> in such an area <strong>without prior consent</strong> of the SPCB — the <strong>key enforcement tool</strong>, structurally identical to the Water Act's consent mechanism.</li>
+    <li><strong>Section 22:</strong> no industry operating in a control area can <strong>emit air pollutants in excess</strong> of standards laid down by the SPCB.</li>
+  </ul>
+
+  <h3>7. Penalties</h3>
+  <ul>
+    <li><strong>Section 37:</strong> failure to obtain consent under Section 21, or violating consent conditions → <strong>imprisonment of 1.5 years to 6 years, with fine</strong>, and additional fine for continuing contravention.</li>
+  </ul>
+
+  <h3>8. Relation to Water Act &amp; later amendment</h3>
+  <ul>
+    <li>The Air Act <strong>deliberately reused</strong> the Water Act's institutional machinery (CPCB/SPCB) instead of duplicating it — making the two Acts <strong>structurally parallel</strong> (both use the consent mechanism and Board-based enforcement).</li>
+    <li>The original 1981 Act <strong>did not cover noise pollution</strong>; added later via the <strong>1987 Amendment</strong>, which brought <strong>noise</strong> under the definition of "air pollutant".</li>
+  </ul>
+
+  <div class="skel">
+    <span class="lab">Quick recall</span>
+    <p>16 May 1981, post-Stockholm 1972 <span class="ar">→</span> 7 Ch / 54 Sec <span class="ar">→</span> reuses CPCB/SPCB from Water Act 1974 <span class="ar">→</span> CPCB: advises Centre, sets NAAQS | SPCB: executes, inspects, emission standards <span class="ar">→</span> Sec 19 (Air Pollution Control Area) <span class="ar">→</span> Sec 21 (prior consent) <span class="ar">→</span> Sec 22 (emission limit) <span class="ar">→</span> Sec 37 penalty (1.5–6 yrs + fine) <span class="ar">→</span> 1987 amendment added noise</p>
+  </div>
+
+  <p class="aside"><b>Likely follow-up</b>"Differentiate Water Act vs Air Act" — sections, consent and penalty side by side. The table below is that comparison, built only from the points above.</p>
+</section>
+
+<!-- ============ 07 ============ -->
+<section class="sec rise" id="glance">
+  <div class="sec-head">
+    <span class="sec-num">07</span>
+    <h2>Acts at a glance</h2>
+  </div>
+  <p class="lead">Assembled from sections 02, 05 and 06 above — every value here is stated in those notes. Use it for the "differentiate" sub-question, not as new material.</p>
+
+  <div class="scroll">
+    <table>
+      <caption>Water Act vs Air Act vs EPA</caption>
+      <thead><tr><th></th><th>Water Act</th><th>Air Act</th><th>EPA</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Year</td><td>1974 · Act No. 6 of 1974, assent 23 Mar 1974</td><td>1981 · in force 16 May 1981</td><td>1986 · assent 23 May 1986, force 19 Nov 1986</td></tr>
+        <tr><td class="n">Basis</td><td>Article 252 (12 states)</td><td>Post-Stockholm 1972</td><td>Article 253</td></tr>
+        <tr><td class="n">Size</td><td>8 Chapters · 64 Sections</td><td>7 Chapters · 54 Sections</td><td>4 Chapters · 26 Sections</td></tr>
+        <tr><td class="n">Boards</td><td>Creates CPCB (Sec 3/16) and SPCB (Sec 4/17)</td><td>Reuses CPCB/SPCB; new Board via Sec 5 where none exists</td><td>Central Government powers; officers appointed under Sec 4</td></tr>
+        <tr><td class="n">Consent</td><td>Sec 25–26 · CTE/CTO from SPCB</td><td>Sec 21 · prior consent from SPCB (after Sec 19 control area)</td><td>Umbrella — EIA notifications issued via Sec 3</td></tr>
+        <tr><td class="n hot">Penalty</td><td>Up to 6 years + fine</td><td>Sec 37 · 1.5–6 years + fine</td><td>Sec 15 · 5 years or ₹1 lakh, or both</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="swipe">Swipe the table sideways →</p>
+
+  <div class="key">
+    <span class="lab">One line that answers half the paper</span>
+    Water Act 1974 created the Boards, the Air Act 1981 reused them, and the EPA 1986 gave them the umbrella power under which EIA notifications are issued.
+  </div>
+</section>
+
+
+<!-- ============ 08 ============ -->
+<section class="sec rise" id="ec-procedure">
+  <div class="sec-head">
+    <span class="sec-num">08</span>
+    <h2>Environmental Clearance procedure for a project</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">process question</span>
+    <span class="chip">flowchart · steps</span>
+  </div>
+
+  <p class="lead">Before any project — nuclear, hydroelectric, mining, or any Category I/II activity — can be set up in India, it must obtain <strong>Environmental Clearance (EC)</strong> under the <em>EIA Notification, 2006</em>, issued by the <strong>Ministry of Environment, Forest and Climate Change (MoEF&amp;CC)</strong>. The process ensures environmental concerns are examined <strong>before</strong> the project begins, not after damage is done. It runs through <strong>four sequential stages</strong> leading to a final decision.</p>
+
+  <p class="flowcap">Flowchart — the EC process</p>
+  <div class="flow">
+    <b>Screening</b><i>&#8594;</i><b>Scoping</b><i>&#8594;</i><b>Public Consultation</b><i>&#8594;</i><b>Appraisal</b><i>&#8594;</i><b class="hot">Decision</b>
+  </div>
+
+  <h3>Stage 1 — Screening</h3>
+  <p>The project is checked to see whether it needs an EIA at all, and if so, at what level. Projects are classified into <strong>Category A</strong> (clearance from the <em>Central Government</em>, via MoEF&amp;CC) and <strong>Category B</strong> (clearance from the <em>State Government</em>, via <strong>SEIAA</strong> — State Environment Impact Assessment Authority). Category B splits further into <strong>B1</strong> (needs full EIA) and <strong>B2</strong> (exempted from detailed EIA).</p>
+
+  <h3>Stage 2 — Scoping</h3>
+  <p>Once screened in, the <strong>Expert Appraisal Committee (EAC)</strong> or <strong>State Level EAC (SEAC)</strong> decides the <em>Terms of Reference (ToR)</em> — which environmental parameters (air, water, soil, noise, biodiversity, socio-economic impact) must be studied in detail for that specific project.</p>
+
+  <h3>Baseline data collection / EIA report preparation</h3>
+  <p>Based on the ToR, the project proponent conducts field studies — generally a <strong>Rapid EIA</strong> (one season of data, ~3 months) or a <strong>Comprehensive EIA</strong> (all four seasons, ~16 months) — and prepares the draft <strong>EIA report</strong> along with an <strong>Environmental Management Plan (EMP)</strong>.</p>
+
+  <h3>Stage 3 — Public consultation</h3>
+  <p>This has two parts:</p>
+  <ul>
+    <li><strong>Public Hearing (PH):</strong> conducted at or near the project site by the <strong>State Pollution Control Board (SPCB)</strong>; local affected persons and stakeholders raise concerns. A minimum <strong>30-day notice</strong> is given before the hearing.</li>
+    <li><strong>Written responses:</strong> comments collected from concerned persons who have a plausible stake in the project but could not attend.</li>
+  </ul>
+  <p>After the hearing, the <strong>applicant must address all concerns raised</strong> and revise the draft EIA and EMP accordingly, then submit the <strong>Final EIA Report</strong> to the regulatory authority.</p>
+
+  <h3>Stage 4 — Appraisal</h3>
+  <p>The <strong>EAC/SEAC</strong> carries out a <strong>detailed scrutiny</strong> of the Final EIA report, the public hearing proceedings and the EMP, and recommends either grant or rejection of clearance to the regulatory authority (MoEF&amp;CC for Category A, SEIAA for Category B).</p>
+
+  <h3>Decision</h3>
+  <p>Based on the EAC/SEAC recommendation, the <strong>Central or State Government grants or rejects EC</strong>, often with specific conditions attached — safeguards, mitigation measures, monitoring requirements.</p>
+
+  <h3>Monitoring</h3>
+  <p>Once the project is operational, <strong>compliance with EC conditions is periodically monitored</strong> — a continuous obligation, not a one-time formality.</p>
+
+  <h3>Post-clearance audit and evaluation</h3>
+  <p>The final stage checks whether the EIA predictions were accurate and whether the mitigation measures actually worked, recommending corrective action if needed.</p>
+
+  <h3>Category III / exempted projects</h3>
+  <p>Certain projects — defence road construction in border areas, pipeline projects, small-scale activities — are <strong>exempted from the EIA process altogether</strong>.</p>
+
+  <div class="key">
+    <span class="lab">Key terms to remember</span>
+    <em>Screening → Scoping → Public Consultation → Appraisal</em>; <strong>EAC/SEAC</strong>, <strong>SPCB</strong>, <strong>SEIAA</strong>, <strong>MoEF&amp;CC</strong>, <strong>EMP</strong>.
+  </div>
+
+  <div class="warn">
+    <span class="lab">Exam tip</span>
+    Whatever project name appears in the question — nuclear plant, hydroelectric dam, quarry, generic industry — <strong>the four-stage structure never changes</strong>. Just plug the project into Stage 1 (is it Category A or B?) and write the same sequence. Asked as "steps in the EIA process with flowchart", draw the longer chain below.
+  </div>
+
+  <p class="flowcap" style="margin-top:18px">Longer chain, for the flowchart question</p>
+  <div class="flow">
+    <b>Screening</b><i>&#8594;</i><b>Scoping</b><i>&#8594;</i><b>EIA Report</b><i>&#8594;</i><b>Public Consultation</b><i>&#8594;</i><b>Appraisal</b><i>&#8594;</i><b>Decision</b><i>&#8594;</i><b class="hot">Monitoring</b>
+  </div>
+</section>
+
+<!-- ============ 09 ============ -->
+<section class="sec sec--plain rise" id="types">
+  <div class="sec-head">
+    <span class="sec-num">09</span>
+    <h2>Different types of EIA</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">full question</span>
+    <span class="chip">Nov 2025</span><span class="chip">Dec 2023</span><span class="chip">Apr 2025</span><span class="chip">Dec 2022</span><span class="chip">4/5 — usually the OR question</span>
+  </div>
+
+  <p class="lead">EIA is not a single rigid technique — it is categorised by the <em>level of planning</em>, <em>geographical scale</em> and <em>stage at which it is applied</em>. Based on systematic analysis of environmental parameters, geographical region, carrying-capacity limitations and sectoral planning, it is broadly classified into <strong>five types</strong>: Strategic, Regional, Sectoral, Project-level and Life Cycle Assessment. The classification decides <em>when</em> and <em>at what level</em> environmental concerns enter decision-making.</p>
+
+  <h3>1. Strategic EIA (SEIA)</h3>
+  <p>Systematic analysis of the environmental effects of <strong>development policies, plans, programmes and other proposed strategic actions</strong> — not individual projects. It extends the aims of EIA <em>upstream</em> in decision-making, applied <strong>before</strong> project-level decisions are made, while major alternatives are still open. A <strong>proactive approach</strong> that integrates environmental considerations into <em>higher-level</em> policy decisions.</p>
+
+  <h3>2. Regional EIA</h3>
+  <p>Integrates environmental concerns into <strong>development planning for a geographic region</strong> (usually sub-country level) — an approach called <strong>Economic-cum-Environmental (EcE) development planning</strong>. It combines economic development with management of renewable natural resources within <strong>carrying-capacity limits</strong>, to achieve <em>sustainable development</em>.</p>
+  <p>Regional EIA fulfils the need for <strong>macro-level environmental integration</strong> that project-level EIA cannot achieve alone: it sets the <em>context</em> for individual project EIAs in that region, and lets the <strong>cumulative impacts</strong> of all projects there be accounted for together.</p>
+
+  <h3>3. Sectoral EIA</h3>
+  <p>Instead of one project in isolation, EIA is applied to an entire <strong>sector's development plan</strong> — e.g. all power projects, all mining projects in a sector. Once sector-level plans already address environmental concerns, the scope of subsequent project-level EIA becomes much <strong>narrower</strong>. It addresses the <em>specific environmental problems</em> typical of planning and implementing that sector's projects.</p>
+
+  <h3>4. Project-level EIA</h3>
+  <p>The <strong>most common and traditional</strong> form — assesses a <strong>single developmental activity in isolation</strong>, examining the impacts it exerts on the <em>immediate receiving environment</em>. Its major limitation: it does <strong>not effectively capture cumulative effects</strong> of multiple developments happening together in a region.</p>
+
+  <h3>5. Life Cycle Assessment (LCA)</h3>
+  <p>Evaluates the environmental impact of a project or product across its <strong>entire life cycle</strong> — raw material extraction, construction/manufacturing and operation, through to decommissioning and disposal — rather than at one stage only.</p>
+
+  <div class="key">
+    <span class="lab">Why the classification matters</span>
+    Moving from <em>Strategic → Regional → Sectoral → Project-level</em> is moving from <strong>broad policy-level thinking down to a single project</strong>. Each level catches impacts the level below it would miss — for example the cumulative, regional impacts a single project-level EIA cannot see.
+  </div>
+
+  <h3>Related assessment depth (often clubbed in the same answer)</h3>
+  <div class="scroll">
+    <table>
+      <caption>Rapid vs comprehensive EIA</caption>
+      <thead><tr><th>Type</th><th>Baseline data</th><th>Duration</th><th>Used when</th></tr></thead>
+      <tbody>
+        <tr><td>Rapid EIA</td><td class="n">One season</td><td class="n hot">~3 months</td><td>Initiating a new activity, or expansion / process change</td></tr>
+        <tr><td>Comprehensive EIA</td><td class="n">All four seasons — monsoon, post-monsoon, winter, summer</td><td class="n">~16 months</td><td>Required if asked for after evaluating the Rapid EIA report</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="swipe">Swipe the table sideways &#8594;</p>
+
+  <div class="warn">
+    <span class="lab">Exam tip — the OR question</span>
+    "Different types of EIA" → write <strong>Strategic, Regional, Sectoral, Project-level, LCA</strong> (5 types), 2–3 lines each. If framed as "types of environmental assessment reports" or "assessment methods", add <strong>Rapid vs Comprehensive EIA</strong> as a supporting point — that combination covers both phrasings.
+  </div>
+</section>
+
+<!-- ============ 10 ============ -->
+<section class="sec rise" id="iee">
+  <div class="sec-head">
+    <span class="sec-num">10</span>
+    <h2>Initial Environmental Examination (IEE)</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">b) part · ~7–8 marks</span>
+    <span class="chip">Nov 2025</span><span class="chip">Dec 2023</span><span class="chip">Apr 2025</span><span class="chip">paired with types of EIA</span>
+  </div>
+
+  <p class="lead">An <strong>early, low-cost, screening-level study</strong> carried out to decide whether a proposed project has the potential to cause significant environmental impacts, and if so whether a <strong>full-scale EIA</strong> is actually required. It sits right after the <em>Screening</em> stage and before a full EIA is commissioned — a <strong>filter</strong> that saves time, money and resources by avoiding detailed studies for low-risk projects.</p>
+
+  <p class="flowcap">IEE in the overall EIA process</p>
+  <div class="flow">
+    <b>Project Screening</b><i>&#8594;</i><b class="hot">IEE</b><i>&#8594;</i><b>Full-Scale EIA</b>
+  </div>
+
+  <h3>Definition and purpose</h3>
+  <ul>
+    <li><strong>Definition:</strong> a <strong>low-cost environmental evaluation</strong> that uses <strong>information already available</strong> — existing data, reports, maps — rather than generating fresh, detailed field data.</li>
+    <li><strong>Purpose:</strong> it would be <em>time-consuming and wasteful</em> for <strong>every</strong> proposed project to undergo a full EIA; since not all developments pose a genuine threat, IEE <strong>filters out</strong> low-risk projects early.</li>
+    <li><strong>Core function:</strong> determines <strong>(a)</strong> whether a project requires a full EIA at all, and <strong>(b)</strong> if so, <em>what level</em> of environmental review is necessary.</li>
+    <li><strong>Role in the process:</strong> IEE <strong>speeds up</strong> the overall EIA process by resolving simple issues quickly and directing only genuinely significant ones for detailed assessment.</li>
+  </ul>
+
+  <h3>Four key functions of IEE</h3>
+  <ol class="num">
+    <li><strong>Identifies</strong> potential significant environmental issues associated with the project.</li>
+    <li><strong>Grades</strong> the effects and pinpoints the actual <strong>Significant Environmental Issues (SEIs)</strong>.</li>
+    <li><strong>Resolves</strong> the simple/minor SEIs directly at this stage itself.</li>
+    <li><strong>Recommends further action</strong> for the outstanding, more serious SEIs.</li>
+  </ol>
+
+  <h3>Outcome of the IEE review — two paths</h3>
+  <div class="split">
+    <div>
+      <h4>All SEIs resolved</h4>
+      <p>The project proceeds according to the terms laid out in the IEE itself — <strong>no full EIA needed</strong>.</p>
+    </div>
+    <div>
+      <h4>Significant issues remain</h4>
+      <p>The process moves to <strong>Scoping</strong>, which lays down the <strong>Terms of Reference (ToR)</strong> for a <strong>Full-Scale EIA</strong>.</p>
+    </div>
+  </div>
+
+  <h3>Relationship with scoping and the full-scale EIA</h3>
+  <p>IEE feeds directly into Scoping: the outstanding SEIs identified in the IEE become the <strong>input</strong> for the Full-Scale EIA's assessment phase.</p>
+
+  <div class="key">
+    <span class="lab">Significance</span>
+    IEE reflects the <strong>"screen before you study"</strong> philosophy of EIA — avoiding both mistakes: ignoring a genuinely risky project, or wasting resources studying a harmless one in full detail.
+  </div>
+
+  <div class="warn">
+    <span class="lab">Exam tip</span>
+    Keep it tight (~7–8 marks): <strong>definition, purpose, the four functions, and the two outcomes</strong> (proceed vs. go to Scoping/Full EIA). Mentioning the flowchart position — <em>Screening → IEE → IEE Review → Scoping/Full-Scale EIA</em> — earns easy marks even without drawing it.
+  </div>
+</section>
+
+<!-- ============ 11 ============ -->
+<section class="sec sec--plain rise" id="tor">
+  <div class="sec-head">
+    <span class="sec-num">11</span>
+    <h2>Terms of Reference (ToR)</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">short note · 2–3 or 7 marks</span>
+    <span class="chip">contents / relevance</span>
+  </div>
+
+  <p class="lead">The document that emerges from the <strong>Scoping</strong> stage. It defines the exact <strong>boundaries, issues and work plan</strong> for the detailed (Full-Scale) EIA study that follows — telling the project proponent <em>"what to study, how much to study, and how to present it."</em> Without a clear ToR, an EIA study becomes either too broad (wasting time and money) or too narrow (missing real impacts).</p>
+
+  <h3>Origin</h3>
+  <p>Finalised during the <strong>Scoping</strong> stage — a process of <strong>interaction between government agencies and project proponents</strong> — once the <strong>IEE Review</strong> confirms that outstanding <strong>Significant Environmental Issues (SEIs)</strong> remain unresolved and a Full-Scale EIA is required.</p>
+
+  <h3>Core purpose — scoping (and hence the ToR) identifies</h3>
+  <ul>
+    <li><strong>Spatial and temporal boundaries</strong> for the EIA — <em>what geographic area</em> and <em>what time period</em> the study should cover.</li>
+    <li><strong>Important issues and concerns</strong> relevant to the specific project.</li>
+    <li><strong>Information necessary for decision-making</strong>.</li>
+    <li><strong>Significant effects and factors</strong> that must be considered in the study.</li>
+  </ul>
+
+  <h3>Main contents of the ToR</h3>
+  <ol class="num">
+    <li><strong>Background</strong> — context of the project, its location and nature.</li>
+    <li><strong>Impact issues</strong> —
+      <ul class="tight" style="margin-top:7px">
+        <li><strong>Significant issues</strong> to be studied in depth.</li>
+        <li><strong>Relevant resources</strong> — environmental components such as air, water, soil, biodiversity, socio-economic — that need assessment.</li>
+        <li><strong>Report formatting</strong> — how the final EIA report should be structured and presented.</li>
+      </ul>
+    </li>
+    <li><strong>Work plan</strong> — the <strong>When / Who / How</strong> of task completion: timeline, responsible agencies/experts, and methodology.</li>
+  </ol>
+
+  <h3>Function and position in the process</h3>
+  <p>The ToR <strong>establishes the terms of reference for the Full-Scale EIA</strong>: the detailed study must address strictly the issues and boundaries the ToR laid down, nothing vague or open-ended.</p>
+  <div class="flow" style="margin-top:14px">
+    <b>IEE</b><i>&#8594;</i><b>IEE Review</b><i>&#8594;</i><b>Scoping / ToR</b><i>&#8594;</i><b class="hot">Full-Scale EIA</b>
+  </div>
+
+  <h3>Relevance / importance</h3>
+  <ul>
+    <li>Prevents <strong>wastage of time and resources</strong> by focusing the EIA only on genuinely significant issues.</li>
+    <li>Ensures <strong>all stakeholders (government + proponent) agree in advance</strong> on the scope, avoiding disputes later.</li>
+    <li>Provides a <strong>clear, structured work plan</strong>, so the Full-Scale EIA is systematic rather than haphazard.</li>
+    <li>Acts as a <strong>reference/checklist during Appraisal</strong> — the EAC/SEAC checks whether the final EIA report actually followed the approved ToR.</li>
+  </ul>
+
+  <div class="warn">
+    <span class="lab">Exam tip</span>
+    <strong>Short note (2–3 marks):</strong> definition + where it comes from (Scoping) + the three main contents (Background, Impact Issues, Work Plan). <strong>Full 7 marks:</strong> add the spatial/temporal boundaries point and the relevance bullets.
+  </div>
+</section>
+
+<!-- ============ 12 ============ -->
+<section class="sec rise" id="report">
+  <div class="sec-head">
+    <span class="sec-num">12</span>
+    <h2>Generic structure of an EIA report</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">13–14 marks</span>
+    <span class="chip">Apr 2025</span><span class="chip">Dec 2022</span>
+  </div>
+
+  <p class="lead">The formal document prepared by the project proponent (through accredited consultants), summarising the whole assessment from baseline data to proposed mitigation. As per the <strong>EIA Notification, 2006</strong> guidelines every EIA report follows a <strong>standard generic structure</strong>, so that the <strong>EAC/SEAC</strong> can review it uniformly and the public can understand it during <strong>Public Consultation</strong>. Contents vary slightly by project type (nuclear, mining, hydroelectric), but the skeleton stays the same.</p>
+
+  <ol class="num">
+    <li><strong>Introduction</strong> — purpose of the report, identification of the project and its proponent, scope of the study, and the name of the organisation preparing the EIA.</li>
+    <li><strong>Project description</strong> — <strong>nature, size and location</strong> of the project; process/technology involved; raw materials and resource requirements (land, water, power); project schedule and cost.</li>
+    <li><strong>Description of the environment (baseline data)</strong> — the <strong>existing environmental status</strong> of the study area: <em>air, water, soil, noise, biological (flora/fauna) and socio-economic</em> components, collected through <strong>Rapid</strong> or <strong>Comprehensive EIA</strong> field studies.</li>
+    <li><strong>Anticipated environmental impacts &amp; mitigation measures</strong> — identifies and predicts likely <strong>direct and indirect impacts</strong> on each environmental component (human beings, flora/fauna, soil/water/air, climate, material assets, cultural heritage), and proposes measures to <em>prevent, minimise or offset</em> them.</li>
+    <li><strong>Analysis of alternatives (technology &amp; site)</strong> — compares the chosen site/technology against <strong>viable alternatives</strong>, including the <strong>"no project" option</strong>, and justifies the final selection on environmental grounds.</li>
+    <li><strong>Environmental monitoring programme</strong> — the plan for <strong>post-clearance monitoring</strong>: which parameters will be tracked, at what frequency, and by which agency, to verify that actual impacts match predictions.</li>
+    <li><strong>Additional studies</strong> — specialised studies where relevant: <strong>Risk Assessment</strong> (hazard-prone industries), <strong>Social Impact Assessment</strong>, or a <strong>Rehabilitation &amp; Resettlement (R&amp;R) Plan</strong> if displacement is involved.</li>
+    <li><strong>Project benefits</strong> — the <strong>positive outcomes</strong>: infrastructure improvement, employment generation, socio-economic development of the region.</li>
+    <li><strong>Environmental Management Plan (EMP)</strong> — the <strong>most critical section</strong>: a detailed action plan for mitigating/controlling adverse impacts and bringing them within prescribed standards (as laid down by <strong>CPCB</strong> and <strong>MoEF&amp;CC</strong>), including costs and implementation schedule.</li>
+    <li><strong>Summary &amp; conclusion</strong> — a non-technical summary of the whole report, understandable to the general public and decision-makers (this portion is also used during the <strong>Public Hearing</strong>).</li>
+    <li><strong>Disclosure of consultants</strong> — name and credentials of the <strong>accredited EIA consultant/agency</strong> who prepared the report, mandated for accountability and quality control.</li>
+  </ol>
+
+  <div class="warn">
+    <span class="lab">Exam tip</span>
+    "Generic structure / contents of EIA report" → list all <strong>11 points</strong> for the full 13–14 marks. As a <strong>short note</strong>, compress to: <em>Introduction → Project Description → Baseline Environment → Anticipated Impacts → Alternatives Analysis → EMP → Monitoring Plan → Summary</em> — 7–8 headings are enough to show you know the standard format.
+  </div>
+</section>
+
+
+<!-- ============ 13 ============ -->
+<section class="sec rise" id="methodologies">
+  <div class="sec-head">
+    <span class="sec-num">13</span>
+    <h2>EIA methodologies</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">15 marks</span>
+    <span class="chip">impact identification</span>
+  </div>
+
+  <p class="lead"><strong>EIA methodology</strong> means the <em>structured approaches</em> used to carry out the activities of EIA — mainly <strong>impact identification, prediction and evaluation</strong>. A good methodology must be <strong>appropriate</strong> to the task, <strong>free from the assessor's bias</strong>, and <strong>economical</strong> in cost, data, time and manpower. The main methods used for impact identification/analysis are: <em>Ad hoc, Checklists, Matrices, Network</em> and <em>Overlays</em>.</p>
+
+  <h3>1. Ad hoc method</h3>
+  <ul>
+    <li>The <strong>simplest</strong> method, based on <strong>subjective judgement / expert opinion</strong>; useful under a <strong>time constraint</strong> or when data is lacking.</li>
+    <li>Types: <em>opinion polls, expert opinion, Delphi method</em>.</li>
+    <li><strong>Advantage:</strong> specialist guidance is available.</li>
+    <li><strong>Disadvantage:</strong> needs experts; impacts assessed on a <strong>guess basis</strong>; poor identification, prediction and interpretation.</li>
+  </ul>
+
+  <h3>2. Checklists method</h3>
+  <ul>
+    <li>A simple <strong>listing of potential environmental impacts</strong>, recording the nature of each impact — adverse/beneficial, short/long term, reversible/irreversible.</li>
+    <li>Types: <em>simple lists, descriptive, scaling, questionnaire checklists</em>.</li>
+    <li><strong>Advantage:</strong> <strong>simple to use</strong>; good for site selection and priority setting.</li>
+    <li><strong>Disadvantage:</strong> does not distinguish <strong>direct from indirect</strong> impact; does not link action to impact.</li>
+  </ul>
+
+  <h3>3. Matrices method</h3>
+  <ul>
+    <li>Provides a <strong>framework of interaction</strong> between project <em>actions</em> (vertical axis) and <em>environmental impacts</em> (horizontal axis).</li>
+    <li><strong>Advantage:</strong> <strong>links action to impact</strong>; good for displaying EIA results.</li>
+    <li><strong>Disadvantage:</strong> <strong>qualitative</strong>; risk of double-counting; hard to separate direct and indirect impacts.</li>
+  </ul>
+
+  <h3>4. Network method</h3>
+  <ul>
+    <li>Extends the matrix approach to capture <strong>primary and secondary impacts</strong>; builds an <strong>impact tree</strong> showing <em>cause–effect linkages</em> visually.</li>
+    <li><strong>Advantage:</strong> links action to impact; handles <strong>direct and indirect impacts</strong>; good for second-order impact checking.</li>
+    <li><strong>Disadvantage:</strong> can become <strong>overly complex</strong>; qualitative.</li>
+  </ul>
+
+  <h3>5. Overlays method (McHarg, 1968–69)</h3>
+  <ul>
+    <li>Uses a <strong>set of maps</strong> of the project area's environmental features — wetlands, slopes, soil, wildlife habitats — at the <strong>same scale</strong> as the project site plan.</li>
+    <li><em>Older technique:</em> transparent plastic sheets in different colours. <em>Newer technique:</em> <strong>GIS</strong> (Geographic Information Systems).</li>
+    <li><strong>Advantage:</strong> easy to understand, a <strong>good display method</strong>, useful for site selection.</li>
+    <li><strong>Disadvantage:</strong> addresses only <strong>direct impacts</strong>; ignores duration and probability.</li>
+  </ul>
+
+  <div class="scroll">
+    <table>
+      <caption>Methods at a glance — assembled from the points above</caption>
+      <thead><tr><th>Method</th><th>Basis</th><th>Strength</th><th>Main limit</th></tr></thead>
+      <tbody>
+        <tr><td>Ad hoc</td><td>Subjective judgement, expert opinion</td><td>Specialist guidance when time or data is short</td><td>Guess basis; weak identification and prediction</td></tr>
+        <tr><td>Checklists</td><td>Listing of impacts with their nature</td><td>Simple; site selection, priority setting</td><td>No direct vs indirect; no action-to-impact link</td></tr>
+        <tr><td>Matrices</td><td>Grid of actions &#215; impacts</td><td>Links action to impact; displays results</td><td>Qualitative; double-counting; direct/indirect blurred</td></tr>
+        <tr><td>Network</td><td>Impact tree of cause–effect chains</td><td>Handles direct <em>and</em> indirect impacts</td><td>Overly complex; qualitative</td></tr>
+        <tr><td>Overlays</td><td>Same-scale maps of features (GIS today)</td><td>Easy to understand; good display; site selection</td><td>Direct impacts only; ignores duration and probability</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="swipe">Swipe the table sideways &#8594;</p>
+
+  <div class="key">
+    <span class="lab">Conclusion line</span>
+    No single method is complete — practitioners often <strong>combine methods</strong> (checklist + matrix, or matrix + GIS overlays) to cover identification, prediction and evaluation together.
+  </div>
+</section>
+
+<!-- ============ 14 ============ -->
+<section class="sec sec--plain rise" id="socio-economic">
+  <div class="sec-head">
+    <span class="sec-num">14</span>
+    <h2>Socio-economic impact assessment</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">15 marks</span>
+    <span class="chip">Nov 2025</span><span class="chip">Nov 2024</span><span class="chip">Apr 2025</span><span class="chip">Dec 2022</span>
+  </div>
+
+  <p class="lead">Examines how a proposed project affects the <strong>social fabric</strong> and <strong>economic conditions</strong> of people living in and around the project area — changes in population, culture, livelihood, employment and the local economy. It is a key part of EIA because these impacts act directly on <strong>human well-being</strong>, not just the physical environment.</p>
+
+  <h3>Social impacts — four heads</h3>
+  <ul>
+    <li><strong>Demographic</strong> — <em>displacement and relocation</em> effects, changes in population characteristics.</li>
+    <li><strong>Cultural</strong> — effects on <em>traditional patterns, family structure, religious/archaeological features</em> and <em>social networks</em>.</li>
+    <li><strong>Gender</strong> — implications for the <em>roles of women</em>, employment opportunity and equity.</li>
+    <li><strong>Institutional</strong> — effects on <em>housing, schools, criminal justice, health and welfare</em> systems.</li>
+  </ul>
+
+  <h3>Economic impacts — assessed by examining</h3>
+  <ul>
+    <li><strong>Duration</strong> of construction and operation phases.</li>
+    <li><strong>Workforce requirements</strong> for each phase/period.</li>
+    <li><strong>Skill requirements</strong> and local availability of skilled labour.</li>
+    <li><strong>Earnings</strong> generated for the local population.</li>
+    <li><strong>Raw material and input purchases</strong> from local sources.</li>
+    <li><strong>Capital investment</strong> brought into the region.</li>
+    <li><strong>Outputs</strong> of the project — goods/services produced.</li>
+    <li><strong>Characteristics of the local economy</strong> — existing economic base, dependency patterns.</li>
+  </ul>
+
+  <h3>Steps — how it is assessed</h3>
+  <ol class="num">
+    <li><strong>Baseline data collection</strong> — study existing socio-economic conditions (population, occupation, income levels, infrastructure) <em>before</em> the project starts.</li>
+    <li><strong>Identification of affected groups</strong> — who will be displaced, relocated, or have their livelihood changed.</li>
+    <li><strong>Prediction of impacts</strong> — using <em>professional judgement</em>, <em>case studies</em> and <em>public consultation / opinion surveys</em> to estimate the magnitude of social and economic change.</li>
+    <li><strong>Evaluation of significance</strong> — ranking impacts by <strong>importance of the affected community</strong>, <strong>magnitude/extent</strong>, <strong>duration</strong> and <strong>reversibility</strong> (permanent displacement vs. temporary job loss).</li>
+    <li><strong>Mitigation and compensation measures</strong> — rehabilitation and resettlement (<strong>R&amp;R</strong>) plans, skill training, compensation packages and <strong>community development programmes</strong>.</li>
+  </ol>
+
+  <div class="key">
+    <span class="lab">Key purpose</span>
+    To ensure the project does not <strong>disproportionately harm</strong> vulnerable or local populations, and to maximise <strong>positive economic benefits</strong> (employment, income, infrastructure) while minimising <strong>social disruption</strong> (displacement, cultural loss, inequity).
+  </div>
+
+  <div class="warn">
+    <span class="lab">Conclusion line</span>
+    Socio-economic assessment is essential because it links the environmental and human dimensions of a project — a technically sound project can still fail or face opposition if its <strong>social and economic impacts on local communities</strong> are not properly assessed and mitigated.
+  </div>
+</section>
+
+<!-- ============ 15 ============ -->
+<section class="sec rise" id="water-impacts">
+  <div class="sec-head">
+    <span class="sec-num">15</span>
+    <h2>Prediction &amp; assessment of impacts on the water environment</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">15 marks</span>
+    <span class="chip">Nov 2025</span><span class="chip">Apr 2025</span><span class="chip">Dec 2022</span>
+  </div>
+
+  <p class="lead">Water is one of the most vital resources affected by development. <strong>Water pollution</strong> is the <em>contamination of water sources</em> by substances that make water unusable for drinking, cooking, cleaning or other activities, and that disrupt <strong>aquatic ecosystems</strong>. Assessment means identifying pollution sources, studying existing water quality and quantity, and predicting the changes a project will cause.</p>
+
+  <h3>Sources of water pollution</h3>
+  <ul>
+    <li><strong>Point sources</strong> — a <em>single, identifiable source</em> such as a pipe or drain (e.g. industrial waste discharged directly into rivers or the sea).</li>
+    <li><strong>Nonpoint sources</strong> — also called <em>"diffuse pollution"</em>; spread over a <strong>wide area</strong>, not traceable to one source, and linked to land-use patterns (sediments, toxics, plastics from agricultural runoff).</li>
+  </ul>
+
+  <h3>Water quality parameters used for assessment</h3>
+  <ul>
+    <li><strong>Physical</strong> — turbidity, colour, temperature.</li>
+    <li><strong>Chemical</strong> — pH, hardness, chlorides, heavy metals, nitrates.</li>
+    <li><strong>Biological</strong> — presence of indicator organisms.</li>
+    <li>Compared against standards such as <strong>IS: 10500</strong> (Indian Standard Specifications for Drinking Water).</li>
+  </ul>
+
+  <h3>Water quality assessment — desktop study</h3>
+  <ul>
+    <li>Use of <strong>existing information</strong>, where available, from environmental protection agencies.</li>
+    <li>Data on <strong>chemical pollutants</strong> and <strong>biological surveys</strong> used to assess water chemistry.</li>
+    <li><strong>Routine monitoring</strong> data of bathing waters and of surface waters used for drinking.</li>
+  </ul>
+
+  <h3>Water quantity assessment — field study</h3>
+  <ul>
+    <li><strong>Temporary stream gauging</strong> to determine the <em>flow regime</em> (can be expensive).</li>
+    <li><strong>Stream gauging methods</strong> for measuring discharge.</li>
+    <li><strong>Detailed survey data</strong> fed into <em>hydraulic models</em>.</li>
+    <li><strong>Surveys of rivers</strong>, <strong>biological/fisheries surveys</strong>, use of <em>freshwater organisms as pollutant indicators</em>, and <strong>biological monitoring methods</strong>.</li>
+  </ul>
+
+  <h3>General steps for impact assessment</h3>
+  <p>Based on the standard EIA flow, applicable to water, soil and groundwater:</p>
+  <ol class="num">
+    <li><strong>Delineation of the study area.</strong></li>
+    <li><strong>Identification of project activities</strong> that will impact water quality/quantity.</li>
+    <li><strong>Preparation of a baseline description</strong> of the existing water resource condition.</li>
+    <li><strong>Procurement of relevant standards</strong> — water quality/quantity criteria, e.g. IS:10500.</li>
+    <li><strong>Impact prediction</strong> for the water environment, using models, mass balance or professional judgement.</li>
+    <li><strong>Assessment of impact significance</strong> — magnitude, duration, reversibility.</li>
+    <li><strong>Identification and incorporation of mitigation measures.</strong></li>
+  </ol>
+
+  <div class="key">
+    <span class="lab">Conclusion line</span>
+    A combination of <strong>desktop study</strong> (quality) and <strong>field study</strong> (quantity), compared against <strong>statutory water quality standards</strong>, forms the backbone of water impact prediction — ensuring project-induced pollution or depletion does not compromise water's usability for <strong>human and ecological needs</strong>.
+  </div>
+</section>
+
+<!-- ============ 16 ============ -->
+<section class="sec sec--plain rise" id="air-impacts">
+  <div class="sec-head">
+    <span class="sec-num">16</span>
+    <h2>Prediction &amp; assessment of impacts on the air environment</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">15 marks</span>
+    <span class="chip">Nov 2025</span><span class="chip">Dec 2023</span><span class="chip">Dec 2022</span>
+  </div>
+
+  <p class="lead">Many developmental activities add <strong>air pollutants</strong> to the atmosphere or alter weather patterns, causing adverse effects on people, plants, animals, materials and buildings — effects that can occur at <strong>local, regional or even global</strong> scale. Assessment means identifying sources, studying baseline air quality, and predicting pollutant concentrations using scientific and modelling approaches.</p>
+
+  <h3>Air pollution sources — area and point, in five categories</h3>
+  <ul>
+    <li><strong>Transportation sources</strong> — motor vehicles, aircraft, trains, vessels, fuel evaporation losses.</li>
+    <li><strong>Fuel combustion in stationary sources</strong> — residential, commercial and industrial fuel use, power plants.</li>
+    <li><strong>Emission from industrial process losses</strong> — chemical, metallurgical, mineral, petroleum industries.</li>
+    <li><strong>Solid waste disposal</strong> — incineration, open burning.</li>
+    <li><strong>Miscellaneous</strong> — forest fires, structural fires, agricultural burning.</li>
+  </ul>
+
+  <h3>Effects of air pollution</h3>
+  <ul>
+    <li><strong>Human health</strong> — eye irritation, headaches, aggravation of respiratory problems.</li>
+    <li><strong>Plants/crops</strong> — abnormal growth, leaf discolouration or spotting, death.</li>
+    <li><strong>Animals</strong> — undesirable consequences from atmospheric fluorides.</li>
+    <li><strong>Materials damage</strong> — property devaluation, deterioration of concrete, discolouration of painted surfaces.</li>
+    <li><strong>Climatic effects</strong> — <strong>greenhouse effect</strong>, ozone depletion.</li>
+    <li><strong>Aesthetic effects</strong> — reduced visibility, photochemical smog, odour and dust nuisance.</li>
+  </ul>
+
+  <h3>Predicting changes in concentration</h3>
+  <ul>
+    <li>Assessment centres on the <strong>concentrations of air pollutants</strong>, compared against <strong>national/local air quality standards</strong> (e.g. WHO guidelines for SO₂, CO, NO₂, ozone and particulates).</li>
+    <li><strong>Pre-project data collection</strong> establishes a <strong>baseline</strong> — pollutant concentration at different times and locations.</li>
+    <li>That baseline also feeds <strong>predictive models</strong>, and for higher-order effects, predictions of <strong>deposition rates</strong> affecting flora, fauna, local climate and visibility.</li>
+  </ul>
+
+  <h3>Six-step generalised approach</h3>
+  <ol class="num">
+    <li><strong>Evaluate/identify sources, types and quantities</strong> of pollutants from each project phase (construction, operation).</li>
+    <li>Detailed evaluation of <strong>existing ambient air quality, meteorological conditions</strong> and the emission inventory of the project area.</li>
+    <li>Examination of <strong>applicable laws, regulations and emission standards</strong>.</li>
+    <li>Impact assessment using <strong>mass balance, dispersion calculations, mathematical models</strong> and/or <strong>qualitative predictions</strong> (case studies, professional judgement).</li>
+    <li><strong>Assessment of significance</strong> of anticipated beneficial and detrimental impacts.</li>
+    <li>Development of appropriate <strong>mitigation/remedial measures</strong>.</li>
+  </ol>
+
+  <div class="key">
+    <span class="lab">Conclusion line</span>
+    Air impact prediction relies on a mix of <strong>mathematical dispersion modelling</strong> and <strong>qualitative judgement</strong>, benchmarked against statutory air quality standards — so planners can anticipate pollution levels <em>before</em> a project is built and design <strong>mitigation measures</strong> in advance.
+  </div>
+</section>
+
+<!-- ============ 17 ============ -->
+<section class="sec rise" id="leopold">
+  <div class="sec-head">
+    <span class="sec-num">17</span>
+    <h2>Leopold matrix</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">7 marks</span>
+    <span class="chip">Nov 2024</span><span class="chip">standalone</span>
+  </div>
+
+  <p class="lead">Developed by <strong>Luna Leopold (1971)</strong>, the most widely used <strong>interaction matrix</strong> for identifying and displaying a project's impacts on the environment. It links <strong>project actions</strong> with <strong>environmental impacts</strong> in a simple grid.</p>
+
+  <h3>Structure</h3>
+  <ul>
+    <li><strong>100 project actions</strong> along the <strong>horizontal axis</strong> (columns) and <strong>88 environmental characteristics/conditions</strong> along the <strong>vertical axis</strong> (rows).</li>
+    <li>That gives <strong>8,800 possible interactions</strong>.</li>
+  </ul>
+
+  <h3>Working</h3>
+  <ul>
+    <li>For every <strong>action–impact interaction</strong>, a <strong>diagonal line</strong> is drawn in the cell and two numbers (scale <strong>1–10</strong>) are entered.</li>
+    <li><strong>Magnitude</strong> — the <em>size/extent</em> of the impact, with a +/– sign for beneficial/adverse.</li>
+    <li><strong>Importance</strong> — the <em>significance</em> of that impact (weightage).</li>
+  </ul>
+
+  <h3>Purpose</h3>
+  <p>Shows which <strong>project activities</strong> cause the <strong>most significant impacts</strong>, and on <em>which environmental components</em>.</p>
+
+  <h3>Advantages</h3>
+  <ul>
+    <li><strong>Comprehensive</strong> — covers a very wide range of actions and impacts.</li>
+    <li><strong>Links action to impact</strong> clearly; good for <strong>displaying results</strong>.</li>
+    <li>Useful for <strong>comparing alternatives</strong>.</li>
+  </ul>
+
+  <h3>Disadvantages</h3>
+  <ul>
+    <li><strong>Highly subjective</strong> — magnitude and importance scores depend on individual judgement.</li>
+    <li>Does not distinguish <strong>direct vs indirect</strong> impacts well.</li>
+    <li>Risk of <strong>double-counting</strong>; purely <strong>qualitative</strong>, not probabilistic.</li>
+    <li>Too large and <strong>complex</strong> for small projects.</li>
+  </ul>
+</section>
+
+<!-- ============ 18 ============ -->
+<section class="sec sec--plain rise" id="network">
+  <div class="sec-head">
+    <span class="sec-num">18</span>
+    <h2>Network method</h2>
+  </div>
+  <div class="chips">
+    <span class="chip marks">7 marks</span>
+    <span class="chip">Nov 2024</span><span class="chip">standalone</span>
+  </div>
+
+  <p class="lead">An extension of the matrix approach, used to trace the <strong>chain of cause–effect relationships</strong> triggered by a project — capturing not just direct impacts but their <strong>secondary and tertiary consequences</strong>.</p>
+
+  <h3>Concept</h3>
+  <p>Takes the matrix approach further by accounting for <strong>primary as well as secondary impacts</strong>, building what is called an <strong>impact tree</strong>.</p>
+
+  <h3>Purpose</h3>
+  <p>To identify <strong>cause–effect linkages</strong> between project actions and resulting environmental changes — showing how one impact <strong>triggers another</strong> in sequence.</p>
+
+  <h3>Key feature</h3>
+  <p>Provides a <strong>visual description of linkages</strong>, showing <strong>direct, indirect, short-term and long-term</strong> environmental impacts as an <em>interconnected network or tree diagram</em>.</p>
+
+  <h3>Advantages</h3>
+  <ul>
+    <li><strong>Links action to impact</strong> clearly, like matrices.</li>
+    <li><strong>Handles both direct and indirect impacts</strong> — a major improvement over simple matrices.</li>
+    <li>Useful, in <strong>simplified form</strong>, for checking <strong>second-order impacts</strong>.</li>
+  </ul>
+
+  <h3>Disadvantages</h3>
+  <ul>
+    <li>Can become <strong>overly complex</strong> if extended beyond a simplified version.</li>
+    <li>Still largely <strong>qualitative</strong> in nature.</li>
+  </ul>
+
+  <div class="key">
+    <span class="lab">Note for exam</span>
+    If asked together: <strong>Network method = Matrix + cause–effect chain tracing</strong> (primary &#8594; secondary &#8594; tertiary impacts).
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p class="big">EIA &amp; Indian environmental law — notes</p>
+  <p>Source: your pasted notes, 18 topics · Page built 25 November 2026</p>
+  <p>Numbers, dates and section references are reproduced as given in the source notes.</p>
+</footer>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.rise');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.06 });
+    items.forEach(function(el){ io.observe(el); });
+  }
+  var toc = document.querySelector('.toc');
+  if (toc) {
+    toc.addEventListener('click', function(e){
+      if (e.target.tagName === 'A') { toc.open = false; }
+    });
+  }
+})();
+</script>
+</body>
+</html>
