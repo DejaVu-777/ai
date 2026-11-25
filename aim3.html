@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e9e8e4">
+<title>Module III — EIA Methodologies &amp; Impact Prediction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#e9e8e4;
+    --panel:#f7f6f3;
+    --ink:#2b2b2b;
+    --dim:#6b6a66;
+    --signal:#e8541f;
+    --rule:#d3d1ca;
+    --mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --display:'Space Grotesk','Instrument Sans',-apple-system,'Segoe UI',sans-serif;
+    --body:'Instrument Sans',-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--ground);color:var(--ink);
+    font-family:var(--body);font-size:17px;line-height:1.65;overflow-wrap:anywhere;
+  }
+  .wrap{max-width:840px;margin:0 auto;padding:0 20px}
+  @media (min-width:720px){.wrap{padding:0 32px}}
+
+  h1,h2,h3{font-family:var(--display);letter-spacing:-0.028em;margin:0}
+  h1{font-weight:700;font-size:clamp(2.1rem,7.4vw,3.9rem);line-height:1.02}
+  h2{font-weight:600;font-size:clamp(1.5rem,4.6vw,2.15rem);line-height:1.1}
+  h3{font-weight:600;font-size:1.06rem;line-height:1.3;letter-spacing:-0.018em}
+  p{margin:0 0 .85em}
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 10px;
+  }
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.94em}
+  b,strong{font-weight:600}
+
+  /* hero */
+  .hero{padding:44px 0 34px;border-bottom:1px solid var(--rule)}
+  @media (min-width:720px){.hero{padding:72px 0 52px}}
+  .hero h1{max-width:15ch;margin:0 0 18px}
+  .hero .sub{margin:0;color:var(--dim);max-width:46ch;font-size:1rem}
+  .chain{
+    margin:26px 0 0;background:var(--ink);color:#f2f1ed;border-radius:8px;
+    padding:16px 18px;display:flex;flex-wrap:wrap;align-items:stretch;gap:6px 10px;
+  }
+  .chain .cell{min-width:0;padding:2px 0}
+  .chain .yr{display:block;font-family:var(--mono);font-size:13px;color:#fff}
+  .chain .lbl{display:block;font-size:11px;line-height:1.35;color:#b9b7b0}
+  .chain .arw{font-family:var(--mono);color:var(--signal);font-size:13px;align-self:center}
+
+  /* sticky bar */
+  .bar{position:sticky;top:0;z-index:20;background:var(--ground);border-bottom:1px solid var(--rule)}
+  .bar-in{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px}
+  .brand{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink);text-decoration:none;padding:12px 0;min-height:44px;display:flex;align-items:center;
+  }
+  details.toc{position:relative}
+  details.toc summary{
+    list-style:none;cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);
+  }
+  details.toc summary::-webkit-details-marker{display:none}
+  details.toc summary::after{content:"+";color:var(--signal);font-size:14px;line-height:1}
+  details.toc[open] summary::after{content:"–"}
+  details.toc nav{
+    position:absolute;right:0;top:calc(100% + 4px);width:min(80vw,330px);
+    background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:8px;
+    max-height:64vh;overflow:auto;
+  }
+  details.toc ol{list-style:none;margin:0;padding:0}
+  details.toc a{
+    display:flex;gap:10px;align-items:baseline;padding:9px 8px;min-height:44px;
+    text-decoration:none;color:var(--ink);font-size:14px;border-bottom:1px solid var(--rule);
+  }
+  details.toc li:last-child a{border-bottom:0}
+  details.toc a .n{font-family:var(--mono);font-size:10px;color:var(--dim)}
+
+  /* sections */
+  main{padding:8px 0 0}
+  .sec{padding:40px 0 8px;border-bottom:1px solid var(--rule);scroll-margin-top:70px}
+  @media (min-width:720px){.sec{padding:64px 0 12px}}
+  .sec:last-of-type{border-bottom:0}
+  .sec-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:22px}
+  .idx{
+    font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--dim);
+    border:1px solid var(--rule);border-radius:4px;padding:3px 6px;flex:none;margin-top:4px;
+  }
+  .sec-head h2{margin:2px 0 0}
+  .repeat{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--signal);margin:10px 0 0;
+  }
+  .repeat span.s{color:var(--dim)}
+
+  .block{margin:0 0 26px}
+  .block:last-child{margin-bottom:0}
+  h3.plabel{
+    font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 8px;padding-top:14px;border-top:1px solid var(--rule);
+  }
+  ul{margin:0 0 .9em;padding-left:0;list-style:none}
+  li{position:relative;padding-left:20px;margin:0 0 .5em}
+  li::before{content:"";position:absolute;left:2px;top:.72em;width:7px;height:1px;background:var(--dim)}
+  li ul{margin:.5em 0 0}
+  li li{padding-left:18px}
+  li li::before{background:var(--rule);width:5px}
+  ul.tight li{margin-bottom:.25em}
+
+  .key{background:var(--panel);border-left:2px solid var(--ink);border-radius:0 8px 8px 0;padding:12px 16px;margin:0 0 18px;font-size:.97rem}
+  .key .kl,.warn .kl{
+    display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:4px;
+  }
+  .warn{background:var(--panel);border-left:2px solid var(--signal);border-radius:0 8px 8px 0;padding:12px 16px;margin:0 0 18px;font-size:.97rem}
+  .warn .kl{color:var(--signal)}
+
+  /* method card */
+  .method{border-top:1px solid var(--rule);padding-top:14px;margin:0 0 26px}
+  .method h3{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+  .method h3 .tag{
+    font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--signal);border:1px solid var(--rule);border-radius:4px;padding:2px 5px;
+  }
+  .ad{display:grid;gap:10px;margin:10px 0 0}
+  @media (min-width:600px){.ad{grid-template-columns:1fr 1fr}}
+  .ad div{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;min-width:0}
+  .ad .t{
+    display:block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin-bottom:5px;
+  }
+  .ad .t.neg{color:var(--signal)}
+  .ad p{margin:0;font-size:14px;line-height:1.5}
+  .ad ul{margin:0}
+  .ad li{font-size:14px;line-height:1.5;margin-bottom:.3em}
+  .ad li::before{top:.65em}
+
+  /* flow */
+  .flow{border:1px solid var(--rule);border-radius:8px;background:var(--panel);overflow:hidden;margin:0 0 10px}
+  .flow .step{display:flex;gap:14px;padding:12px 14px;border-top:1px solid var(--rule);align-items:flex-start}
+  .flow .step:first-child{border-top:0}
+  .flow .sn{font-family:var(--mono);font-size:11px;color:var(--signal);flex:none;width:24px;padding-top:3px}
+  .flow .st{display:block;font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:-0.015em;line-height:1.3}
+  .flow .sd{display:block;font-size:13px;color:var(--dim);line-height:1.45;margin-top:2px}
+  .fig{
+    font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 22px;line-height:1.6;
+  }
+
+  .skeleton{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin:26px 0 0}
+  .skeleton .sl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+  .skeleton p{font-family:var(--mono);font-size:12.5px;line-height:1.75;margin:0;color:var(--ink)}
+  .skeleton .arw{color:var(--signal)}
+
+  /* table */
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 6px;border:1px solid var(--rule);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:.92rem;background:var(--panel)}
+  caption{
+    text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);padding:10px 12px 0;background:var(--panel);
+  }
+  th,td{padding:10px 12px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+  thead th{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:400}
+  tbody tr:last-child td{border-bottom:0}
+  td.m{font-family:var(--display);font-weight:600;white-space:nowrap}
+  .hint{display:none;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:0 0 18px}
+  @media (max-width:559px){.hint{display:block}}
+
+  .aside{font-size:.9rem;color:var(--dim);border-top:1px solid var(--rule);padding-top:12px;margin:0 0 18px}
+  .aside .al{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:4px}
+
+  .concl{
+    font-size:.95rem;color:var(--dim);border-left:2px solid var(--rule);
+    padding:2px 0 2px 14px;margin:22px 0 0;
+  }
+  .concl .cl{
+    font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--dim);display:block;margin-bottom:3px;
+  }
+
+  footer{border-top:1px solid var(--rule);padding:32px 0 48px;margin-top:24px}
+  footer p{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--dim);margin:0 0 6px;text-transform:uppercase}
+
+  @media (prefers-reduced-motion:no-preference){
+    .sec{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+    .sec.in{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body id="top">
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Module III · methods and predictions</p>
+    <h1>How impacts get measured</h1>
+    <p class="sub">Five EIA methodologies, socio-economic assessment, water and air prediction, plus the two 7-mark methods — Leopold matrix and network. From your notes, nothing added.</p>
+    <div class="chain" aria-label="Five methods">
+      <span class="cell"><span class="yr">Ad hoc</span><span class="lbl">expert opinion</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">Checklists</span><span class="lbl">listing</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">Matrices</span><span class="lbl">action × impact</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">Network</span><span class="lbl">cause-effect</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">Overlays</span><span class="lbl">McHarg · GIS</span></span>
+    </div>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap bar-in">
+    <a class="brand" href="#top">Module III — Methods</a>
+    <details class="toc">
+      <summary>Contents</summary>
+      <nav>
+        <ol>
+          <li><a href="#s1"><span class="n">01</span> EIA methodologies</a></li>
+          <li><a href="#s2"><span class="n">02</span> Socio-economic impact assessment</a></li>
+          <li><a href="#s3"><span class="n">03</span> Impacts on the water environment</a></li>
+          <li><a href="#s4"><span class="n">04</span> Impacts on the air environment</a></li>
+          <li><a href="#s5"><span class="n">05</span> Leopold matrix (7 marks)</a></li>
+          <li><a href="#s6"><span class="n">06</span> Network method (7 marks)</a></li>
+        </ol>
+      </nav>
+    </details>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- 01 -->
+  <section class="sec" id="s1">
+    <div class="sec-head">
+      <span class="idx">01</span>
+      <div>
+        <p class="eyebrow">Topic 01 · 15 marks</p>
+        <h2>EIA methodologies</h2>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>EIA methodology refers to the <i>structured approaches</i> used to carry out the activities of Environmental Impact Assessment — mainly <b>impact identification, prediction, and evaluation</b>. A good methodology must be <b>appropriate</b> to the task, <b>free from assessor’s bias</b>, and <b>economical</b> in terms of cost, data, time, and manpower. The main methods used for <b>impact identification/analysis</b> are: <i>ad hoc method, checklists, matrices, network method,</i> and <i>overlays</i>.</p>
+    </div>
+
+    <div class="method">
+      <h3>Ad hoc method <span class="tag">simplest</span></h3>
+      <ul>
+        <li>Based on <b>subjective judgement/expert opinion</b>; useful when there is a <b>time constraint</b> or lack of data.</li>
+        <li>Types include <i>opinion polls, expert opinion, Delphi method</i>.</li>
+      </ul>
+      <div class="ad">
+        <div><span class="t">Advantage</span><p>Specialist guidance available.</p></div>
+        <div><span class="t neg">Disadvantage</span><p>Needs experts; impacts assessed on <b>guess basis</b>; poor identification/prediction/interpretation.</p></div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>Checklists method <span class="tag">listing</span></h3>
+      <ul>
+        <li>A simple <b>listing of potential environmental impacts</b>, assessing nature of impact (adverse/beneficial, short/long term, reversible/irreversible).</li>
+        <li>Types: <i>simple lists, descriptive, scaling, questionnaire checklists</i>.</li>
+      </ul>
+      <div class="ad">
+        <div><span class="t">Advantage</span><p><b>Simple to use</b>; good for site selection and priority setting.</p></div>
+        <div><span class="t neg">Disadvantage</span><p>Doesn’t distinguish <b>direct vs indirect</b> impact; doesn’t link action to impact.</p></div>
+      </div>
+    </div>
+
+    <div class="method">
+      <h3>Matrices method <span class="tag">interaction grid</span></h3>
+      <ul>
+        <li>Provides a <b>framework of interaction</b> between project <i>actions</i> (vertical axis) and <i>environmental impacts</i> (horizontal axis).</li>
+      </ul>
+      <div class="ad">
+        <div><span class="t">Advantage</span><p><b>Links action to impact</b>; good for displaying EIA results.</p></div>
+        <div><span class="t neg">Disadvantage</span><p><b>Qualitative</b>; risk of double-counting; hard to separate direct/indirect impacts.</p></div>
+      </div>
+      <p class="fig" style="margin:10px 0 0">Source note — an interaction matrix diagram is referenced here; your notes say mention it only, so it is not drawn on this page</p>
+    </div>
+
+    <div class="method">
+      <h3>Network method <span class="tag">impact tree</span></h3>
+      <ul>
+        <li>Extends the matrix approach to capture <b>primary and secondary impacts</b>; builds an <b>impact tree</b> to show <i>cause-effect linkages</i> visually.</li>
+      </ul>
+      <div class="ad">
+        <div><span class="t">Advantage</span><p>Links action to impact; handles <b>direct and indirect impacts</b>; good for second-order impact checking.</p></div>
+        <div><span class="t neg">Disadvantage</span><p>Can become <b>overly complex</b>; qualitative.</p></div>
+      </div>
+      <p class="fig" style="margin:10px 0 0">Source note — impact tree diagram referenced; not drawn here, per your notes</p>
+    </div>
+
+    <div class="method">
+      <h3>Overlays method <span class="tag">McHarg, 1968–69</span></h3>
+      <ul>
+        <li>Uses a <b>set of maps</b> of the project area’s environmental features (wetlands, slopes, soil, wildlife habitats etc.) at the <b>same scale</b> as the project site plan.</li>
+        <li><i>Older technique</i>: transparent plastic sheets in different colors.</li>
+        <li><i>Newer technique</i>: <b>GIS</b> (Geographic Information Systems).</li>
+      </ul>
+      <div class="ad">
+        <div><span class="t">Advantage</span><p>Easy to understand, <b>good display method</b>, useful for site selection.</p></div>
+        <div><span class="t neg">Disadvantage</span><p>Addresses only <b>direct impacts</b>; ignores duration/probability.</p></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Methods at a glance</h3>
+      <div class="scroll">
+        <table>
+          <caption>All five, in the source’s own terms</caption>
+          <thead>
+            <tr><th scope="col">Method</th><th scope="col">What it does</th><th scope="col">Chief limitation</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="m">Ad hoc</td><td>Subjective judgement / expert opinion</td><td>Guess basis; poor prediction</td></tr>
+            <tr><td class="m">Checklists</td><td>Lists potential impacts and their nature</td><td>No direct vs indirect; no action→impact link</td></tr>
+            <tr><td class="m">Matrices</td><td>Interaction of actions against impacts</td><td>Qualitative; double-counting</td></tr>
+            <tr><td class="m">Network</td><td>Impact tree of cause-effect linkages</td><td>Overly complex; qualitative</td></tr>
+            <tr><td class="m">Overlays</td><td>Same-scale maps stacked, now GIS</td><td>Only direct impacts; no duration/probability</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint">Swipe the table sideways if it is cut off</p>
+    </div>
+
+    <div class="key">
+      <span class="kl">Conclusion line — optional for the exam</span>
+      No single method is complete — EIA practitioners often <b>combine methods</b> (e.g. checklist + matrix, or matrix + GIS overlays) to get a comprehensive assessment covering identification, prediction, and evaluation stages.
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec" id="s2">
+    <div class="sec-head">
+      <span class="idx">02</span>
+      <div>
+        <p class="eyebrow">Topic 02 · 15 marks</p>
+        <h2>Socio-economic impact assessment</h2>
+        <p class="repeat">Nov 2025 · Nov 2024 · Apr 2025 · Dec 2022 <span class="s">— b)-part or paired question</span></p>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>Socio-economic impact assessment examines how a proposed project affects the <b>social fabric</b> and <b>economic conditions</b> of the people living in and around the project area. It covers changes in population, culture, livelihood, employment, and the local economy, and is a key part of EIA because these impacts directly affect <b>human well-being</b>, not just the physical environment.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Social impacts — four main heads</h3>
+      <ul>
+        <li><b>Demographic</b> — <i>displacement and relocation</i> effects, changes in population characteristics.</li>
+        <li><b>Cultural</b> — effects on <i>traditional patterns, family structure, religious/archaeological features,</i> and <i>social networks</i>.</li>
+        <li><b>Gender</b> — implication of the project on <i>roles of women</i>, employment opportunity, and equity.</li>
+        <li><b>Institutional</b> — effects on <i>housing, schools, criminal justice, health, and welfare</i> systems.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Economic impacts — assessed by examining</h3>
+      <ul>
+        <li><b>Duration</b> of construction and operation phases.</li>
+        <li><b>Workforce requirements</b> for each phase/period.</li>
+        <li><b>Skill requirements</b> and local availability of skilled labour.</li>
+        <li><b>Earnings</b> generated for the local population.</li>
+        <li><b>Raw material and input purchases</b> from local sources.</li>
+        <li><b>Capital investment</b> brought into the region.</li>
+        <li><b>Outputs</b> of the project (goods/services produced).</li>
+        <li><b>Characteristics of the local economy</b> (existing economic base, dependency patterns).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Steps / how it is assessed</h3>
+      <div class="flow">
+        <div class="step"><span class="sn">01</span><div><span class="st">Baseline data collection</span><span class="sd">Study existing socio-economic conditions — population, occupation, income levels, infrastructure — before the project starts</span></div></div>
+        <div class="step"><span class="sn">02</span><div><span class="st">Identification of affected groups</span><span class="sd">Who will be displaced, relocated, or whose livelihood will change</span></div></div>
+        <div class="step"><span class="sn">03</span><div><span class="st">Prediction of impacts</span><span class="sd">Professional judgement, case studies, public consultation/opinion surveys to estimate magnitude of change</span></div></div>
+        <div class="step"><span class="sn">04</span><div><span class="st">Evaluation of significance</span><span class="sd">Ranked on importance of affected community, magnitude/extent, duration, reversibility — e.g. permanent displacement vs temporary job loss</span></div></div>
+        <div class="step"><span class="sn">05</span><div><span class="st">Mitigation and compensation</span><span class="sd">R&amp;R plans, skill training, compensation packages, community development programs</span></div></div>
+      </div>
+    </div>
+
+    <div class="key">
+      <span class="kl">Key purpose</span>
+      To ensure the project doesn’t <b>disproportionately harm</b> vulnerable or local populations, and to maximize <b>positive economic benefits</b> (employment, income, infrastructure) while minimizing <b>social disruption</b> (displacement, cultural loss, inequity).
+    </div>
+
+    <div class="concl">
+      <span class="cl">Conclusion line — optional for the exam</span>
+      Socio-economic impact assessment is essential because it links the environmental and human dimensions of a project — a technically sound project can still fail or face opposition if its <b>social and economic impacts on local communities</b> are not properly assessed and mitigated.
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec" id="s3">
+    <div class="sec-head">
+      <span class="idx">03</span>
+      <div>
+        <p class="eyebrow">Topic 03 · 15 marks</p>
+        <h2>Prediction &amp; assessment of impacts on the water environment</h2>
+        <p class="repeat">Nov 2025 · Apr 2025 · Dec 2022</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>Water is one of the most vital resources affected by developmental projects. Water pollution is the <b>contamination of water sources</b> by substances that make water unusable for drinking, cooking, cleaning, or other activities, and disrupts <b>aquatic ecosystems</b>. Assessing impacts on the water environment involves identifying pollution sources, studying existing water quality/quantity, and predicting changes due to the proposed project.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Sources of water pollution — two types</h3>
+      <ul>
+        <li><b>Point sources</b> — a <i>single, identifiable source</i> such as a pipe or drain (e.g. industrial waste discharged directly into rivers/sea).</li>
+        <li><b>Nonpoint sources</b> — also called <i>“diffuse pollution”</i>; occur over a <b>wide area</b>, not traceable to one source; linked to land-use patterns (e.g. sediments, toxics, plastics from agricultural runoff).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Water quality parameters</h3>
+      <ul>
+        <li><b>Physical</b> — e.g. turbidity, colour, temperature.</li>
+        <li><b>Chemical</b> — e.g. pH, hardness, chlorides, heavy metals, nitrates.</li>
+        <li><b>Biological</b> — e.g. presence of indicator organisms.</li>
+        <li>Compared against standards like <b>IS: 10500</b> (Indian Standard Specifications for Drinking Water).</li>
+      </ul>
+      <p class="fig" style="margin:0">Source note — a table of standards is referenced; not reproduced in your notes</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Water quality assessment — desktop study</h3>
+      <ul>
+        <li>Use of <b>existing information</b> (if available) from environmental protection agencies.</li>
+        <li>Data on <b>chemical pollutants</b> and <b>biological surveys</b> used to assess water chemistry.</li>
+        <li><b>Routine monitoring</b> data of bathing waters and surface waters used for drinking.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Water quantity assessment — field study</h3>
+      <ul>
+        <li><b>Temporary stream gauging</b> to determine <i>flow regime</i> (can be expensive).</li>
+        <li><b>Stream gauging methods</b> for measuring discharge.</li>
+        <li><b>Detailed survey data</b> fed into <i>hydraulic models</i>.</li>
+        <li><b>Surveys of rivers</b>, <b>biological/fisheries surveys</b>, use of <i>freshwater organisms as pollutant indicators</i>, and <b>biological monitoring methods</b>.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">General steps / procedure for impact assessment</h3>
+      <div class="flow">
+        <div class="step"><span class="sn">01</span><div><span class="st">Delineation of study area</span></div></div>
+        <div class="step"><span class="sn">02</span><div><span class="st">Identification of project activities</span><span class="sd">Those that will impact water quality/quantity</span></div></div>
+        <div class="step"><span class="sn">03</span><div><span class="st">Preparation of baseline description</span><span class="sd">Existing water resource condition</span></div></div>
+        <div class="step"><span class="sn">04</span><div><span class="st">Procurement of relevant standards</span><span class="sd">Water quality/quantity criteria, e.g. IS:10500</span></div></div>
+        <div class="step"><span class="sn">05</span><div><span class="st">Impact prediction</span><span class="sd">Models, mass balance, or professional judgement</span></div></div>
+        <div class="step"><span class="sn">06</span><div><span class="st">Assessment of impact significance</span><span class="sd">Magnitude, duration, reversibility</span></div></div>
+        <div class="step"><span class="sn">07</span><div><span class="st">Identification and incorporation of mitigation measures</span></div></div>
+      </div>
+      <p class="fig" style="margin:10px 0 0">Source note — the seven steps are also given as a flowchart in the notes; the sequence above is that flowchart in words</p>
+    </div>
+
+    <div class="concl">
+      <span class="cl">Conclusion line — optional for the exam</span>
+      A combination of <b>desktop study</b> (quality) and <b>field study</b> (quantity), compared against <b>statutory water quality standards</b>, forms the backbone of water environment impact prediction — ensuring that project-induced pollution or depletion does not compromise water’s usability for <b>human and ecological needs</b>.
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec" id="s4">
+    <div class="sec-head">
+      <span class="idx">04</span>
+      <div>
+        <p class="eyebrow">Topic 04 · 15 marks</p>
+        <h2>Prediction &amp; assessment of impacts on the air environment</h2>
+        <p class="repeat">Nov 2025 · Dec 2023 · Dec 2022</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>Many developmental activities add <b>air pollutants</b> to the atmosphere or alter weather patterns, causing adverse effects on people, plants, animals, materials, and buildings — effects that can occur at <b>local, regional, or even global</b> scale. Assessing air quality impact involves identifying pollution sources, studying baseline air quality, and predicting pollutant concentrations using scientific and modelling approaches.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Air pollution sources — area and point, five categories</h3>
+      <ul>
+        <li><b>Transportation sources</b> — motor vehicles, aircraft, trains, vessels, fuel evaporation losses.</li>
+        <li><b>Fuel combustion in stationary sources</b> — residential, commercial, industrial fuel use, power plants.</li>
+        <li><b>Emission from industrial process losses</b> — chemical, metallurgical, mineral, petroleum industries.</li>
+        <li><b>Solid waste disposal</b> — incineration, open burning.</li>
+        <li><b>Miscellaneous</b> — forest fires, structural fires, agricultural burning.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Effects of air pollution</h3>
+      <ul>
+        <li><b>Human health</b> — eye irritation, headaches, aggravation of respiratory problems.</li>
+        <li><b>Plants/crops</b> — abnormal growth, leaf discoloration/spotting, death.</li>
+        <li><b>Animals</b> — undesirable consequences from atmospheric fluorides.</li>
+        <li><b>Materials damage</b> — property devaluation, deterioration of concrete, discoloration of painted surfaces.</li>
+        <li><b>Climatic effects</b> — <b>greenhouse effect</b>, ozone depletion.</li>
+        <li><b>Aesthetic effects</b> — reduced visibility, photochemical smog, odour/dust nuisance.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Predicting changes in concentration</h3>
+      <ul>
+        <li>Assessment focuses on determining <b>concentrations of air pollutants</b>, compared against <b>national/local air quality standards</b> (e.g. WHO guidelines — SO₂, CO, NO₂, ozone, particulates).</li>
+        <li><b>Pre-project data collection</b> determines pollutant concentration at <i>different times and locations</i> to establish a <b>baseline</b>.</li>
+        <li>This baseline data also feeds into <b>predictive models</b>, and in cases of higher-order effects, into predictions of <b>deposition rates</b> affecting flora, fauna, and local climate/visibility.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Six-step generalized approach</h3>
+      <div class="flow">
+        <div class="step"><span class="sn">01</span><div><span class="st">Sources, types &amp; quantities</span><span class="sd">Evaluation/identification of pollutants from each project phase — construction, operation</span></div></div>
+        <div class="step"><span class="sn">02</span><div><span class="st">Existing ambient air quality</span><span class="sd">Detailed evaluation of air quality, meteorological conditions, and emission inventory of the area</span></div></div>
+        <div class="step"><span class="sn">03</span><div><span class="st">Laws and standards</span><span class="sd">Examination of applicable laws, regulations, and emission standards</span></div></div>
+        <div class="step"><span class="sn">04</span><div><span class="st">Impact assessment</span><span class="sd">Mass balance, dispersion calculations, mathematical models, and/or qualitative predictions — case studies, professional judgement</span></div></div>
+        <div class="step"><span class="sn">05</span><div><span class="st">Significance of impacts</span><span class="sd">Assessment of anticipated beneficial and detrimental impacts</span></div></div>
+        <div class="step"><span class="sn">06</span><div><span class="st">Mitigation / remedial measures</span><span class="sd">Development of appropriate measures</span></div></div>
+      </div>
+      <p class="fig" style="margin:10px 0 0">Source note — referenced as a flowchart (Fig 6.3) in the notes; the sequence above is that flowchart in words</p>
+    </div>
+
+    <div class="concl">
+      <span class="cl">Conclusion line — optional for the exam</span>
+      Air impact prediction relies on a mix of <b>mathematical dispersion modelling</b> and <b>qualitative judgement</b>, benchmarked against statutory air quality standards — allowing planners to anticipate pollution levels <i>before</i> a project is built and design suitable <b>mitigation measures</b> in advance.
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec" id="s5">
+    <div class="sec-head">
+      <span class="idx">05</span>
+      <div>
+        <p class="eyebrow">Topic 05 · 7 marks</p>
+        <h2>Leopold matrix</h2>
+        <p class="repeat">Nov 2024 <span class="s">— standalone</span></p>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>The <b>Leopold Matrix</b>, developed by <i>Luna Leopold (1971)</i>, is the most well-known and widely used <b>interaction matrix</b> method for identifying and displaying the impacts of a project on the environment. It links <b>project actions</b> with <b>environmental impacts</b> in a simple grid format.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Structure</h3>
+      <ul>
+        <li>A large matrix with <b>100 project actions</b> along the <b>horizontal axis</b> (columns) and <b>88 environmental characteristics/conditions</b> along the <b>vertical axis</b> (rows) — giving <b>8,800 possible interactions</b>.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Working</h3>
+      <ul>
+        <li>For every <b>action–impact interaction</b>, a <b>diagonal line</b> is drawn in the cell, and two numbers (scale <b>1–10</b>) are entered:
+          <ul>
+            <li><b>Magnitude</b> — the <i>size/extent</i> of the impact (with +/– sign for beneficial/adverse).</li>
+            <li><b>Importance</b> — the <i>significance</i> of that impact (weightage).</li>
+          </ul>
+        </li>
+      </ul>
+      <p class="fig" style="margin:0">Source note — a diagram of the matrix grid is referenced; your notes say mention only, so the grid is not drawn here</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Purpose</h3>
+      <ul>
+        <li>Helps assess which <b>project activities</b> cause the <b>most significant impacts</b>, and on <i>which environmental components</i>.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Advantages and disadvantages</h3>
+      <div class="ad">
+        <div>
+          <span class="t">Advantages</span>
+          <ul>
+            <li><b>Comprehensive</b> — covers a very wide range of actions and impacts.</li>
+            <li><b>Links action to impact</b> clearly; good for <b>displaying results</b>.</li>
+            <li>Useful for <b>comparing alternatives</b>.</li>
+          </ul>
+        </div>
+        <div>
+          <span class="t neg">Disadvantages</span>
+          <ul>
+            <li><b>Highly subjective</b> — magnitude/importance scores depend on <i>individual judgement</i>.</li>
+            <li>Does not distinguish <b>direct vs indirect</b> impacts well.</li>
+            <li>Risk of <b>double-counting</b> impacts; purely <b>qualitative</b>, not probabilistic.</li>
+            <li>Too large and <b>complex</b> for small projects.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 -->
+  <section class="sec" id="s6">
+    <div class="sec-head">
+      <span class="idx">06</span>
+      <div>
+        <p class="eyebrow">Topic 06 · 7 marks</p>
+        <h2>Network method</h2>
+        <p class="repeat">Nov 2024 <span class="s">— standalone</span></p>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>The <b>Network method</b> is an extension of the matrix approach, used to trace the <b>chain of cause-effect relationships</b> triggered by a project — capturing not just direct impacts but also their <b>secondary and tertiary consequences</b>.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Concept</h3>
+      <ul>
+        <li>It takes the matrix approach further by accounting for <b>primary as well as secondary impacts</b>, building what is called an <b>impact tree</b>.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Purpose</h3>
+      <ul>
+        <li>Used to identify <b>cause-effect linkages</b> between project actions and resulting environmental changes, showing how one impact <b>triggers another</b> in sequence.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Key feature</h3>
+      <ul>
+        <li>Provides a <b>visual description of linkages</b> — showing identification of <b>direct, indirect, short-term, and long-term</b> environmental impacts as an <i>interconnected network/tree diagram</i>.</li>
+      </ul>
+      <p class="fig" style="margin:0">Source note — impact tree/network diagram referenced; not drawn here, per your notes</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Advantages and disadvantages</h3>
+      <div class="ad">
+        <div>
+          <span class="t">Advantages</span>
+          <ul>
+            <li><b>Links action to impact</b> clearly, like matrices.</li>
+            <li><b>Handles both direct and indirect impacts</b> — a major improvement over simple matrices.</li>
+            <li>Useful (in <b>simplified form</b>) for checking <b>second-order impacts</b>.</li>
+          </ul>
+        </div>
+        <div>
+          <span class="t neg">Disadvantages</span>
+          <ul>
+            <li>Can become <b>overly complex</b> if extended beyond a simplified version.</li>
+            <li>Still largely <b>qualitative</b> in nature.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="skeleton">
+      <p class="sl">Note for the exam — if asked together</p>
+      <p>Network method = Matrix + cause-effect chain tracing (primary <span class="arw">→</span> secondary <span class="arw">→</span> tertiary impacts)</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Source — your Module III notes, six answers</p>
+    <p>Matrix, impact-tree, source-classification and standards-table diagrams were referenced but not supplied; they are named in place, not drawn</p>
+    <p>Page built 25 November 2026</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var secs = document.querySelectorAll('.sec');
+    if(!('IntersectionObserver' in window)){
+      for(var i=0;i<secs.length;i++){secs[i].classList.add('in');}
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+      });
+    },{rootMargin:'0px 0px -8% 0px',threshold:0.05});
+    for(var j=0;j<secs.length;j++){io.observe(secs[j]);}
+    var d = document.querySelector('details.toc');
+    if(d){
+      d.addEventListener('click',function(ev){
+        if(ev.target.tagName === 'A'){d.removeAttribute('open');}
+      });
+    }
+  })();
+</script>
+</body>
+</html>

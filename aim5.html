@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e9e8e4">
+<title>Module V — Project-Specific EIA: Hydro, Airport, Quarry, Highway, SWM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#e9e8e4;
+    --panel:#f7f6f3;
+    --ink:#2b2b2b;
+    --dim:#6b6a66;
+    --signal:#e8541f;
+    --rule:#d3d1ca;
+    --mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --display:'Space Grotesk','Instrument Sans',-apple-system,'Segoe UI',sans-serif;
+    --body:'Instrument Sans',-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--ground);color:var(--ink);
+    font-family:var(--body);font-size:17px;line-height:1.65;overflow-wrap:anywhere;
+  }
+  .wrap{max-width:840px;margin:0 auto;padding:0 20px}
+  @media (min-width:720px){.wrap{padding:0 32px}}
+
+  h1,h2,h3{font-family:var(--display);letter-spacing:-0.028em;margin:0}
+  h1{font-weight:700;font-size:clamp(2.1rem,7.4vw,3.9rem);line-height:1.02}
+  h2{font-weight:600;font-size:clamp(1.5rem,4.6vw,2.15rem);line-height:1.1}
+  h3{font-weight:600;font-size:1.06rem;line-height:1.3;letter-spacing:-0.018em}
+  p{margin:0 0 .85em}
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 10px;
+  }
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.94em}
+  b,strong{font-weight:600}
+
+  .hero{padding:44px 0 34px;border-bottom:1px solid var(--rule)}
+  @media (min-width:720px){.hero{padding:72px 0 52px}}
+  .hero h1{max-width:15ch;margin:0 0 18px}
+  .hero .sub{margin:0;color:var(--dim);max-width:46ch;font-size:1rem}
+  .chain{
+    margin:26px 0 0;background:var(--ink);color:#f2f1ed;border-radius:8px;
+    padding:16px 18px;display:flex;flex-wrap:wrap;align-items:stretch;gap:6px 10px;
+  }
+  .chain .cell{min-width:0;padding:2px 0}
+  .chain .yr{display:block;font-family:var(--mono);font-size:13px;color:#fff}
+  .chain .lbl{display:block;font-size:11px;line-height:1.35;color:#b9b7b0}
+  .chain .arw{font-family:var(--mono);color:var(--signal);font-size:13px;align-self:center}
+
+  .bar{position:sticky;top:0;z-index:20;background:var(--ground);border-bottom:1px solid var(--rule)}
+  .bar-in{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px}
+  .brand{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink);text-decoration:none;padding:12px 0;min-height:44px;display:flex;align-items:center;
+  }
+  details.toc{position:relative}
+  details.toc summary{
+    list-style:none;cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);
+  }
+  details.toc summary::-webkit-details-marker{display:none}
+  details.toc summary::after{content:"+";color:var(--signal);font-size:14px;line-height:1}
+  details.toc[open] summary::after{content:"–"}
+  details.toc nav{
+    position:absolute;right:0;top:calc(100% + 4px);width:min(80vw,340px);
+    background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:8px;
+    max-height:64vh;overflow:auto;
+  }
+  details.toc ol{list-style:none;margin:0;padding:0}
+  details.toc a{
+    display:flex;gap:10px;align-items:baseline;padding:9px 8px;min-height:44px;
+    text-decoration:none;color:var(--ink);font-size:14px;border-bottom:1px solid var(--rule);
+  }
+  details.toc li:last-child a{border-bottom:0}
+  details.toc a .n{font-family:var(--mono);font-size:10px;color:var(--dim)}
+
+  main{padding:8px 0 0}
+  .sec{padding:40px 0 8px;border-bottom:1px solid var(--rule);scroll-margin-top:70px}
+  @media (min-width:720px){.sec{padding:64px 0 12px}}
+  .sec:last-of-type{border-bottom:0}
+  .sec-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:22px}
+  .idx{
+    font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--dim);
+    border:1px solid var(--rule);border-radius:4px;padding:3px 6px;flex:none;margin-top:4px;
+  }
+  .sec-head h2{margin:2px 0 0}
+  .repeat{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--signal);margin:10px 0 0;
+  }
+  .repeat span.s{color:var(--dim)}
+
+  .block{margin:0 0 26px}
+  .block:last-child{margin-bottom:0}
+  h3.plabel{
+    font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 8px;padding-top:14px;border-top:1px solid var(--rule);
+  }
+  ul{margin:0 0 .9em;padding-left:0;list-style:none}
+  li{position:relative;padding-left:20px;margin:0 0 .5em}
+  li::before{content:"";position:absolute;left:2px;top:.72em;width:7px;height:1px;background:var(--dim)}
+  li ul{margin:.5em 0 0}
+  li li{padding-left:18px}
+  li li::before{background:var(--rule);width:5px}
+  ul.tight li{margin-bottom:.25em}
+
+  .key{background:var(--panel);border-left:2px solid var(--ink);border-radius:0 8px 8px 0;padding:12px 16px;margin:0 0 18px;font-size:.97rem}
+  .key .kl,.warn .kl{
+    display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:4px;
+  }
+  .warn{background:var(--panel);border-left:2px solid var(--signal);border-radius:0 8px 8px 0;padding:12px 16px;margin:0 0 18px;font-size:.97rem}
+  .warn .kl{color:var(--signal)}
+
+  .flow{border:1px solid var(--rule);border-radius:8px;background:var(--panel);overflow:hidden;margin:0 0 10px}
+  .flow .step{display:flex;gap:14px;padding:12px 14px;border-top:1px solid var(--rule);align-items:flex-start}
+  .flow .step:first-child{border-top:0}
+  .flow .sn{font-family:var(--mono);font-size:11px;color:var(--signal);flex:none;width:24px;padding-top:3px}
+  .flow .st{display:block;font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:-0.015em;line-height:1.35}
+  .flow .sd{display:block;font-size:13px;color:var(--dim);line-height:1.45;margin-top:2px}
+  .fig{
+    font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 22px;line-height:1.6;
+  }
+
+  .skeleton{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin:26px 0 0}
+  .skeleton .sl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+  .skeleton p{font-family:var(--mono);font-size:12.5px;line-height:1.75;margin:0;color:var(--ink)}
+  .skeleton .arw{color:var(--signal)}
+
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 6px;border:1px solid var(--rule);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:380px;font-size:.93rem;background:var(--panel)}
+  caption{
+    text-align:left;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);padding:10px 12px 0;background:var(--panel);
+  }
+  th,td{padding:10px 12px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+  thead th{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:400}
+  tbody tr:last-child td{border-bottom:0}
+  td.v{font-family:var(--mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+  .hint{display:none;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:0 0 18px}
+  @media (max-width:559px){.hint{display:block}}
+
+  .aside{font-size:.9rem;color:var(--dim);border-top:1px solid var(--rule);padding-top:12px;margin:0 0 18px}
+  .aside .al{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:4px}
+
+  .tagline{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--signal);margin:0 0 14px;
+  }
+
+  footer{border-top:1px solid var(--rule);padding:32px 0 48px;margin-top:24px}
+  footer p{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--dim);margin:0 0 6px;text-transform:uppercase}
+
+  @media (prefers-reduced-motion:no-preference){
+    .sec{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+    .sec.in{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body id="top">
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Module V · project-specific EIA</p>
+    <h1>Five projects, one procedure</h1>
+    <p class="sub">Hydro, airport, quarry, highway case study and solid waste — each with its clearance route, impacts and mitigation. From your notes, nothing added.</p>
+    <div class="chain" aria-label="Five project types">
+      <span class="cell"><span class="yr">Hydro</span><span class="lbl">&gt;25 MW · Cat A</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">Airport</span><span class="lbl">Cat A</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">Quarry</span><span class="lbl">A ≥50 ha · B &lt;50 ha</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">Highway</span><span class="lbl">case study</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">SWM</span><span class="lbl">landfill · WtE</span></span>
+    </div>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap bar-in">
+    <a class="brand" href="#top">Module V — Projects</a>
+    <details class="toc">
+      <summary>Contents</summary>
+      <nav>
+        <ol>
+          <li><a href="#s1"><span class="n">01</span> Hydroelectric project</a></li>
+          <li><a href="#s2"><span class="n">02</span> Airport project</a></li>
+          <li><a href="#s3"><span class="n">03</span> Quarry / mining project</a></li>
+          <li><a href="#s4"><span class="n">04</span> Highway project — case study</a></li>
+          <li><a href="#s5"><span class="n">05</span> Solid waste management project</a></li>
+        </ol>
+      </nav>
+    </details>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- 01 -->
+  <section class="sec" id="s1">
+    <div class="sec-head">
+      <span class="idx">01</span>
+      <div>
+        <p class="eyebrow">Topic 01 · 15 marks</p>
+        <h2>Hydroelectric project — clearance procedure &amp; impact assessment</h2>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>Hydroelectric projects, despite being a <i>renewable</i> energy source, cause significant environmental and social disruption due to large-scale land submergence, deforestation, and population displacement. Hence in India, such projects (especially those <b>&gt;25 MW</b> or with large dams) mandatorily require <b>Environmental Clearance (EC)</b> under the <b>EIA Notification, 2006</b>, following a structured multi-stage procedure before construction can begin.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Clearance procedure — four stages</h3>
+      <div class="flow">
+        <div class="step"><span class="sn">01</span><div><span class="st">Screening</span><span class="sd">Determines whether the project needs clearance at all, and whether it falls under Category A (cleared by MoEF&amp;CC at central level) or Category B (cleared by SEIAA)</span></div></div>
+        <div class="step"><span class="sn">02</span><div><span class="st">Scoping</span><span class="sd">The expert committee (EAC) decides the Terms of Reference (ToR) — what specific impacts (submergence, seismicity, biodiversity) the EIA study must cover</span></div></div>
+        <div class="step"><span class="sn">03</span><div><span class="st">Public consultation</span><span class="sd">Public hearing at the project site to record concerns of local people / Project Affected Persons (PAPs), plus written responses from stakeholders</span></div></div>
+        <div class="step"><span class="sn">04</span><div><span class="st">Appraisal</span><span class="sd">The EAC scrutinizes the final EIA report and EMP and recommends grant/rejection of EC to the regulatory authority</span></div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Key impact assessment parameters</h3>
+      <ul>
+        <li><b>Submergence of land</b> — large forest and agricultural area lost permanently under the reservoir.</li>
+        <li><b>Displacement &amp; resettlement</b> — villages/settlements submerged, requiring a formal <b>Rehabilitation &amp; Resettlement (R&amp;R) Plan</b>.</li>
+        <li><i>Loss of biodiversity</i> — destruction of terrestrial flora/fauna habitat and disruption of <b>aquatic ecology</b> (fish migration blocked by dam).</li>
+        <li><b>Downstream flow alteration</b> — reduced river discharge affects irrigation, drinking water, and downstream ecosystems (<i>e-flow</i> norms now mandatory).</li>
+        <li><b>Seismic risk</b> — reservoir-induced seismicity due to added water load on fault zones.</li>
+        <li><b>Sedimentation</b> — trapping of silt behind the dam reduces reservoir life and starves downstream agricultural land of nutrients.</li>
+        <li><b>Greenhouse gas emissions</b> — submerged vegetation decomposition releases <b>methane</b>, often overlooked despite hydro being labelled “clean”.</li>
+        <li><b>Cultural/religious site loss</b> — temples, heritage sites, burial grounds submerged.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Mitigation measures</h3>
+      <ul>
+        <li>Compensatory afforestation for forest land diverted.</li>
+        <li>Fish ladders/passes to maintain aquatic connectivity.</li>
+        <li>Maintaining minimum <b>environmental flow (e-flow)</b> downstream.</li>
+        <li>Resettlement colonies with livelihood restoration for PAPs.</li>
+      </ul>
+    </div>
+
+    <p class="fig">Source note — the notes reference an EIA flowchart (Screening → Scoping → Public Hearing → Appraisal → EC) but say mention only, so it is written out above, not drawn</p>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec" id="s2">
+    <div class="sec-head">
+      <span class="idx">02</span>
+      <div>
+        <p class="eyebrow">Topic 02 · 15 marks</p>
+        <h2>Airport project — EIA need &amp; impact identification</h2>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>Airport projects are classified as <b>Category A</b> projects under the <b>EIA Notification, 2006</b>, requiring mandatory clearance from <b>MoEF&amp;CC</b> due to their large land footprint, high traffic-induced pollution, and significant social displacement. Since airports are long-term, irreversible land-use changes located near urban/semi-urban areas, a detailed EIA is essential to balance <b>connectivity &amp; economic growth</b> against environmental and community costs.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Why EIA is needed for airport projects</h3>
+      <ul>
+        <li><b>Large land requirement</b> — runways, terminals, and buffer zones consume hundreds of hectares, often agricultural or forest land.</li>
+        <li><b>Population displacement</b> — villages/settlements near the site require <b>resettlement</b>, similar to highway/dam projects.</li>
+        <li><i>Irreversibility</i> — once built, land-use cannot easily revert; long operational lifespan locks in impacts for decades.</li>
+        <li><b>Multiple impact types</b> — noise, air, water, and ecological impacts occur simultaneously, needing integrated assessment.</li>
+        <li>Statutory requirement — no <b>Environmental Clearance (EC)</b>, no construction can legally begin.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Key impacts identified</h3>
+      <ul>
+        <li><b>Noise pollution</b> — aircraft takeoff/landing causes severe noise exceeding permissible limits near residential zones; affects nearby schools/hospitals.</li>
+        <li><b>Air quality degradation</b> — aircraft engine emissions + increased <b>vehicular traffic</b> around the airport raise local pollution levels.</li>
+        <li><i>Loss of agricultural/forest land</i> — large-scale land acquisition reduces farming livelihoods and green cover.</li>
+        <li><b>Hydrological changes</b> — paving large areas increases <b>surface runoff</b>, reduces groundwater recharge, and can cause local flooding.</li>
+        <li><b>Bird hazard &amp; biodiversity loss</b> — airports often disturb wetlands/bird habitats; conversely, bird presence creates a <b>bird-strike safety risk</b> to aircraft.</li>
+        <li><b>Displacement &amp; R&amp;R issues</b> — compensation and rehabilitation of <b>Project Affected Persons (PAPs)</b>.</li>
+        <li><b>Construction-phase impacts</b> — dust, noise, and soil erosion during the building phase.</li>
+        <li><b>Socio-economic impact</b> — positive: boosts tourism, trade, employment; negative: land value disputes, livelihood loss for displaced farmers.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Mitigation measures</h3>
+      <ul>
+        <li><b>Noise barriers</b> and restricted night-flight schedules near residential areas.</li>
+        <li>Proper <b>stormwater drainage design</b> to compensate for loss of natural permeable surface.</li>
+        <li>Green belt/buffer plantation around the perimeter to control dust and noise.</li>
+        <li><b>R&amp;R package</b> with livelihood restoration for displaced families.</li>
+      </ul>
+    </div>
+
+    <p class="fig">Source note — a site-layout diagram (runway, buffer zone, affected settlement radius) is referenced; mention only, not drawn</p>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec" id="s3">
+    <div class="sec-head">
+      <span class="idx">03</span>
+      <div>
+        <p class="eyebrow">Topic 03 · 15 marks</p>
+        <h2>Quarry / mining project — clearance procedure &amp; impact assessment</h2>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>Quarrying and mining projects involve extraction of minerals, stone, or sand from the earth’s surface, causing <b>direct and often irreversible damage</b> to land, water, and ecology. Under the <b>EIA Notification, 2006</b>, mining projects (based on lease area) fall under <b>Category A</b> (≥<span class="num">50 ha</span>) or <b>Category B</b> (&lt;<span class="num">50 ha</span>), requiring <b>Environmental Clearance (EC)</b> before operations can begin, along with separate <b>Mining Plan/Lease approval</b> from the Department of Mines.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Clearance procedure — four stages</h3>
+      <div class="flow">
+        <div class="step"><span class="sn">01</span><div><span class="st">Screening</span><span class="sd">Classifies the project as Category A (cleared by MoEF&amp;CC) or Category B (cleared by SEIAA) based on lease area and mineral type</span></div></div>
+        <div class="step"><span class="sn">02</span><div><span class="st">Scoping</span><span class="sd">Expert Appraisal Committee (EAC) finalizes the Terms of Reference (ToR), specifying which impacts — dust, blasting, groundwater — must be studied in detail</span></div></div>
+        <div class="step"><span class="sn">03</span><div><span class="st">Public consultation</span><span class="sd">Mandatory public hearing near the mine site to record objections/suggestions from local residents and affected communities</span></div></div>
+        <div class="step"><span class="sn">04</span><div><span class="st">Appraisal</span><span class="sd">EAC reviews the final EIA report + EMP and recommends grant or rejection of clearance</span></div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Key impact assessment parameters</h3>
+      <ul>
+        <li><b>Land degradation</b> — permanent alteration of topography, creation of <b>open pits</b> and overburden dumps.</li>
+        <li><b>Loss of topsoil &amp; vegetation</b> — removal of the fertile soil layer makes post-mining land unfit for agriculture without reclamation.</li>
+        <li><i>Air pollution</i> — <b>dust emission</b> from blasting, excavation, crushing, and transport of material.</li>
+        <li><b>Noise &amp; vibration</b> — from blasting operations and heavy machinery, affecting nearby settlements and wildlife.</li>
+        <li><b>Groundwater depletion/contamination</b> — deep excavation can intersect aquifers, lowering the water table or polluting it with mine effluent.</li>
+        <li><b>Water body siltation</b> — runoff carrying loose debris increases <b>sedimentation</b> in nearby rivers/streams.</li>
+        <li><b>Habitat destruction</b> — disturbance/loss of flora and fauna in and around the mining lease area.</li>
+        <li><b>Slope instability</b> — improper excavation can trigger <b>landslides</b> or slope failure, especially in hilly terrain.</li>
+        <li><b>Occupational health hazards</b> — workers exposed to silica dust (risk of <b>silicosis</b>), noise, and accident-prone conditions.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Mitigation measures</h3>
+      <ul>
+        <li><b>Progressive mine closure &amp; reclamation</b> — backfilling pits, re-vegetation with native species.</li>
+        <li><b>Water sprinkling</b> on haul roads and crushers to suppress dust.</li>
+        <li>Controlled/delayed blasting techniques to limit noise and vibration.</li>
+        <li>Garland drains and <b>siltation ponds</b> to prevent sediment entering water bodies.</li>
+        <li>Providing <b>PPE</b> (masks, ear protection) and regular health check-ups for workers.</li>
+      </ul>
+    </div>
+
+    <p class="fig">Source note — a cross-section of the quarry pit (overburden dump, pit, water table) is referenced; mention only, not drawn</p>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec" id="s4">
+    <div class="sec-head">
+      <span class="idx">04</span>
+      <div>
+        <p class="eyebrow">Topic 04 · 15 marks</p>
+        <h2>Highway project — impact assessment, with case study</h2>
+        <p class="repeat">Case study <span class="s">— Nagpur–Mumbai Samruddhi Mahamarg, Package-III</span></p>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>Highway projects, though essential for <b>connectivity, trade, and regional development</b>, involve large-scale linear land acquisition cutting across forests, farmland, and settlements. A relevant case study is the <b>Nagpur–Mumbai Samruddhi Mahamarg (Package-III: Jalna to Aurangabad, 155 km)</b>, where land was acquired through <b>land pooling</b> instead of traditional acquisition, and a detailed EIA was conducted to assess environmental and social consequences before construction.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Case study overview</h3>
+      <ul>
+        <li>Project: <b>701.128 km</b> expressway across <b>10 districts</b> from Vidarbha through Marathwada to Konkan, implemented by <b>MSRDC</b>.</li>
+        <li><b>Land pooling model</b> — farmers transfer land ownership to the government agency, which develops infrastructure (differs from traditional land acquisition).</li>
+        <li>Total land requirement of about <b>10,000 ha</b>, with Package-III alone requiring <b>26.877 ha forest land</b> and <b>1858 ha non-forest/agricultural land</b>.</li>
+      </ul>
+      <div class="scroll">
+        <table>
+          <caption>The figures from your notes, in one place</caption>
+          <thead>
+            <tr><th scope="col">Item</th><th scope="col" class="v" style="text-align:right">Figure</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Expressway length</td><td class="v">701.128 km</td></tr>
+            <tr><td>Districts crossed</td><td class="v">10</td></tr>
+            <tr><td>Package-III length</td><td class="v">155 km</td></tr>
+            <tr><td>Total land requirement</td><td class="v">~10,000 ha</td></tr>
+            <tr><td>Forest land, Pkg-III</td><td class="v">26.877 ha</td></tr>
+            <tr><td>Non-forest / agricultural, Pkg-III</td><td class="v">1,858 ha</td></tr>
+            <tr><td>Trees felled</td><td class="v">5,309</td></tr>
+            <tr><td>— of which forest</td><td class="v">399</td></tr>
+            <tr><td>— of which non-forest</td><td class="v">4,910</td></tr>
+            <tr><td>Rivers affected</td><td class="v">3</td></tr>
+            <tr><td>Ponds affected</td><td class="v">26</td></tr>
+            <tr><td>Canals affected</td><td class="v">3</td></tr>
+            <tr><td>Local streams affected</td><td class="v">59</td></tr>
+            <tr><td>Wells affected</td><td class="v">356</td></tr>
+            <tr><td>Religious / cultural properties</td><td class="v">7</td></tr>
+            <tr><td>Borrow earth</td><td class="v">2.8 Cr cum</td></tr>
+            <tr><td>Accident reduction</td><td class="v">50%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hint">Swipe the table sideways if it is cut off</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Key impacts identified</h3>
+      <ul>
+        <li><b>Deforestation</b> — felling of <b>5,309 trees</b> (399 forest + 4,910 non-forest), causing <i>loss of habitat</i> for avian fauna.</li>
+        <li><b>Loss of agricultural land</b> — diversion of 1,858 ha affects farmer livelihoods and food security.</li>
+        <li><b>Impact on water bodies</b> — disturbance to <b>3 rivers, 26 ponds, 3 canals, and 59 local streams</b>; risk of sediment deposition and turbidity.</li>
+        <li><b>Groundwater disturbance</b> — potential impact on <b>356 wells</b> along the corridor.</li>
+        <li><i>Impact on cultural/religious sites</i> — <b>7 religious/cultural properties</b> affected by the alignment.</li>
+        <li><b>Air &amp; dust pollution</b> — from earthwork, borrow areas (<b>2.8 Cr. cum</b> of borrow earth), and vehicular movement during construction.</li>
+        <li><b>Noise pollution</b> — from construction machinery and post-completion vehicular traffic.</li>
+        <li><b>Displacement &amp; resettlement</b> — demolition of structures within the <b>Right of Way (ROW)</b>, requiring R&amp;R measures.</li>
+        <li><b>Occupational health &amp; safety risks</b> — to construction workers from dust, noise, and site hazards.</li>
+        <li><b>Positive impacts</b> — reduced travel time, lower vehicle operating costs, <b>50% reduction in accidents</b>, better connectivity boosting regional development.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Mitigation measures</h3>
+      <ul>
+        <li><b>Compensatory afforestation</b> in degraded forest areas + avenue plantation along the corridor.</li>
+        <li><b>Sediment traps</b> and proper drainage to protect water bodies from construction runoff.</li>
+        <li><b>Rehabilitation Action Plan (RAP)</b> ensuring equitable compensation for Project Affected Persons (PAPs).</li>
+        <li>Restriction on tree felling <b>beyond the toe line</b>, with replanting commitments.</li>
+        <li>Low-noise equipment and scheduling construction activity to daytime near residential zones.</li>
+      </ul>
+    </div>
+
+    <p class="fig">Source note — the notes reference an 8-step EIA flowchart (Screening → Scoping → Impact Analysis → Mitigation → Reporting → Review → Decision-making → Post-monitoring); mention only, not drawn</p>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec" id="s5">
+    <div class="sec-head">
+      <span class="idx">05</span>
+      <div>
+        <p class="eyebrow">Topic 05 · 15 marks</p>
+        <h2>Solid waste management project — impact assessment</h2>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>Solid Waste Management (SWM) projects — including <b>landfills, waste-to-energy plants, and composting facilities</b> — are essential to handle growing municipal waste but can themselves become significant pollution sources if poorly planned. Under the <b>EIA Notification, 2006</b>, common/municipal solid waste management facilities handling large volumes require <b>Environmental Clearance</b>, with site selection and impact assessment being critical since these projects operate near or within urban/semi-urban areas for decades.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Why EIA is needed</h3>
+      <ul>
+        <li><b>Long operational life</b> — landfills remain active (and leach pollutants) for <b>decades</b>, making impacts long-term and difficult to reverse.</li>
+        <li><b>Proximity to habitation</b> — site often located near residential areas, raising health and nuisance concerns.</li>
+        <li><b>Multiple pollution pathways</b> — air, water, soil, and groundwater can all be affected simultaneously.</li>
+        <li>Mandatory under law before <b>siting, construction, and operation</b> of landfill/treatment facility.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Key impacts identified</h3>
+      <ul>
+        <li><b>Leachate generation</b> — percolation of rainwater through waste produces toxic <b>leachate</b>, contaminating soil and <b>groundwater</b> if not lined/contained.</li>
+        <li><b>Groundwater &amp; surface water pollution</b> — untreated leachate seeping into aquifers or nearby streams/ponds.</li>
+        <li><i>Air pollution</i> — <b>methane and landfill gas</b> emissions from decomposing organic waste (also a major <b>greenhouse gas</b> contributor).</li>
+        <li><b>Foul odour</b> — decomposition causes persistent odour nuisance affecting nearby residents.</li>
+        <li><b>Soil contamination</b> — heavy metals and toxic substances from waste leaching into surrounding soil.</li>
+        <li><b>Vector-borne disease risk</b> — open dumping attracts <b>rats, flies, and stray animals</b>, spreading disease.</li>
+        <li><b>Fire hazard</b> — methane build-up can cause spontaneous landfill fires, releasing toxic smoke.</li>
+        <li><b>Loss of land value &amp; aesthetics</b> — visual pollution and reduced property value near dump sites.</li>
+        <li><b>Traffic &amp; noise</b> — movement of heavy waste-collection vehicles causes congestion and noise in surrounding areas.</li>
+        <li><b>Occupational health hazards</b> — waste-pickers/workers exposed to <b>toxic fumes, sharp objects, and biological hazards</b>.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Mitigation measures</h3>
+      <ul>
+        <li><b>Scientific sanitary landfill design</b> with impermeable liners and leachate collection/treatment system.</li>
+        <li><b>Gas collection systems</b> to capture methane (can be used for energy recovery).</li>
+        <li><b>Segregation at source</b> (wet/dry/biomedical) to reduce landfill load and enable composting/recycling.</li>
+        <li>Buffer <b>green belt</b> around the site to control odour and dust dispersion.</li>
+        <li>Regular groundwater monitoring in and around the facility.</li>
+        <li><b>PPE and health check-ups</b> for sanitation workers.</li>
+      </ul>
+    </div>
+
+    <p class="fig">Source note — a sanitary landfill cross-section (liner, leachate collection, gas vent) is referenced; mention only, not drawn</p>
+
+    <div class="key">
+      <span class="kl">Pattern across all five — as your notes set it out</span>
+      The same four stages appear every time: Screening → Scoping → Public Consultation → Appraisal. What changes is the category (hydro &gt;25 MW, airport, and quarry ≥50 ha sit in Category A; quarry &lt;50 ha in Category B) and the list of impacts and mitigation measures, which is specific to each project type above.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Source — your Module V notes, five answers</p>
+    <p>All five diagrams were referenced but not supplied; each is written out in words in its section</p>
+    <p>Page built 25 November 2026</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var secs = document.querySelectorAll('.sec');
+    if(!('IntersectionObserver' in window)){
+      for(var i=0;i<secs.length;i++){secs[i].classList.add('in');}
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+      });
+    },{rootMargin:'0px 0px -8% 0px',threshold:0.05});
+    for(var j=0;j<secs.length;j++){io.observe(secs[j]);}
+    var d = document.querySelector('details.toc');
+    if(d){
+      d.addEventListener('click',function(ev){
+        if(ev.target.tagName === 'A'){d.removeAttribute('open');}
+      });
+    }
+  })();
+</script>
+</body>
+</html>

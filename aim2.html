@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e9e8e4">
+<title>Module II — Environmental Clearance, Types of EIA, IEE &amp; ToR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#e9e8e4;
+    --panel:#f7f6f3;
+    --ink:#2b2b2b;
+    --dim:#6b6a66;
+    --signal:#e8541f;
+    --rule:#d3d1ca;
+    --mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --display:'Space Grotesk','Instrument Sans',-apple-system,'Segoe UI',sans-serif;
+    --body:'Instrument Sans',-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--ground);color:var(--ink);
+    font-family:var(--body);font-size:17px;line-height:1.65;
+    overflow-wrap:anywhere;
+  }
+  .wrap{max-width:840px;margin:0 auto;padding:0 20px}
+  @media (min-width:720px){.wrap{padding:0 32px}}
+
+  h1,h2,h3{font-family:var(--display);letter-spacing:-0.028em;margin:0}
+  h1{font-weight:700;font-size:clamp(2.1rem,7.4vw,3.9rem);line-height:1.02}
+  h2{font-weight:600;font-size:clamp(1.5rem,4.6vw,2.15rem);line-height:1.1}
+  h3{font-weight:600;font-size:1.06rem;line-height:1.3;letter-spacing:-0.018em}
+  p{margin:0 0 .85em}
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 10px;
+  }
+  .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  .num{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.94em}
+  b,strong{font-weight:600}
+
+  /* hero */
+  .hero{padding:44px 0 34px;border-bottom:1px solid var(--rule)}
+  @media (min-width:720px){.hero{padding:72px 0 52px}}
+  .hero h1{max-width:15ch;margin:0 0 18px}
+  .hero .sub{margin:0;color:var(--dim);max-width:46ch;font-size:1rem}
+  .chain{
+    margin:26px 0 0;background:var(--ink);color:#f2f1ed;border-radius:8px;
+    padding:16px 18px;display:flex;flex-wrap:wrap;align-items:stretch;gap:6px 10px;
+  }
+  .chain .cell{min-width:0;padding:2px 0}
+  .chain .yr{display:block;font-family:var(--mono);font-size:13px;letter-spacing:.02em;color:#fff}
+  .chain .lbl{display:block;font-size:11px;line-height:1.35;color:#b9b7b0}
+  .chain .arw{font-family:var(--mono);color:var(--signal);font-size:13px;align-self:center}
+
+  /* light chain */
+  .chain-lt{
+    display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;
+    background:var(--panel);border:1px solid var(--rule);border-radius:8px;
+    padding:12px 14px;margin:0 0 22px;
+  }
+  .chain-lt .c{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.02em;
+    border:1px solid var(--rule);border-radius:4px;padding:4px 7px;background:var(--ground);
+  }
+  .chain-lt .c.hot{border-color:var(--signal);color:var(--signal)}
+  .chain-lt .a{font-family:var(--mono);color:var(--signal);font-size:12px}
+
+  /* sticky bar */
+  .bar{position:sticky;top:0;z-index:20;background:var(--ground);border-bottom:1px solid var(--rule)}
+  .bar-in{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px}
+  .brand{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink);text-decoration:none;padding:12px 0;min-height:44px;display:flex;align-items:center;
+  }
+  details.toc{position:relative}
+  details.toc summary{
+    list-style:none;cursor:pointer;min-height:44px;display:flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);
+  }
+  details.toc summary::-webkit-details-marker{display:none}
+  details.toc summary::after{content:"+";color:var(--signal);font-size:14px;line-height:1}
+  details.toc[open] summary::after{content:"–"}
+  details.toc nav{
+    position:absolute;right:0;top:calc(100% + 4px);width:min(80vw,330px);
+    background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:8px;
+    max-height:64vh;overflow:auto;
+  }
+  details.toc ol{list-style:none;margin:0;padding:0}
+  details.toc a{
+    display:flex;gap:10px;align-items:baseline;padding:9px 8px;min-height:44px;
+    text-decoration:none;color:var(--ink);font-size:14px;border-bottom:1px solid var(--rule);
+  }
+  details.toc li:last-child a{border-bottom:0}
+  details.toc a .n{font-family:var(--mono);font-size:10px;color:var(--dim)}
+
+  /* sections */
+  main{padding:8px 0 0}
+  .sec{padding:40px 0 8px;border-bottom:1px solid var(--rule);scroll-margin-top:70px}
+  @media (min-width:720px){.sec{padding:64px 0 12px}}
+  .sec:last-of-type{border-bottom:0}
+  .sec-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:22px}
+  .idx{
+    font-family:var(--mono);font-size:12px;letter-spacing:.06em;color:var(--dim);
+    border:1px solid var(--rule);border-radius:4px;padding:3px 6px;flex:none;margin-top:4px;
+  }
+  .sec-head h2{margin:2px 0 0}
+  .repeat{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--signal);margin:10px 0 0;
+  }
+  .repeat span.s{color:var(--dim)}
+
+  .block{margin:0 0 26px}
+  .block:last-child{margin-bottom:0}
+  .plabel{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 8px;padding-top:14px;border-top:1px solid var(--rule);
+  }
+  ul{margin:0 0 .9em;padding-left:0;list-style:none}
+  li{position:relative;padding-left:20px;margin:0 0 .5em}
+  li::before{content:"";position:absolute;left:2px;top:.72em;width:7px;height:1px;background:var(--dim)}
+  li ul{margin:.5em 0 0}
+  li li{padding-left:18px}
+  li li::before{background:var(--rule);width:5px}
+  ul.tight li{margin-bottom:.25em}
+
+  .key{background:var(--panel);border-left:2px solid var(--ink);border-radius:0 8px 8px 0;padding:12px 16px;margin:0 0 18px;font-size:.97rem}
+  .key .kl,.warn .kl{
+    display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:4px;
+  }
+  .warn{background:var(--panel);border-left:2px solid var(--signal);border-radius:0 8px 8px 0;padding:12px 16px;margin:0 0 18px;font-size:.97rem}
+  .warn .kl{color:var(--signal)}
+
+  /* flow diagram */
+  .flow{border:1px solid var(--rule);border-radius:8px;background:var(--panel);overflow:hidden;margin:0 0 10px}
+  .flow .step{display:flex;gap:14px;padding:12px 14px;border-top:1px solid var(--rule);align-items:flex-start}
+  .flow .step:first-child{border-top:0}
+  .flow .sn{font-family:var(--mono);font-size:11px;color:var(--signal);flex:none;width:24px;padding-top:3px}
+  .flow .st{display:block;font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:-0.015em;line-height:1.3}
+  .flow .sd{display:block;font-size:13px;color:var(--dim);line-height:1.45;margin-top:2px}
+  .fig{
+    font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--dim);margin:0 0 22px;
+  }
+
+  /* duo */
+  .duo{display:grid;gap:12px;margin:0 0 22px}
+  @media (min-width:640px){.duo{grid-template-columns:1fr 1fr}}
+  .duo .card{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;min-width:0}
+  .duo .card .ch{font-family:var(--display);font-weight:600;font-size:15px;display:block;margin-bottom:4px}
+  .duo .card p{font-size:14px;color:var(--dim);margin:0;line-height:1.5}
+  .duo .card .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--signal);display:block;margin-bottom:6px}
+
+  .skeleton{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin:26px 0 0}
+  .skeleton .sl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin:0 0 8px}
+  .skeleton p{font-family:var(--mono);font-size:12.5px;line-height:1.75;margin:0;color:var(--ink)}
+  .skeleton .arw{color:var(--signal)}
+
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 6px;border:1px solid var(--rule);border-radius:8px}
+  table{border-collapse:collapse;width:100%;min-width:320px;font-size:.95rem;background:var(--panel)}
+  th,td{padding:10px 12px;border-bottom:1px solid var(--rule);text-align:left}
+  thead th{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:400}
+  tbody tr:last-child td{border-bottom:0}
+  .hint{display:none;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin:0 0 18px}
+  @media (max-width:559px){.hint{display:block}}
+
+  .aside{font-size:.9rem;color:var(--dim);border-top:1px solid var(--rule);padding-top:12px;margin:0 0 18px}
+  .aside .al{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);display:block;margin-bottom:4px}
+
+  .terms{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px;padding:0;list-style:none}
+  .terms li{
+    margin:0;padding:5px 9px;border:1px solid var(--rule);border-radius:4px;background:var(--panel);
+    font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--ink);
+  }
+  .terms li::before{content:none}
+
+  footer{border-top:1px solid var(--rule);padding:32px 0 48px;margin-top:24px}
+  footer p{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--dim);margin:0 0 6px;text-transform:uppercase}
+
+  @media (prefers-reduced-motion:no-preference){
+    .sec{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+    .sec.in{opacity:1;transform:none}
+  }
+</style>
+</head>
+<body id="top">
+
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Module II · environmental impact assessment</p>
+    <h1>How a project gets cleared</h1>
+    <p class="sub">The four-stage EC procedure, the five types of EIA, IEE, Terms of Reference and the generic EIA report. From your notes, nothing added.</p>
+    <div class="chain" aria-label="Four-stage clearance chain">
+      <span class="cell"><span class="yr">Screening</span><span class="lbl">Cat A / Cat B</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">Scoping</span><span class="lbl">ToR by EAC/SEAC</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">Public Consultation</span><span class="lbl">SPCB hearing</span></span>
+      <span class="arw">→</span>
+      <span class="cell"><span class="yr">Appraisal</span><span class="lbl">grant or reject EC</span></span>
+    </div>
+  </div>
+</header>
+
+<div class="bar">
+  <div class="wrap bar-in">
+    <a class="brand" href="#top">Module II — EC</a>
+    <details class="toc">
+      <summary>Contents</summary>
+      <nav>
+        <ol>
+          <li><a href="#s1"><span class="n">01</span> EC procedure for a project</a></li>
+          <li><a href="#s2"><span class="n">02</span> Different types of EIA</a></li>
+          <li><a href="#s3"><span class="n">03</span> Initial Environmental Examination</a></li>
+          <li><a href="#s4"><span class="n">04</span> Terms of Reference</a></li>
+          <li><a href="#s5"><span class="n">05</span> Generic structure of an EIA report</a></li>
+        </ol>
+      </nav>
+    </details>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- 01 -->
+  <section class="sec" id="s1">
+    <div class="sec-head">
+      <span class="idx">01</span>
+      <div>
+        <p class="eyebrow">Topic 01 · core answer</p>
+        <h2>Environmental Clearance procedure for a project in India</h2>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>Before any project (nuclear, hydroelectric, mining, or any Category I/II activity) can be set up in India, it must obtain <b>Environmental Clearance (EC)</b> under the <i>EIA Notification, 2006</i> issued by the <b>Ministry of Environment, Forest and Climate Change (MoEF&amp;CC)</b>. The clearance process ensures that environmental concerns are examined <b>before</b> the project begins, not after damage is done. It follows <b>four sequential stages</b> — Screening, Scoping, Public Consultation, and Appraisal — leading to a final decision.</p>
+    </div>
+
+    <div class="fig">Figure 1 — the EC process, in the sequence your notes give it</div>
+    <div class="flow">
+      <div class="step"><span class="sn">01</span><div><span class="st">Screening</span><span class="sd">Does it need an EIA, and at what level — Category A or B</span></div></div>
+      <div class="step"><span class="sn">02</span><div><span class="st">Scoping</span><span class="sd">EAC / SEAC fixes the Terms of Reference</span></div></div>
+      <div class="step"><span class="sn">03</span><div><span class="st">EIA report + EMP</span><span class="sd">Baseline field studies, draft EIA and Environmental Management Plan</span></div></div>
+      <div class="step"><span class="sn">04</span><div><span class="st">Public Consultation</span><span class="sd">SPCB public hearing, plus written responses</span></div></div>
+      <div class="step"><span class="sn">05</span><div><span class="st">Appraisal</span><span class="sd">EAC / SEAC scrutinises Final EIA, hearing proceedings, EMP</span></div></div>
+      <div class="step"><span class="sn">06</span><div><span class="st">Decision</span><span class="sd">Central or State Government grants or rejects EC, with conditions</span></div></div>
+      <div class="step"><span class="sn">07</span><div><span class="st">Monitoring</span><span class="sd">Continuous compliance with EC conditions</span></div></div>
+      <div class="step"><span class="sn">08</span><div><span class="st">Post-clearance audit</span><span class="sd">Were predictions right, did mitigation work</span></div></div>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Stage 1 · screening</h3>
+      <ul>
+        <li>The project is checked to see whether it needs an EIA at all, and if so, at what level.</li>
+        <li>Projects are classified into <b>Category A</b> (needs clearance from the <i>Central Government</i>, via <b>MoEF&amp;CC</b>) and <b>Category B</b> (needs clearance from the <i>State Government</i>, via <b>SEIAA</b> — State Environment Impact Assessment Authority).</li>
+        <li>Category B is further split into <b>B1</b> (needs full EIA) and <b>B2</b> (exempted from detailed EIA).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Stage 2 · scoping</h3>
+      <ul>
+        <li>Once screened in, the <b>Expert Appraisal Committee (EAC)</b> or <b>State Level EAC (SEAC)</b> decides the <i>Terms of Reference (ToR)</i> — i.e., which environmental parameters (<b>air, water, soil, noise, biodiversity, socio-economic impact</b>) must be studied in detail for that specific project.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Baseline data collection / EIA report preparation</h3>
+      <ul>
+        <li>Based on the ToR, the project proponent conducts field studies — generally a <b>Rapid EIA</b> (one season of data, ~<span class="num">3 months</span>) or a <b>Comprehensive EIA</b> (all four seasons, ~<span class="num">16 months</span>) — and prepares the draft <b>EIA report</b> along with an <b>Environmental Management Plan (EMP)</b>.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Stage 3 · public consultation</h3>
+      <ul>
+        <li>This has two parts:
+          <ul>
+            <li><b>Public Hearing (PH)</b>: conducted at/near the project site by the <b>State Pollution Control Board (SPCB)</b>; local affected persons and stakeholders raise concerns. A minimum <b>30-day notice</b> is given before the hearing.</li>
+            <li><b>Written responses</b>: comments collected from concerned persons who have a plausible stake in the project but could not attend.</li>
+          </ul>
+        </li>
+        <li>After the hearing, the <b>applicant must address all concerns raised</b> and make appropriate revisions to the draft EIA and EMP, then submit the <b>Final EIA Report</b> to the regulatory authority.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Stage 4 · appraisal</h3>
+      <ul>
+        <li>The <b>EAC/SEAC</b> carries out a <b>detailed scrutiny</b> of the Final EIA report, public hearing proceedings, and EMP, and recommends either grant or rejection of clearance to the regulatory authority (<b>MoEF&amp;CC</b> for Category A, <b>SEIAA</b> for Category B).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Decision</h3>
+      <ul>
+        <li>Based on the EAC/SEAC recommendation, the <b>Central or State Government grants or rejects Environmental Clearance</b>, often with specific conditions attached (safeguards, mitigation measures, monitoring requirements).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Monitoring</h3>
+      <ul>
+        <li>Once the project is operational, <b>compliance with EC conditions is periodically monitored</b> — this is a continuous obligation, not a one-time formality.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Post-clearance audit and evaluation</h3>
+      <ul>
+        <li>The final stage checks whether the EIA predictions were accurate and whether the mitigation measures actually worked, recommending corrective action if needed.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Category III / exempted projects</h3>
+      <ul>
+        <li>Certain projects (e.g. defence road construction in border areas, pipeline projects, small-scale activities) are <b>exempted from the EIA process altogether</b>.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Key terms to remember</h3>
+      <ul class="terms">
+        <li>Screening</li><li>Scoping</li><li>Public Consultation</li><li>Appraisal</li>
+        <li>EAC / SEAC</li><li>SPCB</li><li>SEIAA</li><li>MoEF&amp;CC</li><li>EMP</li>
+      </ul>
+    </div>
+
+    <div class="warn">
+      <span class="kl">Exam tip</span>
+      Whatever project name appears in the question (nuclear plant, hydroelectric dam, quarry, generic industry), the <b>four-stage structure never changes</b> — just plug the project into Stage 1 (check if it is Category A/B) and write the same sequence. If asked as “steps in EIA process with flowchart”, draw or mention the same flowchart: <span class="mono">Screening → Scoping → EIA Report → Public Consultation → Appraisal → Decision → Monitoring</span>.
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="sec" id="s2">
+    <div class="sec-head">
+      <span class="idx">02</span>
+      <div>
+        <p class="eyebrow">Topic 02 · the OR question</p>
+        <h2>Different types of EIA</h2>
+        <p class="repeat">Nov 2025 · Dec 2023 · Apr 2025 · Dec 2022 <span class="s">— 4 of 5, almost always the alternate full question</span></p>
+      </div>
+    </div>
+
+    <div class="block">
+      <p><b>Environmental Impact Assessment (EIA)</b> is not a single rigid technique — it is categorised depending on the <i>level of planning</i>, <i>geographical scale</i>, and <i>stage at which it is applied</i>. Based on systematic analysis of environmental parameters, geographical region, carrying capacity limitations, and sectoral planning, EIA is broadly classified into <b>five types</b>: Strategic, Regional, Sectoral, Project-level, and Life Cycle Assessment. Understanding each type helps decide <i>when</i> and <i>at what level</i> environmental concerns should be integrated into decision-making.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">1 · Strategic EIA (SEIA)</h3>
+      <ul>
+        <li>Refers to the systematic analysis of environmental effects of <b>development policies, plans, programs, and other proposed strategic actions</b> — not individual projects.</li>
+        <li>It extends the aims of EIA <i>upstream</i> in the decision-making process, applied <b>before</b> project-level decisions are made, when major alternatives are still open.</li>
+        <li>It represents a <b>proactive approach</b> to integrate environmental considerations into <i>higher-level</i> policy decisions.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">2 · Regional EIA</h3>
+      <ul>
+        <li>Integrates environmental concerns into <b>development planning for a geographic region</b> (usually sub-country level), an approach called <b>Economic-cum-Environmental (EcE) development planning</b>.</li>
+        <li>It helps combine economic development with management of renewable natural resources within <b>carrying capacity limits</b>, to achieve <i>sustainable development</i>.</li>
+        <li>Regional EIA fulfils the need for <b>macro-level environmental integration</b>, which project-level EIA cannot achieve alone — it sets the <i>context</i> for individual project-level EIAs within that region, and allows <b>cumulative impacts</b> of all projects in the region to be accounted for together.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">3 · Sectoral EIA</h3>
+      <ul>
+        <li>Instead of assessing one project in isolation, EIA is applied at the level of an entire <b>sector’s development plan</b> (e.g. all power projects, all mining projects in a sector).</li>
+        <li>Once sector-level plans already address environmental concerns, the scope of subsequent project-level EIA becomes much <b>narrower</b>.</li>
+        <li>It helps address <i>specific environmental problems</i> typical of planning and implementing that sector’s projects.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">4 · Project-level EIA</h3>
+      <ul>
+        <li>This is the <b>most common and traditional</b> form — it assesses a <b>single developmental activity in isolation</b>, examining the impacts it exerts on the <i>immediate receiving environment</i>.</li>
+        <li>Its major limitation: it does <b>not effectively capture cumulative effects</b> of multiple developments happening together in a region.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">5 · Life Cycle Assessment (LCA)</h3>
+      <ul>
+        <li>Evaluates the environmental impact of a project/product across its <b>entire life cycle</b> — from raw material extraction, through construction/manufacturing and operation, to decommissioning/disposal — rather than just at one stage.</li>
+      </ul>
+    </div>
+
+    <div class="key">
+      <span class="kl">Why the classification matters</span>
+      Moving from <i>Strategic → Regional → Sectoral → Project-level</i> represents moving from <b>broad policy-level thinking downward to a single project</b> — each level catches impacts the level below it would miss (e.g. cumulative/regional impacts that a single Project-level EIA cannot see).
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Related assessment depth — often clubbed in the same answer</h3>
+      <div class="duo">
+        <div class="card">
+          <span class="tag">Rapid EIA</span>
+          <span class="ch">One season, ~3 months</span>
+          <p>Quick assessment using one season of baseline data; used for initiation of a new activity or expansion/process change.</p>
+        </div>
+        <div class="card">
+          <span class="tag">Comprehensive EIA</span>
+          <span class="ch">Four seasons, ~16 months</span>
+          <p>Covers all four seasons (Monsoon, Post-monsoon, Winter, Summer) of baseline data; required if asked for after evaluating the Rapid EIA report.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn">
+      <span class="kl">Exam tip — for the OR question</span>
+      If the question says <i>“Different types of EIA”</i> — write <b>Strategic, Regional, Sectoral, Project-level, LCA</b> (5 types) with 2–3 lines each. If it is framed as <i>“types of environmental assessment reports”</i> or <i>“assessment methods”</i>, add <b>Rapid vs Comprehensive EIA</b> as a supporting point — this combination covers both phrasings examiners use across Nov 2025, Dec 2023, Apr 2025 and Dec 2022.
+    </div>
+  </section>
+
+  <!-- 03 -->
+  <section class="sec" id="s3">
+    <div class="sec-head">
+      <span class="idx">03</span>
+      <div>
+        <p class="eyebrow">Topic 03 · the b)-part</p>
+        <h2>Initial Environmental Examination (IEE)</h2>
+        <p class="repeat">Nov 2025 · Dec 2023 · Apr 2025 <span class="s">— nearly always paired with “different types of EIA”</span></p>
+      </div>
+    </div>
+
+    <div class="block">
+      <p><b>Initial Environmental Examination (IEE)</b> is an <b>early, low-cost screening-level study</b> carried out to determine whether a proposed project has the potential to cause significant environmental impacts, and if so, whether a <b>full-scale EIA</b> is actually required. It sits right after the <i>Screening</i> stage and before a full EIA is commissioned, acting as a <b>filter</b> that saves time, money, and resources by avoiding unnecessary detailed studies for projects with minimal environmental risk.</p>
+    </div>
+
+    <div class="fig">Figure 2 — where IEE sits in the overall EIA process</div>
+    <div class="chain-lt">
+      <span class="c">Project Screening</span><span class="a">→</span>
+      <span class="c hot">IEE</span><span class="a">→</span>
+      <span class="c">IEE Review</span><span class="a">→</span>
+      <span class="c">Scoping / ToR</span><span class="a">→</span>
+      <span class="c">Full-Scale EIA</span>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Definition</h3>
+      <ul>
+        <li>IEE is intended as a <b>low-cost environmental evaluation</b> that makes use of <b>information already available</b> (existing data, reports, maps) rather than generating fresh, detailed field data.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Purpose</h3>
+      <ul>
+        <li>It would be <i>time-consuming and wasteful</i> for <b>every</b> proposed project/activity to undergo a full EIA — since not all developments pose a genuine environmental threat, IEE helps <b>filter out</b> such low-risk projects early.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Core function</h3>
+      <ul>
+        <li>IEE is the process used to determine <b>(a)</b> whether a proposed project requires a full EIA at all, and <b>(b)</b> if so, <i>what level</i> of environmental review is necessary.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Role in the EIA process</h3>
+      <ul>
+        <li>IEE <b>boosts/speeds up</b> the overall EIA process by resolving simple issues quickly and directing only the genuinely significant ones for further, detailed assessment.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Four key functions of IEE</h3>
+      <ul>
+        <li><b>Identifies</b> potential significant environmental issues associated with the project.</li>
+        <li><b>Grades</b> the effects and pinpoints the actual <b>Significant Environmental Issues (SEIs)</b>.</li>
+        <li><b>Resolves</b> the simple/minor SEIs directly at this stage itself.</li>
+        <li><b>Recommends further action</b> for resolving the outstanding, more serious SEIs.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Outcome of IEE review — two paths</h3>
+      <ul>
+        <li>If <b>all potential SEIs are resolved</b> → the project proceeds according to the terms laid out in the IEE itself (<b>no full EIA needed</b>).</li>
+        <li>If <b>significant issues remain unresolved</b> → the process moves to <b>Scoping</b>, which lays down the <b>Terms of Reference (ToR)</b> for a <b>Full-Scale EIA</b>.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Relationship with scoping and full-scale EIA</h3>
+      <ul>
+        <li>IEE feeds directly into Scoping — the outstanding SEIs identified in IEE become the <b>input</b> for the Full-Scale EIA’s assessment phase.</li>
+      </ul>
+    </div>
+
+    <div class="key">
+      <span class="kl">Significance</span>
+      IEE reflects the <b>“screen before you study”</b> philosophy of EIA — avoiding the mistake of either (a) ignoring a genuinely risky project, or (b) wasting resources studying a harmless one in full detail.
+    </div>
+
+    <div class="warn">
+      <span class="kl">Exam tip</span>
+      Since this is almost always the <b>b)-part paired with “Different types of EIA”</b>, keep the answer <b>tight (around 7–8 marks worth)</b> — focus on the <b>definition, purpose, the four functions, and the two possible outcomes</b> (proceed vs. go to Scoping/Full EIA). Mentioning the flowchart position (<span class="mono">Screening → IEE → IEE Review → Scoping/Full-Scale EIA</span>) earns easy marks even without drawing it.
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section class="sec" id="s4">
+    <div class="sec-head">
+      <span class="idx">04</span>
+      <div>
+        <p class="eyebrow">Topic 04 · short note or 7-mark</p>
+        <h2>Terms of Reference (ToR)</h2>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>The <b>Terms of Reference (ToR)</b> is the document that emerges from the <b>Scoping</b> stage of the EIA process. It defines the exact <b>boundaries, issues, and work plan</b> for the detailed (Full-Scale) EIA study that follows — essentially telling the project proponent <b>“what to study, how much to study, and how to present it.”</b> Without a clear ToR, an EIA study could become either too broad (wasting time/money) or too narrow (missing real impacts).</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Origin</h3>
+      <ul>
+        <li>ToR is finalized during the <b>Scoping</b> stage — a process of <b>interaction between government agencies and project proponents</b> — once the <b>IEE Review</b> confirms that outstanding <b>Significant Environmental Issues (SEIs)</b> remain unresolved and a Full-Scale EIA is required.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Core purpose — scoping, and hence the ToR, identifies</h3>
+      <ul>
+        <li><b>Spatial and temporal boundaries</b> for the EIA (i.e. <i>what geographic area</i> and <i>what time period</i> the study should cover).</li>
+        <li><b>Important issues and concerns</b> relevant to the specific project.</li>
+        <li><b>Information necessary for decision-making</b>.</li>
+        <li><b>Significant effects and factors</b> that must be considered in the study.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Main contents of ToR — standard structure</h3>
+      <ul>
+        <li><b>1. Background</b> — context of the project, its location, and nature.</li>
+        <li><b>2. Impact Issues</b> — covering:
+          <ul>
+            <li><b>Significant Issues</b> to be studied in depth.</li>
+            <li><b>Relevant Resources</b> (environmental components like air, water, soil, biodiversity, socio-economic) that need to be assessed.</li>
+            <li><b>Report Formatting</b> — how the final EIA report should be structured and presented.</li>
+          </ul>
+        </li>
+        <li><b>3. Work Plan</b> — specifying the <b>When / Who / How</b> of task completion (timeline, responsible agencies/experts, and methodology).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Function</h3>
+      <ul>
+        <li>ToR <b>establishes the terms of reference for the Full-Scale EIA</b> — meaning the detailed study that follows must strictly address only the issues and boundaries ToR has laid down, nothing vague or open-ended.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Position in the overall process</h3>
+      <div class="chain-lt">
+        <span class="c">IEE</span><span class="a">→</span>
+        <span class="c">IEE Review <span style="color:var(--dim)">(SEIs unresolved)</span></span><span class="a">→</span>
+        <span class="c hot">Scoping / ToR</span><span class="a">→</span>
+        <span class="c">Full-Scale EIA</span>
+      </div>
+      <ul>
+        <li>IEE → IEE Review (if SEIs remain unresolved) → <b>Scoping/ToR</b> → <b>Full-Scale EIA</b> begins using the ToR as its <b>input/mandate</b>.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">Relevance / importance</h3>
+      <ul>
+        <li>Prevents <b>wastage of time and resources</b> by focusing the EIA only on genuinely significant issues.</li>
+        <li>Ensures <b>all stakeholders (government + proponent) agree in advance</b> on the scope, avoiding disputes later.</li>
+        <li>Provides a <b>clear, structured work plan</b> so the Full-Scale EIA is systematic rather than haphazard.</li>
+        <li>Acts as a <b>reference/checklist</b> during Appraisal — the EAC/SEAC checks whether the final EIA report actually followed the approved ToR.</li>
+      </ul>
+    </div>
+
+    <div class="warn">
+      <span class="kl">Exam tip</span>
+      If asked as a <b>short note (2–3 marks)</b>, just cover: <i>definition + where it comes from (Scoping) + the 3 main contents</i> (Background, Impact Issues, Work Plan). If it is a <b>full 7-mark question</b>, add the <i>spatial/temporal boundaries</i> point and the <i>relevance/importance</i> bullets above.
+    </div>
+  </section>
+
+  <!-- 05 -->
+  <section class="sec" id="s5">
+    <div class="sec-head">
+      <span class="idx">05</span>
+      <div>
+        <p class="eyebrow">Topic 05 · 11 sections</p>
+        <h2>Generic structure of an EIA report</h2>
+        <p class="repeat">Apr 2025 · Dec 2022</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <p>An <b>EIA Report</b> is the formal document prepared by the project proponent (through accredited consultants) summarizing the entire assessment — from baseline data to proposed mitigation. As per the <b>EIA Notification, 2006</b> guidelines, every EIA report must follow a <b>standard generic structure</b> so that the <b>EAC/SEAC</b> can review it uniformly and the public can understand it during <b>Public Consultation</b>. Though contents vary slightly by project type (nuclear, mining, hydroelectric, etc.), the overall skeleton remains the same.</p>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">1 · Introduction</h3>
+      <ul>
+        <li>Gives the purpose of the report, the identification of the project and its proponent, the scope of the study, and the name of the organization preparing the EIA.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">2 · Project description</h3>
+      <ul>
+        <li>Describes the <b>nature, size, and location</b> of the project; the process/technology involved; raw materials, resource requirements (land, water, power); and project schedule/cost.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">3 · Description of the environment (baseline data)</h3>
+      <ul>
+        <li>Presents the <b>existing environmental status</b> of the study area — covering <i>air, water, soil, noise, biological (flora/fauna), and socio-economic</i> components — collected through <b>Rapid</b> or <b>Comprehensive EIA</b> field studies.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">4 · Anticipated environmental impacts &amp; mitigation measures</h3>
+      <ul>
+        <li>Identifies and predicts the likely <b>direct and indirect impacts</b> of the project on each environmental component (human beings, flora/fauna, soil/water/air, climate, material assets, cultural heritage), and proposes measures to <i>prevent, minimize, or offset</i> these impacts.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">5 · Analysis of alternatives (technology &amp; site)</h3>
+      <ul>
+        <li>Compares the chosen project site/technology against <b>viable alternatives</b>, including the “no project” option, and justifies the final selection on environmental grounds.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">6 · Environmental monitoring program</h3>
+      <ul>
+        <li>Lays out a plan for <b>post-clearance monitoring</b> — specifying which parameters will be tracked, at what frequency, and by which agency, to verify that actual impacts match predictions.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">7 · Additional studies</h3>
+      <ul>
+        <li>Includes specialized studies where relevant — e.g. <b>Risk Assessment</b> (for hazard-prone industries), <b>Social Impact Assessment</b>, or <b>Rehabilitation &amp; Resettlement (R&amp;R) Plan</b> (if displacement of people is involved).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">8 · Project benefits</h3>
+      <ul>
+        <li>Describes the <b>positive outcomes</b> of the project — improvements in infrastructure, employment generation, socio-economic development of the region.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">9 · Environmental Management Plan (EMP)</h3>
+      <ul>
+        <li>The <b>most critical section</b> — a detailed action plan on how adverse impacts will be <i>mitigated/controlled</i> and brought within prescribed standards (as laid down by <b>CPCB</b> and <b>MoEF&amp;CC</b>), including costs and implementation schedule.</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">10 · Summary &amp; conclusion</h3>
+      <ul>
+        <li>A non-technical summary of the entire report, understandable to the general public and decision-makers (this portion is also used during <b>Public Hearing</b>).</li>
+      </ul>
+    </div>
+
+    <div class="block">
+      <h3 class="plabel">11 · Disclosure of consultants</h3>
+      <ul>
+        <li>Name and credentials of the <b>accredited EIA consultant/agency</b> who prepared the report, as mandated for accountability and quality control.</li>
+      </ul>
+    </div>
+
+    <div class="skeleton">
+      <p class="sl">Quick-recall skeleton</p>
+      <p>Intro <span class="arw">→</span> Project description <span class="arw">→</span> Baseline environment <span class="arw">→</span> Impacts &amp; mitigation <span class="arw">→</span> Alternatives <span class="arw">→</span> Monitoring programme <span class="arw">→</span> Additional studies <span class="arw">→</span> Benefits <span class="arw">→</span> EMP <span class="arw">→</span> Summary <span class="arw">→</span> Consultant disclosure</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Source — your Module II notes, five answers</p>
+    <p>Three diagrams were referenced in the notes but not supplied; figures 1 and 2 here are drawn from the sequences given in the text</p>
+    <p>Page built 25 November 2026</p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var secs = document.querySelectorAll('.sec');
+    if(!('IntersectionObserver' in window)){
+      for(var i=0;i<secs.length;i++){secs[i].classList.add('in');}
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}
+      });
+    },{rootMargin:'0px 0px -8% 0px',threshold:0.05});
+    for(var j=0;j<secs.length;j++){io.observe(secs[j]);}
+    var d = document.querySelector('details.toc');
+    if(d){
+      d.addEventListener('click',function(ev){
+        if(ev.target.tagName === 'A'){d.removeAttribute('open');}
+      });
+    }
+  })();
+</script>
+</body>
+</html>
